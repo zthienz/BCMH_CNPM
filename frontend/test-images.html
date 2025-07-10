@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Hình ảnh - Du lịch Trà Vinh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-images mr-3 text-blue-600"></i>Test Hình ảnh
+            </h1>
+            <p class="text-gray-600">Kiểm tra hình ảnh từ my-server/images</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="mb-8 text-center">
+            <a href="dia-diem.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 mr-4">
+                <i class="fas fa-arrow-left mr-2"></i>Về trang chính
+            </a>
+            <button onclick="loadImages()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                <i class="fas fa-sync mr-2"></i>Tải lại
+            </button>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="text-center py-8">
+            <i class="fas fa-spinner fa-spin text-4xl text-blue-600"></i>
+            <p class="mt-4 text-gray-600">Đang tải hình ảnh...</p>
+        </div>
+
+        <!-- Error -->
+        <div id="error" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <strong>Lỗi:</strong> <span id="errorMessage"></span>
+        </div>
+
+        <!-- Images Grid -->
+        <div id="imagesGrid" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Images will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3000';
+        
+        // List of images in my-server/images directory
+        const imageFiles = [
+            'Chua-Vam-Ray.jpg',
+            'ao-ba-om.jpg',
+            'bien-ba-dong.jpg',
+            'chotravinh.webp',
+            'chua-ang.jpg',
+            'chua-co.jpg',
+            'chua-giac-linh.jpg',
+            'chua-hang.jpg',
+            'chua-pho-quang.jpg',
+            'cu-lao-long-tri.jpg',
+            'cu-lao-tan-quy.jpg',
+            'den-tho-bac.jpg',
+            'giao-duong-mac-bac.webp',
+            'huynh-kha.jpg',
+            'nha-bao-tang.jpg',
+            'rung_duoc.jpg'
+        ];
+
+        async function loadImages() {
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('error').classList.add('hidden');
+            document.getElementById('imagesGrid').classList.add('hidden');
+            
+            const grid = document.getElementById('imagesGrid');
+            grid.innerHTML = '';
+            
+            try {
+                // Test each image
+                for (const imageFile of imageFiles) {
+                    const imageCard = createImageCard(imageFile);
+                    grid.appendChild(imageCard);
+                }
+                
+                document.getElementById('imagesGrid').classList.remove('hidden');
+                
+            } catch (error) {
+                console.error('Error loading images:', error);
+                showError(error.message);
+            } finally {
+                document.getElementById('loading').classList.add('hidden');
+            }
+        }
+
+        function createImageCard(imageFile) {
+            const card = document.createElement('div');
+            card.className = 'bg-white rounded-lg shadow-md overflow-hidden';
+            
+            const imageUrl = `${API_BASE_URL}/images/${imageFile}`;
+            
+            card.innerHTML = `
+                <div class="relative">
+                    <img src="${imageUrl}" alt="${imageFile}" 
+                         class="w-full h-48 object-cover"
+                         onload="this.parentElement.querySelector('.loading-indicator').classList.add('hidden')"
+                         onerror="this.parentElement.querySelector('.error-indicator').classList.remove('hidden'); this.parentElement.querySelector('.loading-indicator').classList.add('hidden')">
+                    
+                    <div class="loading-indicator absolute inset-0 bg-gray-200 flex items-center justify-center">
+                        <i class="fas fa-spinner fa-spin text-gray-500"></i>
+                    </div>
+                    
+                    <div class="error-indicator hidden absolute inset-0 bg-red-100 flex items-center justify-center">
+                        <div class="text-center">
+                            <i class="fas fa-exclamation-triangle text-red-500 text-2xl mb-2"></i>
+                            <p class="text-red-600 text-sm">Lỗi tải ảnh</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-4">
+                    <h3 class="font-bold text-gray-800 mb-2">${imageFile}</h3>
+                    <p class="text-sm text-gray-600 mb-2">URL: /images/${imageFile}</p>
+                    <a href="${imageUrl}" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm">
+                        <i class="fas fa-external-link-alt mr-1"></i>Mở trong tab mới
+                    </a>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('error').classList.remove('hidden');
+        }
+
+        // Auto load on page load
+        window.addEventListener('load', loadImages);
+    </script>
+</body>
+</html>

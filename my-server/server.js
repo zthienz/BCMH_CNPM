@@ -1,293 +1,297 @@
+// ===================================================================
+//  API SERVER FOR 'DuLichTraVinh' APPLICATION
+// ===================================================================
+// - Cung cấp API để lấy dữ liệu địa điểm, loại hình du lịch.
+// - Phục vụ các tệp hình ảnh tĩnh từ thư mục /public/images.
+// - Đã loại bỏ các endpoint gỡ lỗi/thiết lập để mã nguồn sạch hơn.
+// ===================================================================
+
 const http = require('http');
 const mysql = require('mysql');
+const url = require('url');
 const fs = require('fs');
 const path = require('path');
 
-// Tạo kết nối MySQL
+// --- 1. CẤU HÌNH KẾT NỐI DATABASE ---
 const connection = mysql.createConnection({
-  host: 'localhost',       // hoặc IP database nếu không phải local
-  user: 'root',            // tên người dùng MySQL
-  password: 'Thien@160504',            // mật khẩu (nếu có)
-  database: 'DulichTraVinh' // tên CSDL bạn đã tạo
+  host: 'localhost',
+  user: 'root',
+  // **QUAN TRỌNG**: Nên dùng biến môi trường cho mật khẩu trong thực tế
+  // Ví dụ: password: process.env.DB_PASSWORD
+  password: 'Thien@160504',
+  database: 'DuLichTraVinh',
+  charset: 'utf8mb4' // Đảm bảo hỗ trợ tiếng Việt
 });
 
-// Kết nối đến database
+// --- 2. KẾT NỐI TỚI MYSQL ---
 connection.connect(err => {
   if (err) {
-    console.error('Kết nối MySQL thất bại: ' + err.stack);
-    return;
+    console.error('LỖI: Kết nối MySQL thất bại. Vui lòng kiểm tra cấu hình.');
+    console.error(err.stack);
+    // Thoát ứng dụng nếu không thể kết nối DB
+    process.exit(1); 
   }
-  console.log('Đã kết nối MySQL thành công, ID: ' + connection.threadId);
+  console.log('>> Đã kết nối MySQL thành công! (ID: ' + connection.threadId + ')');
 });
 
-const url = require('url');
-
+// --- 3. TẠO SERVER HTTP ---
 const server = http.createServer((req, res) => {
-  // Enable CORS
+  // Bật CORS cho phép các domain khác gọi tới API
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // Xử lý các request OPTIONS (trình duyệt gửi trước khi gọi POST, PUT, DELETE)
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+    res.end();
+    return;
+  }
 
   const parsedUrl = url.parse(req.url, true);
   const pathname = parsedUrl.pathname;
   const query = parsedUrl.query;
 
-  if (pathname === '/luotxem') {
-    connection.query('SELECT * FROM LuotXem', (error, results) => {
-      if (error) {
-        res.writeHead(500, {'Content-Type': 'application/json'});
-        return res.end(JSON.stringify({ error: error.message }));
-      }
-      res.writeHead(200, {'Content-Type': 'application/json'});
-      res.end(JSON.stringify(results));
-    });
-  } else if (pathname === '/diadiemdulich') {
-    // API endpoint for tourist destinations
-    let sqlQuery = 'SELECT * FROM diadiemdulich';
-    let queryParams = [];
+  // --- ROUTING: XỬ LÝ CÁC YÊU CẦU ---
 
-    // Handle search functionality (using actual column names)
-    if (query.search) {
-      sqlQuery += ' WHERE TenDDDL LIKE ? OR MoTa LIKE ? OR DiaChi LIKE ?';
-      const searchTerm = `%${query.search}%`;
-      queryParams = [searchTerm, searchTerm, searchTerm];
-    }
-
-    // Handle category filter (using MALHDL)
-    if (query.loai_dia_diem) {
-      if (queryParams.length > 0) {
-        sqlQuery += ' AND MALHDL = ?';
-      } else {
-        sqlQuery += ' WHERE MALHDL = ?';
-      }
-      queryParams.push(query.loai_dia_diem);
-    }
-
-    // Add ordering (using actual column names)
-    sqlQuery += ' ORDER BY TenDDDL ASC';
-
-    console.log('Executing query:', sqlQuery, 'with params:', queryParams);
-
-    connection.query(sqlQuery, queryParams, (error, results) => {
-      if (error) {
-        console.error('Database error:', error);
-        res.writeHead(500, {'Content-Type': 'application/json'});
-        return res.end(JSON.stringify({
-          error: error.message,
-          code: error.code,
-          sqlState: error.sqlState
-        }));
-      }
-      console.log('Query results:', results.length, 'records found');
-      res.writeHead(200, {'Content-Type': 'application/json'});
-      res.end(JSON.stringify(results));
-    });
-  } else if (pathname.startsWith('/diadiemdulich/') && pathname.split('/').length === 3) {
-    // Get specific destination by ID
-    const id = pathname.split('/')[2];
-    console.log('Getting destination with ID:', id);
-    connection.query('SELECT * FROM diadiemdulich WHERE MADDDL = ?', [id], (error, results) => {
-      if (error) {
-        console.error('Database error for ID query:', error);
-        res.writeHead(500, {'Content-Type': 'application/json'});
-        return res.end(JSON.stringify({ error: error.message }));
-      }
-      if (results.length === 0) {
-        res.writeHead(404, {'Content-Type': 'application/json'});
-        return res.end(JSON.stringify({ error: 'Không tìm thấy địa điểm' }));
-      }
-      res.writeHead(200, {'Content-Type': 'application/json'});
-      res.end(JSON.stringify(results[0]));
-    });
-  } else if (pathname === '/test-db') {
-    // Test database connection
-    connection.query('SHOW TABLES', (error, results) => {
-      if (error) {
-        console.error('Database test error:', error);
-        res.writeHead(500, {'Content-Type': 'application/json'});
-        return res.end(JSON.stringify({ error: error.message, connected: false }));
-      }
-      res.writeHead(200, {'Content-Type': 'application/json'});
-      res.end(JSON.stringify({
-        connected: true,
-        tables: results.map(row => Object.values(row)[0]),
-        message: 'Database connection successful'
-      }));
-    });
-  } else if (pathname === '/describe-table') {
-    // Describe diadiemdulich table structure
-    connection.query('DESCRIBE diadiemdulich', (error, results) => {
-      if (error) {
-        console.error('Describe table error:', error);
-        res.writeHead(500, {'Content-Type': 'application/json'});
-        return res.end(JSON.stringify({ error: error.message }));
-      }
-      res.writeHead(200, {'Content-Type': 'application/json'});
-      res.end(JSON.stringify({
-        structure: results,
-        message: 'Table structure retrieved successfully'
-      }));
-    });
-  } else if (pathname === '/table-info') {
-    // Get complete table information
-    const queries = [
-      'DESCRIBE diadiemdulich',
-      'SELECT * FROM diadiemdulich LIMIT 5',
-      'SELECT COUNT(*) as total_records FROM diadiemdulich',
-      'SHOW TABLES LIKE "%loai%" OR LIKE "%hinh%"'
-    ];
-
-    const results = {};
-    let completed = 0;
-
-    // Execute all queries
-    connection.query(queries[0], (error, structure) => {
-      if (error) {
-        res.writeHead(500, {'Content-Type': 'application/json'});
-        return res.end(JSON.stringify({ error: error.message }));
-      }
-      results.structure = structure;
-      completed++;
-
-      connection.query(queries[1], (error, sample_data) => {
-        if (error) {
-          res.writeHead(500, {'Content-Type': 'application/json'});
-          return res.end(JSON.stringify({ error: error.message }));
-        }
-        results.sample_data = sample_data;
-        completed++;
-
-        connection.query(queries[2], (error, count) => {
-          if (error) {
-            res.writeHead(500, {'Content-Type': 'application/json'});
-            return res.end(JSON.stringify({ error: error.message }));
-          }
-          results.total_records = count[0].total_records;
-          completed++;
-
-          connection.query('SHOW TABLES', (error, tables) => {
-            if (error) {
-              res.writeHead(500, {'Content-Type': 'application/json'});
-              return res.end(JSON.stringify({ error: error.message }));
-            }
-            results.all_tables = tables.map(row => Object.values(row)[0]);
-            completed++;
-
-            if (completed === 4) {
-              res.writeHead(200, {'Content-Type': 'application/json'});
-              res.end(JSON.stringify(results));
-            }
-          });
-        });
-      });
-    });
-  } else if (pathname === '/loaihinhdulich') {
-    // Get all categories from loaihinhdulich table
-    connection.query('SELECT * FROM loaihinhdulich', (error, results) => {
-      if (error) {
-        console.error('Error getting categories:', error);
-        res.writeHead(500, {'Content-Type': 'application/json'});
-        return res.end(JSON.stringify({ error: error.message }));
-      }
-      res.writeHead(200, {'Content-Type': 'application/json'});
-      res.end(JSON.stringify(results));
-    });
-  } else if (pathname.startsWith('/images/')) {
-    // Serve static images
-    const imagePath = path.join(__dirname, '..', 'frontend', pathname);
-
-    fs.readFile(imagePath, (error, data) => {
-      if (error) {
-        res.writeHead(404, {'Content-Type': 'text/plain'});
-        return res.end('Image not found');
-      }
-
-      // Get file extension to set correct content type
-      const ext = path.extname(imagePath).toLowerCase();
-      const contentTypes = {
-        '.jpg': 'image/jpeg',
-        '.jpeg': 'image/jpeg',
-        '.png': 'image/png',
-        '.gif': 'image/gif',
-        '.webp': 'image/webp',
-        '.svg': 'image/svg+xml'
-      };
-
-      const contentType = contentTypes[ext] || 'image/jpeg';
-      res.writeHead(200, {'Content-Type': contentType});
-      res.end(data);
-    });
-  } else if (pathname === '/add-image-column') {
-    // Add image column to diadiemdulich table if not exists
-    const addColumnQuery = `
-      ALTER TABLE diadiemdulich
-      ADD COLUMN HinhAnh VARCHAR(255) DEFAULT NULL
-    `;
-
-    connection.query(addColumnQuery, (error, results) => {
-      if (error) {
-        console.error('Error adding image column:', error);
-        res.writeHead(500, {'Content-Type': 'application/json'});
-        return res.end(JSON.stringify({ error: error.message }));
-      }
-      res.writeHead(200, {'Content-Type': 'application/json'});
-      res.end(JSON.stringify({
-        success: true,
-        message: 'Image column added successfully'
-      }));
-    });
-  } else if (pathname === '/update-sample-images') {
-    // Update sample data with image paths
-    const updateQueries = [
-      "UPDATE diadiemdulich SET HinhAnh = 'images/ao-ba-om.svg' WHERE TenDDDL LIKE '%Ao B%Om%'",
-      "UPDATE diadiemdulich SET HinhAnh = 'images/bien-ba-dong.svg' WHERE TenDDDL LIKE '%Biển%' OR TenDDDL LIKE '%Ba Động%'",
-      "UPDATE diadiemdulich SET HinhAnh = 'images/bao-tang-van-hoa-khmer.svg' WHERE TenDDDL LIKE '%Bảo tàng%' OR TenDDDL LIKE '%Văn hóa%'",
-      "UPDATE diadiemdulich SET HinhAnh = 'images/cho-tra-vinh.svg' WHERE TenDDDL LIKE '%Chợ%' OR TenDDDL LIKE '%Trà Vinh%'"
-    ];
-
-    let completed = 0;
-    const results = [];
-
-    updateQueries.forEach((query, index) => {
-      connection.query(query, (error, result) => {
-        if (error) {
-          console.error(`Error updating image ${index + 1}:`, error);
-          results.push({ error: error.message });
-        } else {
-          results.push({ success: true, affected: result.affectedRows });
-        }
-
-        completed++;
-        if (completed === updateQueries.length) {
-          res.writeHead(200, {'Content-Type': 'application/json'});
-          res.end(JSON.stringify({
-            message: `Sample images updated (${updateQueries.length} queries executed)`,
-            results: results
-          }));
-        }
-      });
-    });
-  } else if (pathname === '/destinations-with-images') {
-    // Get destinations that have images
-    connection.query('SELECT MADDDL, TenDDDL, HinhAnh FROM diadiemdulich WHERE HinhAnh IS NOT NULL AND HinhAnh != ""', (error, results) => {
-      if (error) {
-        console.error('Error getting destinations with images:', error);
-        res.writeHead(500, {'Content-Type': 'application/json'});
-        return res.end(JSON.stringify({ error: error.message }));
-      }
-      res.writeHead(200, {'Content-Type': 'application/json'});
-      res.end(JSON.stringify({
-        count: results.length,
-        destinations: results
-      }));
-    });
-  } else {
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.end('Hello from Node.js server!');
+  // A. PHỤC VỤ TỆP HÌNH ẢNH TĨNH
+  // URL có dạng: /images/chua_hang.jpg
+  if (pathname.startsWith('/images/')) {
+    serveStaticImage(pathname, res);
+  }
+  // B. API LẤY DANH SÁCH LOẠI HÌNH DU LỊCH
+  // URL: /api/loaihinhdulich
+  else if (pathname === '/api/loaihinhdulich') {
+    getAllCategories(res);
+  }
+  // C. API LẤY CHI TIẾT MỘT ĐỊA ĐIỂM
+  // URL có dạng: /api/diadiemdulich/DD03
+  else if (pathname.match(/^\/api\/diadiemdulich\/([a-zA-Z0-9]+)$/)) {
+    const id = pathname.split('/')[3];
+    getDestinationById(id, res);
+  }
+  // D. API LẤY DANH SÁCH ĐỊA ĐIỂM (CÓ TÌM KIẾM VÀ LỌC)
+  // URL: /api/diadiemdulich?search=chùa&loai=LH03
+  else if (pathname === '/api/diadiemdulich') {
+    getDestinations(query, res);
+  }
+  // E. KIỂM TRA CỘT HÌNH ẢNH TRONG DATABASE
+  else if (pathname === '/check-db-images') {
+    checkDatabaseImages(res);
+  }
+  // F. CẬP NHẬT HÌNH ẢNH TRONG DATABASE
+  else if (pathname === '/update-db-images') {
+    updateDatabaseImages(res);
+  }
+  // G. LỖI 404 NOT FOUND
+  else {
+    res.writeHead(404, { 'Content-Type': 'application/json; charset=utf-8' });
+    res.end(JSON.stringify({ message: 'Lỗi 404: Không tìm thấy tài nguyên.' }));
   }
 });
 
+// --- CÁC HÀM XỬ LÝ LOGIC ---
+
+/**
+ * Phục vụ tệp hình ảnh từ thư mục public/images
+ * @param {string} imagePath - Đường dẫn ảnh từ URL (ví dụ: /images/chua_hang.jpg)
+ * @param {http.ServerResponse} res - Đối tượng response
+ */
+function serveStaticImage(imagePath, res) {
+  // Ngăn chặn tấn công path traversal (vd: /images/../../server.js)
+  const safePath = path.normalize(imagePath).replace(/^(\.\.[\/\\])+/, '');
+  const fullPath = path.join(__dirname, safePath);
+
+  fs.readFile(fullPath, (err, data) => {
+    if (err) {
+      console.error(`Không tìm thấy ảnh: ${fullPath}`);
+      res.writeHead(404, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ message: 'Không tìm thấy hình ảnh.' }));
+      return;
+    }
+    
+    // Xác định content-type dựa trên đuôi file
+    const ext = path.extname(fullPath).toLowerCase();
+    const contentTypes = {
+      '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
+      '.png': 'image/png', '.gif': 'image/gif',
+      '.svg': 'image/svg+xml', '.webp': 'image/webp'
+    };
+    const contentType = contentTypes[ext] || 'application/octet-stream';
+
+    res.writeHead(200, { 'Content-Type': contentType });
+    res.end(data);
+  });
+}
+
+/**
+ * Lấy tất cả loại hình du lịch
+ * @param {http.ServerResponse} res
+ */
+function getAllCategories(res) {
+  connection.query('SELECT * FROM LoaiHinhDuLich ORDER BY TenLHDL ASC', (error, results) => {
+    if (error) {
+      console.error('Lỗi truy vấn LoaiHinhDuLich:', error);
+      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+      return res.end(JSON.stringify({ error: 'Lỗi máy chủ khi truy vấn dữ liệu.' }));
+    }
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    res.end(JSON.stringify(results));
+  });
+}
+
+/**
+ * Lấy thông tin chi tiết một địa điểm bằng ID
+ * @param {string} id - Mã địa điểm (MADDDL)
+ * @param {http.ServerResponse} res
+ */
+function getDestinationById(id, res) {
+  const sql = 'SELECT * FROM DiaDiemDuLich WHERE MADDDL = ?';
+  connection.query(sql, [id], (error, results) => {
+    if (error) {
+      console.error(`Lỗi truy vấn địa điểm ID ${id}:`, error);
+      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+      return res.end(JSON.stringify({ error: 'Lỗi máy chủ khi truy vấn dữ liệu.' }));
+    }
+    if (results.length === 0) {
+      res.writeHead(404, { 'Content-Type': 'application/json; charset=utf-8' });
+      return res.end(JSON.stringify({ message: 'Không tìm thấy địa điểm này.' }));
+    }
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    res.end(JSON.stringify(results[0]));
+  });
+}
+
+/**
+ * Lấy danh sách địa điểm, hỗ trợ tìm kiếm và lọc
+ * @param {object} query - Các tham số từ URL (ví dụ: { search: 'chùa', loai: 'LH03' })
+ * @param {http.ServerResponse} res
+ */
+function getDestinations(query, res) {
+  let sql = 'SELECT * FROM DiaDiemDuLich';
+  const conditions = [];
+  const params = [];
+
+  // Xử lý tìm kiếm
+  if (query.search) {
+    conditions.push('(TenDDDL LIKE ? OR MoTa LIKE ? OR DiaChi LIKE ?)');
+    const searchTerm = `%${query.search}%`;
+    params.push(searchTerm, searchTerm, searchTerm);
+  }
+
+  // Xử lý lọc theo loại hình du lịch (MALHDL)
+  if (query.loai) {
+    conditions.push('MALHDL = ?');
+    params.push(query.loai);
+  }
+
+  if (conditions.length > 0) {
+    sql += ' WHERE ' + conditions.join(' AND ');
+  }
+
+  sql += ' ORDER BY TenDDDL ASC';
+
+  connection.query(sql, params, (error, results) => {
+    if (error) {
+      console.error('Lỗi truy vấn danh sách địa điểm:', error);
+      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+      return res.end(JSON.stringify({ error: 'Lỗi máy chủ khi truy vấn dữ liệu.' }));
+    }
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    res.end(JSON.stringify(results));
+  });
+}
+
+/**
+ * Kiểm tra cột hình ảnh trong database
+ * @param {http.ServerResponse} res
+ */
+function checkDatabaseImages(res) {
+  const sql = 'SELECT MADDDL, TenDDDL, HinhAnh FROM DiaDiemDuLich ORDER BY MADDDL ASC';
+  connection.query(sql, (error, results) => {
+    if (error) {
+      console.error('Lỗi kiểm tra cột hình ảnh:', error);
+      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+      return res.end(JSON.stringify({ error: 'Lỗi máy chủ khi truy vấn dữ liệu.' }));
+    }
+
+    const imageStatus = results.map(item => ({
+      id: item.MADDDL,
+      name: item.TenDDDL,
+      imagePath: item.HinhAnh,
+      hasImage: item.HinhAnh && item.HinhAnh.trim() !== ''
+    }));
+
+    const stats = {
+      total: results.length,
+      withImages: imageStatus.filter(item => item.hasImage).length,
+      withoutImages: imageStatus.filter(item => !item.hasImage).length
+    };
+
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    res.end(JSON.stringify({
+      stats: stats,
+      details: imageStatus
+    }));
+  });
+}
+
+/**
+ * Cập nhật hình ảnh trong database với các file có sẵn
+ * @param {http.ServerResponse} res
+ */
+function updateDatabaseImages(res) {
+  const updateQueries = [
+    "UPDATE DiaDiemDuLich SET HinhAnh = 'images/chua-hang.jpg' WHERE TenDDDL LIKE '%Chùa Hang%'",
+    "UPDATE DiaDiemDuLich SET HinhAnh = 'images/chua-co.jpg' WHERE TenDDDL LIKE '%Chùa Cò%' OR TenDDDL LIKE '%Nôdol%'",
+    "UPDATE DiaDiemDuLich SET HinhAnh = 'images/ao-ba-om.jpg' WHERE TenDDDL LIKE '%Ao Bà Om%'",
+    "UPDATE DiaDiemDuLich SET HinhAnh = 'images/nha-bao-tang.jpg' WHERE TenDDDL LIKE '%Bảo tàng%'",
+    "UPDATE DiaDiemDuLich SET HinhAnh = 'images/chotravinh.webp' WHERE TenDDDL LIKE '%Chợ%'",
+    "UPDATE DiaDiemDuLich SET HinhAnh = 'images/chua-ang.jpg' WHERE TenDDDL LIKE '%Chùa Ang%'",
+    "UPDATE DiaDiemDuLich SET HinhAnh = 'images/chua-giac-linh.jpg' WHERE TenDDDL LIKE '%Giác Linh%'",
+    "UPDATE DiaDiemDuLich SET HinhAnh = 'images/chua-pho-quang.jpg' WHERE TenDDDL LIKE '%Phổ Quang%'",
+    "UPDATE DiaDiemDuLich SET HinhAnh = 'images/Chua-Vam-Ray.jpg' WHERE TenDDDL LIKE '%Vàm Ray%'",
+    "UPDATE DiaDiemDuLich SET HinhAnh = 'images/cu-lao-long-tri.jpg' WHERE TenDDDL LIKE '%Long Trí%'",
+    "UPDATE DiaDiemDuLich SET HinhAnh = 'images/cu-lao-tan-quy.jpg' WHERE TenDDDL LIKE '%Tân Quý%'",
+    "UPDATE DiaDiemDuLich SET HinhAnh = 'images/den-tho-bac.jpg' WHERE TenDDDL LIKE '%Đền Thổ Bác%'",
+    "UPDATE DiaDiemDuLich SET HinhAnh = 'images/giao-duong-mac-bac.webp' WHERE TenDDDL LIKE '%Giáo đường%'",
+    "UPDATE DiaDiemDuLich SET HinhAnh = 'images/huynh-kha.jpg' WHERE TenDDDL LIKE '%Huỳnh Khá%'",
+    "UPDATE DiaDiemDuLich SET HinhAnh = 'images/rung_duoc.jpg' WHERE TenDDDL LIKE '%Rừng%'",
+    "UPDATE DiaDiemDuLich SET HinhAnh = 'images/bien-ba-dong.jpg' WHERE TenDDDL LIKE '%Biển%' OR TenDDDL LIKE '%Ba Động%'"
+  ];
+
+  let completed = 0;
+  const results = [];
+
+  updateQueries.forEach((query, index) => {
+    connection.query(query, (error, result) => {
+      if (error) {
+        console.error(`Lỗi cập nhật hình ảnh ${index + 1}:`, error);
+        results.push({ query: index + 1, error: error.message });
+      } else {
+        results.push({ query: index + 1, success: true, affected: result.affectedRows });
+      }
+
+      completed++;
+      if (completed === updateQueries.length) {
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({
+          message: `Đã thực hiện ${updateQueries.length} truy vấn cập nhật`,
+          results: results
+        }));
+      }
+    });
+  });
+}
+
+
+// --- 4. KHỞI CHẠY SERVER ---
 const PORT = 3000;
 server.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
+  console.log(`>> Server đang chạy tại http://localhost:${PORT}`);
+  console.log('Các API có sẵn:');
+  console.log(`   - GET /api/diadiemdulich`);
+  console.log(`   - GET /api/diadiemdulich/:id`);
+  console.log(`   - GET /api/loaihinhdulich`);
+  console.log('Phục vụ ảnh tại: /images/<tên_ảnh>');
 });

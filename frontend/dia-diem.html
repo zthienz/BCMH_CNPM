@@ -195,7 +195,7 @@
         // Load categories from database
         async function loadCategories() {
             try {
-                const response = await fetch(`${API_BASE_URL}/loaihinhdulich`);
+                const response = await fetch(`${API_BASE_URL}/api/loaihinhdulich`);
 
                 if (!response.ok) {
                     throw new Error('Không thể tải danh sách loại hình');
@@ -226,7 +226,7 @@
                 const searchTerm = searchInput.value.trim();
                 const category = categoryFilter.value;
 
-                let url = `${API_BASE_URL}/diadiemdulich`;
+                let url = `${API_BASE_URL}/api/diadiemdulich`;
                 const params = new URLSearchParams();
 
                 if (searchTerm) {
@@ -234,7 +234,7 @@
                 }
 
                 if (category) {
-                    params.append('loai_dia_diem', category);
+                    params.append('loai', category);
                 }
 
                 if (params.toString()) {
