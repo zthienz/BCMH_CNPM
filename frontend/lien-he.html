@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liên hệ - Du lịch Trà Vinh</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="vietnam-gradient shadow-lg fixed w-full top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-pagoda text-white text-2xl"></i>
+                    <a href="index.html" class="text-white text-xl font-bold">Du lịch Trà Vinh</a>
+                </div>
+                
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Giới thiệu</a>
+                    <a href="dia-diem.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Địa điểm</a>
+                    <a href="lien-he.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Liên hệ</a>
+                    <a href="danh-gia.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Đánh giá & Bài viết</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button onclick="showLoginModal()" class="bg-white text-blue-600 px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300">
+                        <i class="fas fa-user mr-2"></i>Đăng nhập
+                    </button>
+                    <button onclick="showRegisterModal()" class="border border-white text-white px-4 py-2 rounded-full hover:bg-white hover:text-blue-600 transition duration-300">
+                        Đăng ký
+                    </button>
+                </div>
+                
+                <button class="md:hidden text-white" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <div id="mobileMenu" class="md:hidden hidden bg-white bg-opacity-20 rounded-lg mb-4">
+                <div class="px-4 py-2 space-y-2">
+                    <a href="index.html" class="block text-white hover:text-yellow-200 py-2">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="block text-white hover:text-yellow-200 py-2">Giới thiệu</a>
+                    <a href="dia-diem.html" class="block text-white hover:text-yellow-200 py-2">Địa điểm</a>
+                    <a href="lien-he.html" class="block text-white hover:text-yellow-200 py-2">Liên hệ</a>
+                    <a href="danh-gia.html" class="block text-white hover:text-yellow-200 py-2">Đánh giá & Bài viết</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20">
+        <div class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <h1 class="text-4xl font-bold text-center mb-12 text-gray-800">Liên hệ với chúng tôi</h1>
+                
+                <div class="max-w-6xl mx-auto">
+                    <div class="grid md:grid-cols-2 gap-12">
+                        <!-- Contact Form -->
+                        <div class="bg-gradient-to-b from-blue-50 to-white p-8 rounded-lg shadow-lg">
+                            <h2 class="text-2xl font-bold mb-6 text-blue-600">Gửi tin nhắn cho chúng tôi</h2>
+                            <form class="space-y-6">
+                                <div>
+                                    <label class="block text-gray-700 font-semibold mb-2">Họ và tên</label>
+                                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập họ và tên của bạn">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 font-semibold mb-2">Email</label>
+                                    <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập địa chỉ email">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 font-semibold mb-2">Số điện thoại</label>
+                                    <input type="tel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập số điện thoại">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 font-semibold mb-2">Tin nhắn</label>
+                                    <textarea rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập tin nhắn của bạn"></textarea>
+                                </div>
+                                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
+                                    <i class="fas fa-paper-plane mr-2"></i>Gửi tin nhắn
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Contact Information -->
+                        <div class="space-y-8">
+                            <div class="bg-gradient-to-b from-green-50 to-white p-8 rounded-lg shadow-lg">
+                                <h2 class="text-2xl font-bold mb-6 text-green-600">Thông tin liên hệ</h2>
+                                <div class="space-y-4">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-map-marker-alt text-green-600 text-xl mr-4"></i>
+                                        <div>
+                                            <p class="font-semibold">Địa chỉ</p>
+                                            <p class="text-gray-600">74 Điện Biên Phủ, Phường 1, TP. Trà Vinh</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-phone text-green-600 text-xl mr-4"></i>
+                                        <div>
+                                            <p class="font-semibold">Điện thoại</p>
+                                            <p class="text-gray-600">0294.3855.616</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-envelope text-green-600 text-xl mr-4"></i>
+                                        <div>
+                                            <p class="font-semibold">Email</p>
+                                            <p class="text-gray-600"><a href="mailto:contact@dulichtravinh.com" class="hover:text-green-700">contact@dulichtravinh.com</a></p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-clock text-green-600 text-xl mr-4"></i>
+                                        <div>
+                                            <p class="font-semibold">Giờ làm việc</p>
+                                            <p class="text-gray-600">7:00 - 17:00 (Thứ 2 - Thứ 6)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-gradient-to-b from-yellow-50 to-white p-8 rounded-lg shadow-lg">
+                                <h3 class="text-xl font-bold mb-4 text-yellow-600">Theo dõi chúng tôi</h3>
+                                <div class="flex space-x-4">
+                                    <a href="#" class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-blue-700 transition duration-300">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a href="#" class="bg-blue-400 text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-blue-500 transition duration-300">
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
+                                    <a href="#" class="bg-red-600 text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-red-700 transition duration-300">
+                                        <i class="fab fa-youtube"></i>
+                                    </a>
+                                    <a href="#" class="bg-pink-600 text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-pink-700 transition duration-300">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Login Modal, Register Modal, Chatbot, Footer (Sao chép và dán toàn bộ các phần này từ file index.html vào đây) -->
+    <!-- ... -->
+    
+    <script src="script.js"></script>
+</body>
+</html>

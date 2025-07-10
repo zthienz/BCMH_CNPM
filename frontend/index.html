@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Du lịch Trà Vinh - Khám phá vẻ đẹp đồng bằng sông Cửu Long</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="vietnam-gradient shadow-lg fixed w-full top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-pagoda text-white text-2xl"></i>
+                    <a href="index.html" class="text-white text-xl font-bold">Du lịch Trà Vinh</a>
+                </div>
+                
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Giới thiệu</a>
+                    <a href="dia-diem.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Địa điểm</a>
+                    <a href="lien-he.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Liên hệ</a>
+                    <a href="danh-gia.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Đánh giá & Bài viết</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button onclick="showLoginModal()" class="bg-white text-blue-600 px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300">
+                        <i class="fas fa-user mr-2"></i>Đăng nhập
+                    </button>
+                    <button onclick="showRegisterModal()" class="border border-white text-white px-4 py-2 rounded-full hover:bg-white hover:text-blue-600 transition duration-300">
+                        Đăng ký
+                    </button>
+                </div>
+                
+                <button class="md:hidden text-white" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <div id="mobileMenu" class="md:hidden hidden bg-white bg-opacity-20 rounded-lg mb-4">
+                <div class="px-4 py-2 space-y-2">
+                    <a href="index.html" class="block text-white hover:text-yellow-200 py-2">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="block text-white hover:text-yellow-200 py-2">Giới thiệu</a>
+                    <a href="dia-diem.html" class="block text-white hover:text-yellow-200 py-2">Địa điểm</a>
+                    <a href="lien-he.html" class="block text-white hover:text-yellow-200 py-2">Liên hệ</a>
+                    <a href="danh-gia.html" class="block text-white hover:text-yellow-200 py-2">Đánh giá & Bài viết</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <div class="vietnam-gradient traditional-pattern min-h-screen flex items-center pt-16">
+            <div class="container mx-auto px-4 text-center text-white">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6">Trà Vinh</h1>
+                <p class="text-xl md:text-2xl mb-8">Khám phá vẻ đẹp độc đáo của đồng bằng sông Cửu Long</p>
+                <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4">
+                    <a href="dia-diem.html" class="bg-white text-blue-600 px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-50 transition duration-300 inline-block">
+                        <i class="fas fa-map-marked-alt mr-2"></i>Khám phá ngay
+                    </a>
+                    <a href="gioi-thieu.html" class="border-2 border-white text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-white hover:text-blue-600 transition duration-300 inline-block">
+                        <i class="fas fa-info-circle mr-2"></i>Tìm hiểu thêm
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">Tại sao chọn Trà Vinh?</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center p-6 bg-gradient-to-b from-blue-50 to-white rounded-lg shadow-lg">
+                        <i class="fas fa-landmark text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-4">Văn hóa đa dạng</h3>
+                        <p class="text-gray-600">Khám phá sự hòa quyện độc đáo giữa văn hóa Kinh, Khmer và Hoa</p>
+                    </div>
+                    <div class="text-center p-6 bg-gradient-to-b from-green-50 to-white rounded-lg shadow-lg">
+                        <i class="fas fa-leaf text-4xl text-green-600 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-4">Thiên nhiên hoang sơ</h3>
+                        <p class="text-gray-600">Trải nghiệm cảnh quan đồng bằng sông nước tuyệt đẹp</p>
+                    </div>
+                    <div class="text-center p-6 bg-gradient-to-b from-yellow-50 to-white rounded-lg shadow-lg">
+                        <i class="fas fa-utensils text-4xl text-yellow-600 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-4">Ẩm thực đặc sắc</h3>
+                        <p class="text-gray-600">Thưởng thức các món ăn truyền thống với hương vị đậm đà</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Đăng nhập</h2>
+                <button onclick="hideModal('loginModal')" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Email</label>
+                    <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập email của bạn">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Mật khẩu</label>
+                    <input type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập mật khẩu">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
+                    Đăng nhập
+                </button>
+            </form>
+            <p class="text-center mt-4 text-gray-600">
+                Chưa có tài khoản? 
+                <button onclick="hideModal('loginModal'); showRegisterModal()" class="text-blue-600 hover:text-blue-800 font-semibold">
+                    Đăng ký ngay
+                </button>
+            </p>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Đăng ký</h2>
+                <button onclick="hideModal('registerModal')" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Họ và tên</label>
+                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập họ và tên">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Email</label>
+                    <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập email của bạn">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Mật khẩu</label>
+                    <input type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập mật khẩu">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Xác nhận mật khẩu</label>
+                    <input type="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập lại mật khẩu">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
+                    Đăng ký
+                </button>
+            </form>
+            <p class="text-center mt-4 text-gray-600">
+                Đã có tài khoản? 
+                <button onclick="hideModal('registerModal'); showLoginModal()" class="text-blue-600 hover:text-blue-800 font-semibold">
+                    Đăng nhập
+                </button>
+            </p>
+        </div>
+    </div>
+
+    <!-- Chatbot -->
+    <div id="chatbot" class="fixed bottom-6 right-6 z-50">
+        <button id="chatbotToggle" onclick="toggleChatbot()" class="chatbot-icon bg-blue-600 text-white w-16 h-16 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 flex items-center justify-center">
+            <i class="fas fa-robot text-2xl"></i>
+        </button>
+        <div id="chatbotWindow" class="hidden absolute bottom-20 right-0 w-80 h-96 bg-white rounded-lg shadow-xl border">
+            <div class="vietnam-gradient text-white p-4 rounded-t-lg">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <i class="fas fa-robot mr-2"></i>
+                        <span class="font-semibold">Trợ lý AI Du lịch</span>
+                    </div>
+                    <button onclick="toggleChatbot()" class="text-white hover:text-gray-200">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="chatbotMessages" class="p-4 h-64 overflow-y-auto">
+                <div class="bg-gray-100 p-3 rounded-lg mb-3">
+                    <p class="text-sm">Xin chào! Tôi là trợ lý AI du lịch Trà Vinh. Tôi có thể giúp bạn:</p>
+                    <ul class="text-sm mt-2 space-y-1">
+                        <li>• Tìm hiểu về địa điểm du lịch</li>
+                        <li>• Gợi ý lịch trình</li>
+                        <li>• Thông tin ẩm thực</li>
+                        <li>• Hướng dẫn đi lại</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="p-4 border-t">
+                <div class="flex space-x-2">
+                    <input type="text" id="chatbotInput" placeholder="Nhập câu hỏi của bạn..." class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    <button onclick="sendChatMessage()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-pagoda text-2xl mr-2"></i>
+                        <h3 class="text-xl font-bold">Du lịch Trà Vinh</h3>
+                    </div>
+                    <p class="text-gray-300">Khám phá vẻ đẹp độc đáo của đồng bằng sông Cửu Long</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Liên kết nhanh</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="index.html" class="hover:text-white">Trang chủ</a></li>
+                        <li><a href="gioi-thieu.html" class="hover:text-white">Giới thiệu</a></li>
+                        <li><a href="dia-diem.html" class="hover:text-white">Địa điểm</a></li>
+                        <li><a href="lien-he.html" class="hover:text-white">Liên hệ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Dịch vụ</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-white">Tour du lịch</a></li>
+                        <li><a href="#" class="hover:text-white">Đặt phòng</a></li>
+                        <li><a href="#" class="hover:text-white">Thuê xe</a></li>
+                        <li><a href="#" class="hover:text-white">Hướng dẫn viên</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Theo dõi chúng tôi</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+                <p>© 2024 Du lịch Trà Vinh. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

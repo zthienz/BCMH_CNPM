@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đánh giá & Bài viết - Du lịch Trà Vinh</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="vietnam-gradient shadow-lg fixed w-full top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-pagoda text-white text-2xl"></i>
+                    <a href="index.html" class="text-white text-xl font-bold">Du lịch Trà Vinh</a>
+                </div>
+                
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Giới thiệu</a>
+                    <a href="dia-diem.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Địa điểm</a>
+                    <a href="lien-he.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Liên hệ</a>
+                    <a href="danh-gia.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Đánh giá & Bài viết</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button onclick="showLoginModal()" class="bg-white text-blue-600 px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300">
+                        <i class="fas fa-user mr-2"></i>Đăng nhập
+                    </button>
+                    <button onclick="showRegisterModal()" class="border border-white text-white px-4 py-2 rounded-full hover:bg-white hover:text-blue-600 transition duration-300">
+                        Đăng ký
+                    </button>
+                </div>
+                
+                <button class="md:hidden text-white" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <div id="mobileMenu" class="md:hidden hidden bg-white bg-opacity-20 rounded-lg mb-4">
+                <div class="px-4 py-2 space-y-2">
+                    <a href="index.html" class="block text-white hover:text-yellow-200 py-2">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="block text-white hover:text-yellow-200 py-2">Giới thiệu</a>
+                    <a href="dia-diem.html" class="block text-white hover:text-yellow-200 py-2">Địa điểm</a>
+                    <a href="lien-he.html" class="block text-white hover:text-yellow-200 py-2">Liên hệ</a>
+                    <a href="danh-gia.html" class="block text-white hover:text-yellow-200 py-2">Đánh giá & Bài viết</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20">
+        <div class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <h1 class="text-4xl font-bold text-center mb-12 text-gray-800">Đánh giá & Bài viết</h1>
+                
+                <!-- Reviews Section -->
+                <div class="mb-16">
+                    <h2 class="text-3xl font-bold mb-8 text-center text-blue-600">Đánh giá từ du khách</h2>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Review 1 -->
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+                                    N
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="font-bold">Nguyễn Minh Anh</h4>
+                                    <div class="text-yellow-500">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 italic">"Trà Vinh thật sự tuyệt vời! Văn hóa đa dạng, con người thân thiện và ẩm thực rất ngon. Đặc biệt là các ngôi chùa Khmer rất đẹp và độc đáo."</p>
+                        </div>
+
+                        <!-- Review 2 -->
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
+                                    L
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="font-bold">Lê Thị Hồng</h4>
+                                    <div class="text-yellow-500">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 italic">"Biển Ba Động rất đẹp và hoang sơ. Tôi đã có những giây phút thư giãn tuyệt vời ở đây. Sẽ quay lại lần nữa!"</p>
+                        </div>
+
+                        <!-- Review 3 -->
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">
+                                    T
+                                </div>
+                                <div class="ml-4">
+                                    <h4 class="font-bold">Trần Văn Đức</h4>
+                                    <div class="text-yellow-500">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 italic">"Rừng dừa Bảy Mẫu là nơi tuyệt vời để tìm hiểu về sinh thái miền Tây. Không khí rất trong lành và mát mẻ."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Articles Section -->
+                <div>
+                    <h2 class="text-3xl font-bold mb-8 text-center text-green-600">Bài viết nổi bật</h2>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- Article 1 -->
+                        <article class="bg-white rounded-lg shadow-lg overflow-hidden">
+                            <div class="h-48 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                                <i class="fas fa-newspaper text-white text-6xl"></i>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center text-sm text-gray-500 mb-2">
+                                    <i class="fas fa-calendar mr-2"></i>
+                                    <span>15 tháng 12, 2024</span>
+                                    <i class="fas fa-user ml-4 mr-2"></i>
+                                    <span>Admin</span>
+                                </div>
+                                <h3 class="text-xl font-bold mb-3">Top 10 điểm du lịch không thể bỏ qua ở Trà Vinh</h3>
+                                <p class="text-gray-600 mb-4">Khám phá những địa điểm du lịch hấp dẫn nhất tại Trà Vinh, từ các ngôi chùa cổ kính đến những bãi biển hoang sơ...</p>
+                                <button class="text-blue-600 font-semibold hover:text-blue-800 transition duration-300">
+                                    Đọc thêm <i class="fas fa-arrow-right ml-1"></i>
+                                </button>
+                            </div>
+                        </article>
+
+                        <!-- Article 2 -->
+                        <article class="bg-white rounded-lg shadow-lg overflow-hidden">
+                            <div class="h-48 bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center">
+                                <i class="fas fa-utensils text-white text-6xl"></i>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center text-sm text-gray-500 mb-2">
+                                    <i class="fas fa-calendar mr-2"></i>
+                                    <span>12 tháng 12, 2024</span>
+                                    <i class="fas fa-user ml-4 mr-2"></i>
+                                    <span>Admin</span>
+                                </div>
+                                <h3 class="text-xl font-bold mb-3">Hành trình khám phá ẩm thực Trà Vinh</h3>
+                                <p class="text-gray-600 mb-4">Từ bánh ít lá gai đến cơm dẻo, cùng khám phá những món ăn đặc sản không thể thiếu khi đến Trà Vinh...</p>
+                                <button class="text-blue-600 font-semibold hover:text-blue-800 transition duration-300">
+                                    Đọc thêm <i class="fas fa-arrow-right ml-1"></i>
+                                </button>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Login Modal, Register Modal, Chatbot, Footer (Sao chép và dán toàn bộ các phần này từ file index.html vào đây) -->
+    <!-- ... -->
+    
+    <script src="script.js"></script>
+</body>
+</html>

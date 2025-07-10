@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giới thiệu - Du lịch Trà Vinh</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation (copy from index.html) -->
+    <nav class="vietnam-gradient shadow-lg fixed w-full top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-pagoda text-white text-2xl"></i>
+                    <a href="index.html" class="text-white text-xl font-bold">Du lịch Trà Vinh</a>
+                </div>
+                
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Giới thiệu</a>
+                    <a href="dia-diem.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Địa điểm</a>
+                    <a href="lien-he.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Liên hệ</a>
+                    <a href="danh-gia.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Đánh giá & Bài viết</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button onclick="showLoginModal()" class="bg-white text-blue-600 px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300">
+                        <i class="fas fa-user mr-2"></i>Đăng nhập
+                    </button>
+                    <button onclick="showRegisterModal()" class="border border-white text-white px-4 py-2 rounded-full hover:bg-white hover:text-blue-600 transition duration-300">
+                        Đăng ký
+                    </button>
+                </div>
+                
+                <button class="md:hidden text-white" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <div id="mobileMenu" class="md:hidden hidden bg-white bg-opacity-20 rounded-lg mb-4">
+                <div class="px-4 py-2 space-y-2">
+                    <a href="index.html" class="block text-white hover:text-yellow-200 py-2">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="block text-white hover:text-yellow-200 py-2">Giới thiệu</a>
+                    <a href="dia-diem.html" class="block text-white hover:text-yellow-200 py-2">Địa điểm</a>
+                    <a href="lien-he.html" class="block text-white hover:text-yellow-200 py-2">Liên hệ</a>
+                    <a href="danh-gia.html" class="block text-white hover:text-yellow-200 py-2">Đánh giá & Bài viết</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20">
+        <div class="py-16 bg-gradient-to-b from-blue-50 to-white">
+            <div class="container mx-auto px-4">
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="text-4xl font-bold text-center mb-12 text-gray-800">Giới thiệu về Trà Vinh</h1>
+                    
+                    <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                        <h2 class="text-2xl font-bold mb-6 text-blue-600">
+                            <i class="fas fa-history mr-2"></i>Lịch sử & Văn hóa
+                        </h2>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            Trà Vinh là một tỉnh ven biển thuộc vùng đồng bằng sông Cửu Long, nổi tiếng với sự đa dạng văn hóa độc đáo. 
+                            Đây là nơi sinh sống của ba dân tộc chính: Kinh, Khmer và Hoa, tạo nên một bức tranh văn hóa phong phú và đầy màu sắc.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed">
+                            Tỉnh có hơn 140 ngôi chùa Khmer cổ kính, là minh chứng cho lịch sử lâu đời và truyền thống văn hóa đậm đà của vùng đất này.
+                        </p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-white rounded-lg shadow-lg p-6">
+                            <h3 class="text-xl font-bold mb-4 text-green-600">
+                                <i class="fas fa-map-marker-alt mr-2"></i>Vị trí địa lý
+                            </h3>
+                            <ul class="text-gray-700 space-y-2">
+                                <li><i class="fas fa-arrow-right text-green-500 mr-2"></i>Diện tích: 2.295,1 km²</li>
+                                <li><i class="fas fa-arrow-right text-green-500 mr-2"></i>Dân số: Khoảng 1,015 triệu người</li>
+                                <li><i class="fas fa-arrow-right text-green-500 mr-2"></i>Giáp biển Đông với 65km bờ biển</li>
+                                <li><i class="fas fa-arrow-right text-green-500 mr-2"></i>Cách TP.HCM 200km về phía Tây Nam</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-lg p-6">
+                            <h3 class="text-xl font-bold mb-4 text-orange-600">
+                                <i class="fas fa-star mr-2"></i>Đặc sản nổi tiếng
+                            </h3>
+                            <ul class="text-gray-700 space-y-2">
+                                <li><i class="fas fa-arrow-right text-orange-500 mr-2"></i>Bánh ít lá gai</li>
+                                <li><i class="fas fa-arrow-right text-orange-500 mr-2"></i>Cơm dẻo</li>
+                                <li><i class="fas fa-arrow-right text-orange-500 mr-2"></i>Bánh xèo Khmer</li>
+                                <li><i class="fas fa-arrow-right text-orange-500 mr-2"></i>Tôm càng xanh</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-lg p-8 mt-8">
+                        <h2 class="text-2xl font-bold mb-6 text-purple-600">
+                            <i class="fas fa-calendar-alt mr-2"></i>Lễ hội truyền thống
+                        </h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">Lễ hội Ok Om Bok</h4>
+                                <p class="text-gray-700">Lễ hội cúng trăng của người Khmer, diễn ra vào tháng 10 âm lịch</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-2">Lễ hội Chol Chnam Thmay</h4>
+                                <p class="text-gray-700">Tết truyền thống của người Khmer, thường diễn ra vào tháng 4</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Modals, Chatbot, Footer (copy from index.html) -->
+    <!-- ... (Sao chép và dán toàn bộ các phần này từ file index.html vào đây) ... -->
+
+    <script src="script.js"></script>
+</body>
+</html>
