@@ -1,0 +1,19 @@
+# Thư mục hình ảnh cho địa điểm du lịch
+
+Thư mục này chứa hình ảnh của các địa điểm du lịch.
+
+## Hình ảnh mẫu cần có:
+- ao-ba-om.jpg - Hình ảnh Ao Bà Om
+- bien-ba-dong.jpg - Hình ảnh Biển Ba Động
+
+## Quy tắc đặt tên:
+- Sử dụng tên không dấu, viết thường
+- Thay khoảng trắng bằng dấu gạch ngang (-)
+- Định dạng: jpg, png, webp
+
+## Kích thước khuyến nghị:
+- Chiều rộng: 800px
+- Chiều cao: 600px
+- Tỷ lệ: 4:3
+
+Bạn có thể thêm hình ảnh thực tế vào thư mục này.

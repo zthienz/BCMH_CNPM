@@ -1,0 +1,68 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E0F6FF;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="seaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#20B2AA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#008B8B;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="sandGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#F4A460;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#DEB887;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="palmGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#228B22;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#006400;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Sky -->
+  <rect width="800" height="250" fill="url(#skyGradient)"/>
+  
+  <!-- Sun -->
+  <circle cx="650" cy="80" r="40" fill="#FFD700"/>
+  
+  <!-- Clouds -->
+  <ellipse cx="200" cy="100" rx="30" ry="15" fill="white" opacity="0.8"/>
+  <ellipse cx="220" cy="95" rx="25" ry="12" fill="white" opacity="0.8"/>
+  <ellipse cx="180" cy="95" rx="20" ry="10" fill="white" opacity="0.8"/>
+  
+  <!-- Sea -->
+  <rect x="0" y="250" width="800" height="200" fill="url(#seaGradient)"/>
+  
+  <!-- Waves -->
+  <path d="M0,280 Q100,270 200,280 T400,280 T600,280 T800,280" stroke="white" stroke-width="2" fill="none" opacity="0.6"/>
+  <path d="M0,300 Q150,290 300,300 T600,300 T800,300" stroke="white" stroke-width="2" fill="none" opacity="0.4"/>
+  
+  <!-- Beach -->
+  <rect x="0" y="450" width="800" height="150" fill="url(#sandGradient)"/>
+  
+  <!-- Palm trees -->
+  <rect x="95" y="350" width="10" height="100" fill="#8B4513"/>
+  <ellipse cx="100" cy="340" rx="25" ry="15" fill="url(#palmGradient)"/>
+  <ellipse cx="85" cy="345" rx="20" ry="10" fill="url(#palmGradient)" transform="rotate(-30 85 345)"/>
+  <ellipse cx="115" cy="345" rx="20" ry="10" fill="url(#palmGradient)" transform="rotate(30 115 345)"/>
+  
+  <rect x="695" y="370" width="10" height="80" fill="#8B4513"/>
+  <ellipse cx="700" cy="360" rx="20" ry="12" fill="url(#palmGradient)"/>
+  <ellipse cx="688" cy="365" rx="18" ry="8" fill="url(#palmGradient)" transform="rotate(-25 688 365)"/>
+  <ellipse cx="712" cy="365" rx="18" ry="8" fill="url(#palmGradient)" transform="rotate(25 712 365)"/>
+  
+  <!-- Coconuts -->
+  <circle cx="95" cy="355" r="3" fill="#8B4513"/>
+  <circle cx="105" cy="350" r="3" fill="#8B4513"/>
+  <circle cx="695" cy="375" r="2.5" fill="#8B4513"/>
+  
+  <!-- Seagulls -->
+  <path d="M300,150 Q310,145 320,150" stroke="#666" stroke-width="2" fill="none"/>
+  <path d="M280,145 Q290,140 300,145" stroke="#666" stroke-width="2" fill="none"/>
+  
+  <path d="M500,120 Q510,115 520,120" stroke="#666" stroke-width="2" fill="none"/>
+  <path d="M480,115 Q490,110 500,115" stroke="#666" stroke-width="2" fill="none"/>
+  
+  <!-- Title -->
+  <text x="400" y="50" font-family="Arial, sans-serif" font-size="36" font-weight="bold" text-anchor="middle" fill="#2F4F4F">Biển Ba Động</text>
+  <text x="400" y="80" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="#2F4F4F">Bãi biển hoang sơ - Du lịch thắng cảnh thiên nhiên</text>
+</svg>

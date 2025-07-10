@@ -34,11 +34,17 @@ Tính năng này kết nối trực tiếp với database MySQL có sẵn của 
 - Giờ mở cửa/đóng cửa
 - Số điện thoại liên hệ
 
-### 4. Giao diện đẹp
+### 4. Hiển thị hình ảnh từ database
+- Hình ảnh được lưu trong thư mục `frontend/images/`
+- Đường dẫn hình ảnh lưu trong cột `HinhAnh` của database
+- Tự động fallback về icon nếu không có hình ảnh
+- Hỗ trợ nhiều định dạng: JPG, PNG, SVG, WebP
+
+### 5. Giao diện đẹp
 - Responsive design
 - Hiệu ứng hover và animation
 - Loading indicator
-- Modal chi tiết
+- Modal chi tiết với hình ảnh lớn
 - Color coding theo loại địa điểm
 
 ## Cài đặt và chạy
@@ -107,10 +113,12 @@ TenLHDL varchar(100) NOT NULL             -- Tên loại hình
 
 ## Files đã tạo/cập nhật
 
-1. **frontend/dia-diem.html** - Trang chính với thanh tìm kiếm và hiển thị kết quả
+1. **frontend/dia-diem.html** - Trang chính với thanh tìm kiếm và hiển thị kết quả có hình ảnh
 2. **frontend/destinations.css** - CSS tùy chỉnh cho giao diện đẹp
-3. **my-server/server.js** - API server với endpoints cho địa điểm du lịch
-4. **database/create_diadiemdulich_table.sql** - Script tạo bảng và dữ liệu mẫu
+3. **frontend/admin-images.html** - Trang quản lý hình ảnh địa điểm
+4. **frontend/admin-db.html** - Trang xem thông tin database
+5. **frontend/images/** - Thư mục chứa hình ảnh địa điểm
+6. **my-server/server.js** - API server với endpoints cho địa điểm du lịch và serve static images
 
 ## Tính năng nâng cao có thể phát triển
 

@@ -1,5 +1,7 @@
 const http = require('http');
 const mysql = require('mysql');
+const fs = require('fs');
+const path = require('path');
 
 // Tạo kết nối MySQL
 const connection = mysql.createConnection({
@@ -189,6 +191,95 @@ const server = http.createServer((req, res) => {
       }
       res.writeHead(200, {'Content-Type': 'application/json'});
       res.end(JSON.stringify(results));
+    });
+  } else if (pathname.startsWith('/images/')) {
+    // Serve static images
+    const imagePath = path.join(__dirname, '..', 'frontend', pathname);
+
+    fs.readFile(imagePath, (error, data) => {
+      if (error) {
+        res.writeHead(404, {'Content-Type': 'text/plain'});
+        return res.end('Image not found');
+      }
+
+      // Get file extension to set correct content type
+      const ext = path.extname(imagePath).toLowerCase();
+      const contentTypes = {
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.png': 'image/png',
+        '.gif': 'image/gif',
+        '.webp': 'image/webp',
+        '.svg': 'image/svg+xml'
+      };
+
+      const contentType = contentTypes[ext] || 'image/jpeg';
+      res.writeHead(200, {'Content-Type': contentType});
+      res.end(data);
+    });
+  } else if (pathname === '/add-image-column') {
+    // Add image column to diadiemdulich table if not exists
+    const addColumnQuery = `
+      ALTER TABLE diadiemdulich
+      ADD COLUMN HinhAnh VARCHAR(255) DEFAULT NULL
+    `;
+
+    connection.query(addColumnQuery, (error, results) => {
+      if (error) {
+        console.error('Error adding image column:', error);
+        res.writeHead(500, {'Content-Type': 'application/json'});
+        return res.end(JSON.stringify({ error: error.message }));
+      }
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      res.end(JSON.stringify({
+        success: true,
+        message: 'Image column added successfully'
+      }));
+    });
+  } else if (pathname === '/update-sample-images') {
+    // Update sample data with image paths
+    const updateQueries = [
+      "UPDATE diadiemdulich SET HinhAnh = 'images/ao-ba-om.svg' WHERE TenDDDL LIKE '%Ao B%Om%'",
+      "UPDATE diadiemdulich SET HinhAnh = 'images/bien-ba-dong.svg' WHERE TenDDDL LIKE '%Biển%' OR TenDDDL LIKE '%Ba Động%'",
+      "UPDATE diadiemdulich SET HinhAnh = 'images/bao-tang-van-hoa-khmer.svg' WHERE TenDDDL LIKE '%Bảo tàng%' OR TenDDDL LIKE '%Văn hóa%'",
+      "UPDATE diadiemdulich SET HinhAnh = 'images/cho-tra-vinh.svg' WHERE TenDDDL LIKE '%Chợ%' OR TenDDDL LIKE '%Trà Vinh%'"
+    ];
+
+    let completed = 0;
+    const results = [];
+
+    updateQueries.forEach((query, index) => {
+      connection.query(query, (error, result) => {
+        if (error) {
+          console.error(`Error updating image ${index + 1}:`, error);
+          results.push({ error: error.message });
+        } else {
+          results.push({ success: true, affected: result.affectedRows });
+        }
+
+        completed++;
+        if (completed === updateQueries.length) {
+          res.writeHead(200, {'Content-Type': 'application/json'});
+          res.end(JSON.stringify({
+            message: `Sample images updated (${updateQueries.length} queries executed)`,
+            results: results
+          }));
+        }
+      });
+    });
+  } else if (pathname === '/destinations-with-images') {
+    // Get destinations that have images
+    connection.query('SELECT MADDDL, TenDDDL, HinhAnh FROM diadiemdulich WHERE HinhAnh IS NOT NULL AND HinhAnh != ""', (error, results) => {
+      if (error) {
+        console.error('Error getting destinations with images:', error);
+        res.writeHead(500, {'Content-Type': 'application/json'});
+        return res.end(JSON.stringify({ error: error.message }));
+      }
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      res.end(JSON.stringify({
+        count: results.length,
+        destinations: results
+      }));
     });
   } else {
     res.writeHead(200, {'Content-Type': 'text/plain'});
