@@ -44,6 +44,29 @@
         </div>
     </div>
 
+    <!-- Fullsize Image Modal -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden flex items-center justify-center p-4">
+        <div class="relative max-w-full max-h-full">
+            <!-- Close Button -->
+            <button onclick="closeImageModal()" class="absolute -top-12 right-0 text-white hover:text-gray-300 transition duration-300 z-10">
+                <i class="fas fa-times text-2xl"></i>
+                <span class="ml-2 text-lg">Đóng</span>
+            </button>
+
+            <!-- Image Container -->
+            <div class="relative bg-white rounded-lg overflow-hidden shadow-2xl max-w-screen-lg max-h-screen">
+                <!-- Main Image -->
+                <img id="modalImage" src="" alt="" class="max-w-full max-h-screen object-contain">
+
+                <!-- Image Info -->
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+                    <h3 id="modalImageTitle" class="text-white text-xl font-bold mb-2"></h3>
+                    <p id="modalImagePath" class="text-gray-200 text-sm"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         const API_BASE_URL = 'http://localhost:3000';
         
@@ -100,8 +123,9 @@
             
             card.innerHTML = `
                 <div class="relative">
-                    <img src="${imageUrl}" alt="${imageFile}" 
-                         class="w-full h-48 object-cover"
+                    <img src="${imageUrl}" alt="${imageFile}"
+                         class="w-full h-48 object-cover cursor-pointer hover:opacity-80 transition duration-300"
+                         onclick="openImageModal('${imageUrl}', '${imageFile}', '/images/${imageFile}')"
                          onload="this.parentElement.querySelector('.loading-indicator').classList.add('hidden')"
                          onerror="this.parentElement.querySelector('.error-indicator').classList.remove('hidden'); this.parentElement.querySelector('.loading-indicator').classList.add('hidden')">
                     
@@ -133,6 +157,45 @@
             document.getElementById('errorMessage').textContent = message;
             document.getElementById('error').classList.remove('hidden');
         }
+
+        // ===== FULLSIZE IMAGE MODAL FUNCTIONS =====
+
+        function openImageModal(imageSrc, title, imagePath) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalImageTitle');
+            const modalPath = document.getElementById('modalImagePath');
+
+            // Show modal
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            // Set image info
+            modalTitle.textContent = title;
+            modalPath.textContent = `Đường dẫn: ${imagePath}`;
+            modalImage.alt = title;
+            modalImage.src = imageSrc;
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside the image
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeImageModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeImageModal();
+            }
+        });
 
         // Auto load on page load
         window.addEventListener('load', loadImages);

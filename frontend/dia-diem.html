@@ -123,8 +123,53 @@
         </div>
     </main>
     
-    <!-- Modals, Chatbot, Footer (copy from index.html) -->
-    <!-- ... (Sao chép và dán toàn bộ các phần này từ file index.html vào đây) ... -->
+    <!-- Fullsize Image Modal -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden flex items-center justify-center p-4">
+        <div class="relative max-w-full max-h-full">
+            <!-- Close Button -->
+            <button onclick="closeImageModal()" class="absolute -top-12 right-0 text-white hover:text-gray-300 transition duration-300 z-10">
+                <i class="fas fa-times text-2xl"></i>
+                <span class="ml-2 text-lg">Đóng</span>
+            </button>
+
+            <!-- Image Container -->
+            <div class="relative bg-white rounded-lg overflow-hidden shadow-2xl max-w-screen-lg max-h-screen">
+                <!-- Loading Spinner -->
+                <div id="modalLoading" class="absolute inset-0 bg-gray-100 flex items-center justify-center">
+                    <i class="fas fa-spinner fa-spin text-4xl text-gray-500"></i>
+                </div>
+
+                <!-- Main Image -->
+                <img id="modalImage" src="" alt="" class="max-w-full max-h-screen object-contain"
+                     onload="document.getElementById('modalLoading').classList.add('hidden')"
+                     onerror="showImageError()">
+
+                <!-- Image Info -->
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+                    <h3 id="modalImageTitle" class="text-white text-xl font-bold mb-2"></h3>
+                    <p id="modalImageDescription" class="text-gray-200 text-sm"></p>
+                </div>
+
+                <!-- Navigation Arrows -->
+                <button id="prevImageBtn" onclick="showPreviousImage()" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition duration-300">
+                    <i class="fas fa-chevron-left text-xl"></i>
+                </button>
+                <button id="nextImageBtn" onclick="showNextImage()" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition duration-300">
+                    <i class="fas fa-chevron-right text-xl"></i>
+                </button>
+
+                <!-- Image Counter -->
+                <div class="absolute top-4 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
+                    <span id="imageCounter">1 / 1</span>
+                </div>
+
+                <!-- Download Button -->
+                <button id="downloadBtn" onclick="downloadImage()" class="absolute top-4 right-4 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition duration-300" title="Tải xuống">
+                    <i class="fas fa-download"></i>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 
@@ -159,6 +204,10 @@
 
         // Store categories from database
         let categories = [];
+
+        // Store current destinations for modal navigation
+        let currentDestinations = [];
+        let currentImageIndex = 0;
 
         // Load destinations and categories on page load
         document.addEventListener('DOMContentLoaded', function() {
@@ -266,14 +315,17 @@
                 return;
             }
 
+            // Store destinations for modal navigation
+            currentDestinations = destinations;
+
             showResultsCount(destinations.length);
 
-            const html = destinations.map(destination => createDestinationCard(destination)).join('');
+            const html = destinations.map((destination, index) => createDestinationCard(destination, index)).join('');
             destinationsGrid.innerHTML = html;
         }
 
         // Create destination card HTML
-        function createDestinationCard(destination) {
+        function createDestinationCard(destination, index) {
             const icon = categoryIcons[destination.MALHDL] || 'fas fa-map-marker-alt';
             const colorClass = categoryColors[destination.MALHDL] || 'from-blue-400 to-blue-600';
             const categoryName = getCategoryName(destination.MALHDL);
@@ -284,11 +336,19 @@
 
             return `
                 <div class="destination-card fade-in-up">
-                    <div class="h-48 bg-gradient-to-br ${colorClass} flex items-center justify-center relative card-image-overlay overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br ${colorClass} flex items-center justify-center relative card-image-overlay overflow-hidden ${hasImage ? 'cursor-pointer' : ''}"
+                         ${hasImage ? `onclick="openImageModal('${imageUrl}', '${destination.TenDDDL}', '${destination.MoTa || 'Chưa có mô tả'}', ${index})"` : ''}>
                         ${hasImage ?
                             `<img src="${imageUrl}" alt="${destination.TenDDDL}" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                              <div class="absolute inset-0 flex items-center justify-center" style="display: none;">
                                 <i class="${icon} text-white text-6xl"></i>
+                             </div>
+                             <!-- Hover overlay for fullsize hint -->
+                             <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition duration-300 flex items-center justify-center opacity-0 hover:opacity-100">
+                                <div class="text-white text-center">
+                                    <i class="fas fa-search-plus text-3xl mb-2"></i>
+                                    <p class="text-sm">Nhấp để xem full</p>
+                                </div>
                              </div>` :
                             `<i class="${icon} text-white text-6xl"></i>`
                         }
@@ -491,6 +551,114 @@
                 </div>
             `;
         }
+
+        // ===== FULLSIZE IMAGE MODAL FUNCTIONS =====
+
+        function openImageModal(imageSrc, title, description, destinationIndex) {
+            currentImageIndex = destinationIndex;
+
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalImageTitle');
+            const modalDescription = document.getElementById('modalImageDescription');
+            const modalLoading = document.getElementById('modalLoading');
+            const imageCounter = document.getElementById('imageCounter');
+
+            // Show modal
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
+            // Show loading
+            modalLoading.classList.remove('hidden');
+
+            // Set image info
+            modalTitle.textContent = title;
+            modalDescription.textContent = description;
+            modalImage.alt = title;
+
+            // Update counter
+            imageCounter.textContent = `${currentImageIndex + 1} / ${currentDestinations.length}`;
+
+            // Load image
+            modalImage.src = imageSrc;
+
+            // Update navigation buttons visibility
+            updateNavigationButtons();
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        function showPreviousImage() {
+            if (currentImageIndex > 0) {
+                currentImageIndex--;
+                const destination = currentDestinations[currentImageIndex];
+                const imageSrc = destination.HinhAnh ? `${API_BASE_URL}/${destination.HinhAnh}` : 'https://via.placeholder.com/400x300?text=No+Image';
+                openImageModal(imageSrc, destination.TenDDDL, destination.MoTa, currentImageIndex);
+            }
+        }
+
+        function showNextImage() {
+            if (currentImageIndex < currentDestinations.length - 1) {
+                currentImageIndex++;
+                const destination = currentDestinations[currentImageIndex];
+                const imageSrc = destination.HinhAnh ? `${API_BASE_URL}/${destination.HinhAnh}` : 'https://via.placeholder.com/400x300?text=No+Image';
+                openImageModal(imageSrc, destination.TenDDDL, destination.MoTa, currentImageIndex);
+            }
+        }
+
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prevImageBtn');
+            const nextBtn = document.getElementById('nextImageBtn');
+
+            // Hide/show navigation buttons based on position
+            prevBtn.style.display = currentImageIndex > 0 ? 'block' : 'none';
+            nextBtn.style.display = currentImageIndex < currentDestinations.length - 1 ? 'block' : 'none';
+        }
+
+        function downloadImage() {
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalImageTitle');
+
+            // Create a temporary link to download the image
+            const link = document.createElement('a');
+            link.href = modalImage.src;
+            link.download = `${modalTitle.textContent}.jpg`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function showImageError() {
+            const modalLoading = document.getElementById('modalLoading');
+            modalLoading.innerHTML = `
+                <div class="text-center">
+                    <i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i>
+                    <p class="text-red-600">Không thể tải hình ảnh</p>
+                </div>
+            `;
+        }
+
+        // Close modal when clicking outside the image
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeImageModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeImageModal();
+            } else if (e.key === 'ArrowLeft') {
+                showPreviousImage();
+            } else if (e.key === 'ArrowRight') {
+                showNextImage();
+            }
+        });
     </script>
 </body>
 </html>
