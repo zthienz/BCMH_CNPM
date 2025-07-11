@@ -70,7 +70,7 @@ const server = http.createServer((req, res) => {
 // --- CÁC HÀM XỬ LÝ LOGIC (Ẩn đi cho gọn, không có thay đổi lớn) ---
 function serveStaticImage(imagePath, res) {
   const safePath = path.normalize(imagePath).replace(/^(\.\.[\/\\])+/, '');
-  const fullPath = path.join(__dirname, 'public', safePath);
+  const fullPath = path.join(__dirname, safePath);
   fs.readFile(fullPath, (err, data) => {
     if (err) {
       console.error(`Không tìm thấy ảnh: ${fullPath}`);
