@@ -8,6 +8,170 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="destinations.css">
+
+    <!-- AI Chatbot Component -->
+    <link rel="stylesheet" href="components/chatbot-styles.css">
+
+    <style>
+        /* Inline Chatbot Styles for dia-diem page */
+        .chatbot-toggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 9999;
+            color: white;
+            font-size: 28px;
+        }
+
+        .chatbot-toggle:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .chatbot-window {
+            position: fixed;
+            bottom: 100px;
+            right: 24px;
+            width: 400px;
+            height: 600px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            transform: translateY(20px) scale(0.95);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 9998;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chatbot-window.active {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8fafc;
+        }
+
+        .chatbot-input-area {
+            padding: 20px;
+            border-top: 1px solid #e5e7eb;
+            background: white;
+        }
+
+        .chatbot-input {
+            width: 100%;
+            border: 2px solid #e5e7eb;
+            border-radius: 24px;
+            padding: 12px 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .message {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .message-ai {
+            justify-content: flex-start;
+        }
+
+        .message-user {
+            justify-content: flex-end;
+        }
+
+        .message-bubble {
+            max-width: 280px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            word-wrap: break-word;
+        }
+
+        .message-bubble.ai {
+            background: white;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+        }
+
+        .message-bubble.user {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quick-action-btn {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-action-btn:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            .chatbot-window {
+                width: calc(100vw - 32px);
+                height: calc(100vh - 120px);
+                right: 16px;
+                bottom: 80px;
+            }
+
+            .chatbot-toggle {
+                width: 56px;
+                height: 56px;
+                bottom: 16px;
+                right: 16px;
+            }
+        }
+    </style>
 </head>
 <body class="bg-gray-50">
     <!-- Navigation (copy from index.html) -->
@@ -659,6 +823,157 @@
                 showNextImage();
             }
         });
+    </script>
+
+    <!-- Enhanced AI Chatbot Scripts -->
+    <script src="components/gemini-config.js"></script>
+    <script src="components/gemini-ai-service.js"></script>
+    <script src="components/ai-chatbot-enhanced.js"></script>
+</body>
+</html>
+
+    <div class="chatbot-window" id="chatbotWindow">
+        <div class="chatbot-header">
+            <div>
+                <h3 class="font-semibold">Hỗ trợ Địa điểm</h3>
+                <p class="text-sm opacity-90">Tìm kiếm & khám phá</p>
+            </div>
+            <button onclick="closeChatbot()" class="text-white hover:text-gray-200">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="quick-actions">
+                <button class="quick-action-btn" onclick="sendQuickMessage('Tìm địa điểm du lịch')">
+                    <i class="fas fa-search mr-1"></i>Tìm địa điểm
+                </button>
+                <button class="quick-action-btn" onclick="sendQuickMessage('Lọc theo loại hình')">
+                    <i class="fas fa-filter mr-1"></i>Lọc theo loại
+                </button>
+                <button class="quick-action-btn" onclick="sendQuickMessage('Gợi ý lịch trình')">
+                    <i class="fas fa-route mr-1"></i>Gợi ý lịch trình
+                </button>
+                <button class="quick-action-btn" onclick="sendQuickMessage('Đánh giá địa điểm')">
+                    <i class="fas fa-star mr-1"></i>Đánh giá
+                </button>
+            </div>
+
+            <div id="messagesContainer">
+                <div class="message message-ai">
+                    <div class="message-bubble ai">
+                        🗺️ Xin chào! Tôi là trợ lý tìm kiếm địa điểm du lịch Trà Vinh. Tôi có thể giúp bạn:
+                        <br><br>
+                        • 🔍 Tìm kiếm địa điểm theo tên
+                        <br>• 🏷️ Lọc theo loại hình du lịch
+                        <br>• 📍 Gợi ý lịch trình tham quan
+                        <br>• ⭐ Xem đánh giá và review
+                        <br><br>
+                        Bạn muốn tìm hiểu về địa điểm nào?
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chatbot-input-area">
+            <input type="text"
+                   class="chatbot-input"
+                   id="chatbotInput"
+                   placeholder="Tìm địa điểm du lịch..."
+                   onkeypress="handleKeyPress(event)">
+        </div>
+    </div>
+
+    <script>
+        // Chatbot functionality for dia-diem page
+        let isChatbotOpen = false;
+
+        function toggleChatbot() {
+            isChatbotOpen = !isChatbotOpen;
+            const window = document.getElementById('chatbotWindow');
+
+            if (isChatbotOpen) {
+                window.classList.add('active');
+                document.getElementById('chatbotInput').focus();
+            } else {
+                window.classList.remove('active');
+            }
+        }
+
+        function closeChatbot() {
+            isChatbotOpen = false;
+            document.getElementById('chatbotWindow').classList.remove('active');
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatbotInput');
+            const message = input.value.trim();
+
+            if (message === '') return;
+
+            addChatMessage(message, 'user');
+            input.value = '';
+
+            // Generate contextual response for dia-diem page
+            setTimeout(() => {
+                const response = generateLocationResponse(message.toLowerCase());
+                addChatMessage(response, 'ai');
+            }, 1000);
+        }
+
+        function sendQuickMessage(message) {
+            addChatMessage(message, 'user');
+
+            setTimeout(() => {
+                const response = generateLocationResponse(message.toLowerCase());
+                addChatMessage(response, 'ai');
+            }, 800);
+        }
+
+        function generateLocationResponse(message) {
+            if (message.includes('tìm') || message.includes('địa điểm')) {
+                return '🔍 **Tìm kiếm địa điểm:**<br><br>Bạn có thể:<br>• Dùng ô tìm kiếm phía trên<br>• Lọc theo loại hình du lịch<br>• Xem tất cả địa điểm trên bản đồ<br><br>Hiện tại có **15 địa điểm** được cập nhật với hình ảnh đẹp.';
+            } else if (message.includes('lọc') || message.includes('loại')) {
+                return '🏷️ **Lọc địa điểm theo loại:**<br><br>• **🌿 Du lịch sinh thái:** Rừng tràm, cù lao<br>• **🏔️ Thắng cảnh thiên nhiên:** Ao Bà Om, biển<br>• **🏛️ Lịch sử - tâm linh:** Chùa Khmer, bảo tàng';
+            } else if (message.includes('lịch trình') || message.includes('gợi ý')) {
+                return '📋 **Gợi ý lịch trình:**<br><br>**1 ngày:**<br>• Sáng: Chùa Ang + Bảo tàng Khmer<br>• Chiều: Ao Bà Om + Chùa Hang<br><br>**2-3 ngày:**<br>• Thêm: Cù lao Tân Quy + Rừng tràm<br><br>**Mẹo:** Nên đi vào mùa khô (tháng 11-4)';
+            } else if (message.includes('đánh giá') || message.includes('review')) {
+                return '⭐ **Đánh giá địa điểm:**<br><br>**Top địa điểm được yêu thích:**<br>• Chùa Ang: 4.8/5 ⭐<br>• Ao Bà Om: 4.7/5 ⭐<br>• Chùa Hang: 4.6/5 ⭐<br><br>Bạn có thể xem chi tiết đánh giá khi click vào từng địa điểm!';
+            } else if (message.includes('chùa')) {
+                return '🏛️ **Chùa Khmer nổi tiếng:**<br><br>• **Chùa Ang:** Kiến trúc cổ kính, tượng Phật đẹp<br>• **Chùa Hang:** Nằm trong hang động tự nhiên<br>• **Chùa Cò:** Có đàn cò trắng sinh sống<br>• **Chùa Kompong Chrây:** Lâu đời nhất tỉnh';
+            } else {
+                return '🤖 Tôi có thể giúp bạn tìm hiểu về các địa điểm du lịch ở Trà Vinh. Hãy thử hỏi về:<br><br>• Tìm kiếm địa điểm cụ thể<br>• Lọc theo loại hình<br>• Gợi ý lịch trình<br>• Đánh giá và review';
+            }
+        }
+
+        function addChatMessage(text, sender) {
+            const container = document.getElementById('messagesContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message message-${sender}`;
+
+            messageDiv.innerHTML = `
+                <div class="message-bubble ${sender}">
+                    ${text}
+                </div>
+            `;
+
+            container.appendChild(messageDiv);
+
+            // Scroll to bottom
+            const messagesArea = document.getElementById('chatbotMessages');
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+        }
+
+        // Event listeners for chatbot
+        document.getElementById('chatbotToggle').addEventListener('click', toggleChatbot);
+
+        console.log('✅ Dia-diem Chatbot loaded successfully!');
     </script>
 </body>
 </html>

@@ -7,6 +7,170 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+
+    <!-- AI Chatbot Component -->
+    <link rel="stylesheet" href="components/chatbot-styles.css">
+
+    <style>
+    /* Simple Chatbot Styles */
+    .simple-chatbot-toggle {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        z-index: 9999;
+        color: white;
+        font-size: 28px;
+    }
+
+    .simple-chatbot-toggle:hover {
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .simple-chatbot-window {
+        position: fixed;
+        bottom: 100px;
+        right: 24px;
+        width: 400px;
+        height: 600px;
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        transform: translateY(20px) scale(0.95);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 9998;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .simple-chatbot-window.active {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .simple-chatbot-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .simple-chatbot-messages {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        background: #f8fafc;
+    }
+
+    .simple-chatbot-input-area {
+        padding: 20px;
+        border-top: 1px solid #e5e7eb;
+        background: white;
+    }
+
+    .simple-chatbot-input {
+        width: 100%;
+        border: 2px solid #e5e7eb;
+        border-radius: 24px;
+        padding: 12px 16px;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+    .simple-chatbot-input:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .simple-message {
+        margin-bottom: 16px;
+        display: flex;
+        align-items: flex-end;
+        gap: 8px;
+    }
+
+    .simple-message-ai {
+        justify-content: flex-start;
+    }
+
+    .simple-message-user {
+        justify-content: flex-end;
+    }
+
+    .simple-message-bubble {
+        max-width: 280px;
+        padding: 12px 16px;
+        border-radius: 18px;
+        word-wrap: break-word;
+    }
+
+    .simple-message-bubble.ai {
+        background: white;
+        color: #374151;
+        border: 1px solid #e5e7eb;
+    }
+
+    .simple-message-bubble.user {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .simple-quick-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .simple-quick-action-btn {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 20px;
+        padding: 8px 16px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .simple-quick-action-btn:hover {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-color: transparent;
+    }
+
+    @media (max-width: 768px) {
+        .simple-chatbot-window {
+            width: calc(100vw - 32px);
+            height: calc(100vh - 120px);
+            right: 16px;
+            bottom: 80px;
+        }
+
+        .simple-chatbot-toggle {
+            width: 56px;
+            height: 56px;
+            bottom: 16px;
+            right: 16px;
+        }
+    }
+    </style>
 </head>
 <body class="bg-gray-50">
     <!-- Navigation (copy from index.html) -->
@@ -122,5 +286,147 @@
     <!-- ... (Sao chép và dán toàn bộ các phần này từ file index.html vào đây) ... -->
 
     <script src="script.js"></script>
+
+    <!-- Enhanced AI Chatbot Scripts -->
+    <script src="components/gemini-config.js"></script>
+    <script src="components/gemini-ai-service.js"></script>
+    <script src="components/ai-chatbot-enhanced.js"></script>
+</body>
+</html>
+
+    <div class="simple-chatbot-window" id="simpleChatbotWindow">
+        <div class="simple-chatbot-header">
+            <div>
+                <h3 class="font-semibold" id="chatbotTitle">Hỗ trợ Giới thiệu</h3>
+                <p class="text-sm opacity-90" id="chatbotSubtitle">Tìm hiểu về Trà Vinh</p>
+            </div>
+            <button onclick="closeSimpleChatbot()" class="text-white hover:text-gray-200">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="simple-chatbot-messages" id="simpleChatbotMessages">
+            <div class="simple-quick-actions" id="simpleQuickActions">
+                <button class="simple-quick-action-btn" onclick="sendSimpleQuickMessage('Lịch sử Trà Vinh')">
+                    Lịch sử Trà Vinh
+                </button>
+                <button class="simple-quick-action-btn" onclick="sendSimpleQuickMessage('Văn hóa Khmer')">
+                    Văn hóa Khmer
+                </button>
+                <button class="simple-quick-action-btn" onclick="sendSimpleQuickMessage('Đặc sản địa phương')">
+                    Đặc sản địa phương
+                </button>
+                <button class="simple-quick-action-btn" onclick="sendSimpleQuickMessage('Lễ hội truyền thống')">
+                    Lễ hội truyền thống
+                </button>
+            </div>
+
+            <div id="simpleMessagesContainer">
+                <div class="simple-message simple-message-ai">
+                    <div class="simple-message-bubble ai">
+                        📚 Xin chào! Tôi có thể giúp bạn tìm hiểu về lịch sử, văn hóa và con người Trà Vinh. Bạn muốn khám phá điều gì về vùng đất này?
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="simple-chatbot-input-area">
+            <input type="text"
+                   class="simple-chatbot-input"
+                   id="simpleChatbotInput"
+                   placeholder="Hỏi về lịch sử, văn hóa Trà Vinh..."
+                   onkeypress="handleSimpleKeyPress(event)">
+        </div>
+    </div>
+
+    <script>
+    // Simple Chatbot for gioi-thieu page
+    let isSimpleChatbotOpen = false;
+
+    function toggleSimpleChatbot() {
+        isSimpleChatbotOpen = !isSimpleChatbotOpen;
+        const window = document.getElementById('simpleChatbotWindow');
+
+        if (isSimpleChatbotOpen) {
+            window.classList.add('active');
+            document.getElementById('simpleChatbotInput').focus();
+        } else {
+            window.classList.remove('active');
+        }
+    }
+
+    function closeSimpleChatbot() {
+        isSimpleChatbotOpen = false;
+        document.getElementById('simpleChatbotWindow').classList.remove('active');
+    }
+
+    function handleSimpleKeyPress(event) {
+        if (event.key === 'Enter') {
+            sendSimpleChatMessage();
+        }
+    }
+
+    function sendSimpleChatMessage() {
+        const input = document.getElementById('simpleChatbotInput');
+        const message = input.value.trim();
+
+        if (message === '') return;
+
+        addSimpleMessage(message, 'user');
+        input.value = '';
+
+        setTimeout(() => {
+            const response = generateGioiThieuResponse(message.toLowerCase());
+            addSimpleMessage(response, 'ai');
+        }, 1000);
+    }
+
+    function sendSimpleQuickMessage(message) {
+        addSimpleMessage(message, 'user');
+
+        setTimeout(() => {
+            const response = generateGioiThieuResponse(message.toLowerCase());
+            addSimpleMessage(response, 'ai');
+        }, 800);
+    }
+
+    function generateGioiThieuResponse(message) {
+        if (message.includes('lịch sử') || message.includes('history')) {
+            return '📜 **Lịch sử Trà Vinh:**<br><br>• **Thế kỷ 7-10:** Thuộc vương quốc Phù Nam<br>• **Thế kỷ 10-19:** Thuộc đế chế Khmer<br>• **1976:** Thành lập tỉnh Trà Vinh<br><br>Đây là nơi giao thoa văn hóa Kinh - Khmer - Hoa độc đáo.';
+        } else if (message.includes('văn hóa') || message.includes('khmer')) {
+            return '🏛️ **Văn hóa Khmer ở Trà Vinh:**<br><br>• **Kiến trúc:** Hơn 140 ngôi chùa Khmer cổ kính<br>• **Lễ hội:** Ok Om Bok, Chol Chnam Thmay<br>• **Nghệ thuật:** Múa Robam, nhạc cụ truyền thống<br>• **Ẩm thực:** Bánh ít lá gai, cà ri gà Khmer';
+        } else if (message.includes('đặc sản') || message.includes('ẩm thực')) {
+            return '🍜 **Đặc sản Trà Vinh:**<br><br>• **Bánh tét lá cẩm:** Đặc sản nổi tiếng<br>• **Cháo cá linh bông điên điển:** Món ăn dân dã<br>• **Bánh xèo miền Tây:** Giòn rụm thơm ngon<br>• **Cà ri gà Khmer:** Đậm đà hương vị';
+        } else if (message.includes('lễ hội') || message.includes('festival')) {
+            return '🎭 **Lễ hội truyền thống:**<br><br>• **Ok Om Bok:** Lễ cúng trăng của người Khmer<br>• **Chol Chnam Thmay:** Tết cổ truyền Khmer<br>• **Kate:** Lễ cúng tổ tiên<br>• **Pchum Ben:** Lễ vu lan của người Khmer';
+        } else if (message.includes('dân tộc') || message.includes('người')) {
+            return '👥 **Cộng đồng dân tộc:**<br><br>• **Kinh:** 70% dân số<br>• **Khmer:** 25% dân số<br>• **Hoa:** 3% dân số<br>• **Khác:** 2% dân số<br><br>Ba dân tộc sống hòa thuận, tạo nên bản sắc văn hóa độc đáo.';
+        } else {
+            return '📚 Tôi có thể giúp bạn tìm hiểu về:<br><br>• 📜 Lịch sử hình thành Trà Vinh<br>• 🏛️ Văn hóa người Khmer<br>• 🍜 Ẩm thực đặc sản<br>• 🎭 Lễ hội truyền thống<br>• 👥 Cộng đồng dân tộc<br><br>Bạn muốn tìm hiểu về chủ đề nào?';
+        }
+    }
+
+    function addSimpleMessage(text, sender) {
+        const container = document.getElementById('simpleMessagesContainer');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `simple-message simple-message-${sender}`;
+
+        messageDiv.innerHTML = `
+            <div class="simple-message-bubble ${sender}">
+                ${text}
+            </div>
+        `;
+
+        container.appendChild(messageDiv);
+
+        const messagesArea = document.getElementById('simpleChatbotMessages');
+        messagesArea.scrollTop = messagesArea.scrollHeight;
+    }
+
+    // Event listeners
+    document.getElementById('simpleChatbotToggle').addEventListener('click', toggleSimpleChatbot);
+
+    console.log('✅ Gioi-thieu Chatbot loaded successfully!');
+    </script>
 </body>
 </html>

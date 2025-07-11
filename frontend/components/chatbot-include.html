@@ -1,0 +1,76 @@
+<!-- 
+    AI Chatbot Component Include
+    Add this single line to any HTML page to include the chatbot:
+    
+    <script src="components/chatbot-loader.js"></script>
+    
+    Or include this entire file:
+-->
+
+<!-- Chatbot Component Styles -->
+<link rel="stylesheet" href="components/chatbot-styles.css">
+
+<!-- Chatbot Component Script -->
+<script src="components/chatbot-component.js"></script>
+
+<!-- Chatbot Auto-Loader -->
+<script src="components/chatbot-loader.js"></script>
+
+<!-- Optional: Custom page configuration -->
+<script>
+    // Listen for chatbot loaded event
+    document.addEventListener('chatbotLoaded', function(event) {
+        const { instance, page, config } = event.detail;
+        
+        // Custom initialization for specific pages
+        switch(page) {
+            case 'index':
+                // Home page specific setup
+                break;
+                
+            case 'dia-diem':
+                // Destinations page specific setup
+                break;
+                
+            case 'check-db-images':
+                // Admin page specific setup
+                break;
+                
+            default:
+                // Default setup
+                break;
+        }
+        
+        console.log('Chatbot ready for page:', page);
+    });
+</script>
+
+<!-- 
+    Usage Examples:
+    
+    1. Basic include (recommended):
+       <script src="components/chatbot-loader.js"></script>
+    
+    2. Manual initialization:
+       <link rel="stylesheet" href="components/chatbot-styles.css">
+       <script src="components/chatbot-component.js"></script>
+       <script>
+           document.addEventListener('DOMContentLoaded', function() {
+               window.chatbotInstance = new ChatbotComponent({
+                   theme: 'custom',
+                   autoShow: true
+               });
+           });
+       </script>
+    
+    3. Custom configuration:
+       <script>
+           window.CHATBOT_CONFIG = {
+               theme: 'dark',
+               position: 'bottom-left',
+               autoShow: true,
+               enableSoundEffects: true
+           };
+       </script>
+       <script src="components/chatbot-loader.js"></script>
+-->

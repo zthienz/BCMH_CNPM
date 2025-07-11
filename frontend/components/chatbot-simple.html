@@ -1,0 +1,368 @@
+<!-- Simple Chatbot Template - Copy this to any page -->
+
+<!-- Add this CSS to <head> section -->
+<style>
+/* Simple Chatbot Styles */
+.simple-chatbot-toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    z-index: 9999;
+    color: white;
+    font-size: 28px;
+}
+
+.simple-chatbot-toggle:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.simple-chatbot-window {
+    position: fixed;
+    bottom: 100px;
+    right: 24px;
+    width: 400px;
+    height: 600px;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    transform: translateY(20px) scale(0.95);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 9998;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.simple-chatbot-window.active {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    visibility: visible;
+}
+
+.simple-chatbot-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.simple-chatbot-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #f8fafc;
+}
+
+.simple-chatbot-input-area {
+    padding: 20px;
+    border-top: 1px solid #e5e7eb;
+    background: white;
+}
+
+.simple-chatbot-input {
+    width: 100%;
+    border: 2px solid #e5e7eb;
+    border-radius: 24px;
+    padding: 12px 16px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.simple-chatbot-input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.simple-message {
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.simple-message-ai {
+    justify-content: flex-start;
+}
+
+.simple-message-user {
+    justify-content: flex-end;
+}
+
+.simple-message-bubble {
+    max-width: 280px;
+    padding: 12px 16px;
+    border-radius: 18px;
+    word-wrap: break-word;
+}
+
+.simple-message-bubble.ai {
+    background: white;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+}
+
+.simple-message-bubble.user {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.simple-quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.simple-quick-action-btn {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.simple-quick-action-btn:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: transparent;
+}
+
+@media (max-width: 768px) {
+    .simple-chatbot-window {
+        width: calc(100vw - 32px);
+        height: calc(100vh - 120px);
+        right: 16px;
+        bottom: 80px;
+    }
+    
+    .simple-chatbot-toggle {
+        width: 56px;
+        height: 56px;
+        bottom: 16px;
+        right: 16px;
+    }
+}
+</style>
+
+<!-- Add this HTML before </body> -->
+<button class="simple-chatbot-toggle" id="simpleChatbotToggle">
+    <i class="fas fa-robot"></i>
+</button>
+
+<div class="simple-chatbot-window" id="simpleChatbotWindow">
+    <div class="simple-chatbot-header">
+        <div>
+            <h3 class="font-semibold" id="chatbotTitle">AI Trợ lý Du lịch</h3>
+            <p class="text-sm opacity-90" id="chatbotSubtitle">Trà Vinh Tourism</p>
+        </div>
+        <button onclick="closeSimpleChatbot()" class="text-white hover:text-gray-200">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <div class="simple-chatbot-messages" id="simpleChatbotMessages">
+        <div class="simple-quick-actions" id="simpleQuickActions">
+            <!-- Quick actions will be added by JavaScript -->
+        </div>
+        
+        <div id="simpleMessagesContainer">
+            <div class="simple-message simple-message-ai">
+                <div class="simple-message-bubble ai" id="welcomeMessage">
+                    Xin chào! Tôi là trợ lý AI du lịch Trà Vinh. Tôi có thể giúp bạn tìm hiểu về địa điểm, ẩm thực và lên kế hoạch du lịch. Bạn cần hỗ trợ gì?
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="simple-chatbot-input-area">
+        <input type="text" 
+               class="simple-chatbot-input" 
+               id="simpleChatbotInput" 
+               placeholder="Nhập câu hỏi của bạn..."
+               onkeypress="handleSimpleKeyPress(event)">
+    </div>
+</div>
+
+<!-- Add this JavaScript before </body> -->
+<script>
+// Simple Chatbot JavaScript
+let isSimpleChatbotOpen = false;
+
+// Page configurations
+const pageConfigs = {
+    'index': {
+        title: 'Trợ lý Du lịch Trà Vinh',
+        subtitle: 'Khám phá vẻ đẹp Trà Vinh',
+        welcome: 'Xin chào! Tôi là trợ lý AI du lịch Trà Vinh. Tôi có thể giúp bạn khám phá vẻ đẹp của vùng đất này.',
+        quickActions: ['Giới thiệu Trà Vinh', 'Địa điểm nổi tiếng', 'Lên kế hoạch', 'Ẩm thực đặc sản']
+    },
+    'gioi-thieu': {
+        title: 'Hỗ trợ Giới thiệu',
+        subtitle: 'Tìm hiểu về Trà Vinh',
+        welcome: 'Tôi có thể giúp bạn tìm hiểu về lịch sử, văn hóa và con người Trà Vinh.',
+        quickActions: ['Lịch sử Trà Vinh', 'Văn hóa Khmer', 'Đặc sản địa phương', 'Lễ hội truyền thống']
+    },
+    'lien-he': {
+        title: 'Hỗ trợ Liên hệ',
+        subtitle: 'Kết nối với chúng tôi',
+        welcome: 'Tôi có thể hỗ trợ bạn về thông tin liên hệ, đặt tour và các dịch vụ khác.',
+        quickActions: ['Thông tin liên hệ', 'Đặt tour du lịch', 'Hỗ trợ khách hàng', 'Góp ý dịch vụ']
+    },
+    'danh-gia': {
+        title: 'Hỗ trợ Đánh giá',
+        subtitle: 'Reviews & Bài viết',
+        welcome: 'Tôi có thể hướng dẫn bạn viết đánh giá và chia sẻ trải nghiệm du lịch.',
+        quickActions: ['Viết đánh giá', 'Chia sẻ trải nghiệm', 'Xem review khác', 'Tips du lịch']
+    },
+    'admin-db': {
+        title: 'Database Admin',
+        subtitle: 'Quản lý cơ sở dữ liệu',
+        welcome: 'Tôi có thể hỗ trợ bạn về quản lý database và các vấn đề kỹ thuật.',
+        quickActions: ['Kiểm tra kết nối', 'Backup dữ liệu', 'Thống kê dữ liệu', 'Hỗ trợ SQL']
+    },
+    'admin-images': {
+        title: 'Image Admin',
+        subtitle: 'Quản lý hình ảnh',
+        welcome: 'Tôi có thể hỗ trợ bạn về quản lý hình ảnh và tối ưu hóa storage.',
+        quickActions: ['Upload hình ảnh', 'Tối ưu hình ảnh', 'Kiểm tra lỗi ảnh', 'Quản lý storage']
+    },
+    'check-images': {
+        title: 'Image Checker',
+        subtitle: 'Kiểm tra hình ảnh',
+        welcome: 'Tôi có thể hỗ trợ bạn kiểm tra tình trạng hình ảnh và sửa lỗi.',
+        quickActions: ['Scan tất cả ảnh', 'Báo cáo lỗi ảnh', 'Sửa đường dẫn', 'Thống kê ảnh']
+    }
+};
+
+function detectCurrentPage() {
+    const path = window.location.pathname;
+    const filename = path.split('/').pop().replace('.html', '') || 'index';
+    return filename;
+}
+
+function initializeSimpleChatbot() {
+    const currentPage = detectCurrentPage();
+    const config = pageConfigs[currentPage] || pageConfigs['index'];
+    
+    // Update UI
+    document.getElementById('chatbotTitle').textContent = config.title;
+    document.getElementById('chatbotSubtitle').textContent = config.subtitle;
+    document.getElementById('welcomeMessage').innerHTML = config.welcome;
+    
+    // Add quick actions
+    const quickActionsContainer = document.getElementById('simpleQuickActions');
+    quickActionsContainer.innerHTML = config.quickActions.map(action => 
+        `<button class="simple-quick-action-btn" onclick="sendSimpleQuickMessage('${action}')">
+            ${action}
+        </button>`
+    ).join('');
+}
+
+function toggleSimpleChatbot() {
+    isSimpleChatbotOpen = !isSimpleChatbotOpen;
+    const window = document.getElementById('simpleChatbotWindow');
+    
+    if (isSimpleChatbotOpen) {
+        window.classList.add('active');
+        document.getElementById('simpleChatbotInput').focus();
+    } else {
+        window.classList.remove('active');
+    }
+}
+
+function closeSimpleChatbot() {
+    isSimpleChatbotOpen = false;
+    document.getElementById('simpleChatbotWindow').classList.remove('active');
+}
+
+function handleSimpleKeyPress(event) {
+    if (event.key === 'Enter') {
+        sendSimpleChatMessage();
+    }
+}
+
+function sendSimpleChatMessage() {
+    const input = document.getElementById('simpleChatbotInput');
+    const message = input.value.trim();
+    
+    if (message === '') return;
+    
+    addSimpleMessage(message, 'user');
+    input.value = '';
+    
+    // Generate response
+    setTimeout(() => {
+        const response = generateSimpleResponse(message.toLowerCase());
+        addSimpleMessage(response, 'ai');
+    }, 1000);
+}
+
+function sendSimpleQuickMessage(message) {
+    addSimpleMessage(message, 'user');
+    
+    setTimeout(() => {
+        const response = generateSimpleResponse(message.toLowerCase());
+        addSimpleMessage(response, 'ai');
+    }, 800);
+}
+
+function generateSimpleResponse(message) {
+    // Basic responses
+    if (message.includes('giới thiệu') || message.includes('trà vinh')) {
+        return '🏛️ Trà Vinh là tỉnh ven biển thuộc vùng đồng bằng sông Cửu Long, nổi tiếng với văn hóa Khmer đặc sắc và hơn 140 ngôi chùa cổ kính.';
+    } else if (message.includes('địa điểm') || message.includes('du lịch')) {
+        return '🗺️ Các địa điểm nổi bật: Ao Bà Om, Chùa Ang, Bảo tàng Khmer, Cù lao Tân Quy, Rừng tràm Trà Sư...';
+    } else if (message.includes('ẩm thực') || message.includes('đặc sản')) {
+        return '🍜 Đặc sản Trà Vinh: Bánh tét lá cẩm, cháo cá linh bông điên điển, bánh xèo miền Tây, cà ri gà Khmer...';
+    } else if (message.includes('liên hệ') || message.includes('đặt tour')) {
+        return '📞 Liên hệ: 0294.385.5555 | Email: info@dulichtravinh.vn | Địa chỉ: 95 Điện Biên Phủ, TP. Trà Vinh';
+    } else {
+        return '🤖 Cảm ơn bạn đã quan tâm! Tôi có thể giúp bạn tìm hiểu về địa điểm du lịch, ẩm thực, lịch sử văn hóa và các dịch vụ du lịch tại Trà Vinh.';
+    }
+}
+
+function addSimpleMessage(text, sender) {
+    const container = document.getElementById('simpleMessagesContainer');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `simple-message simple-message-${sender}`;
+    
+    messageDiv.innerHTML = `
+        <div class="simple-message-bubble ${sender}">
+            ${text}
+        </div>
+    `;
+    
+    container.appendChild(messageDiv);
+    
+    // Scroll to bottom
+    const messagesArea = document.getElementById('simpleChatbotMessages');
+    messagesArea.scrollTop = messagesArea.scrollHeight;
+}
+
+// Event listeners
+document.getElementById('simpleChatbotToggle').addEventListener('click', toggleSimpleChatbot);
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', function() {
+    initializeSimpleChatbot();
+    console.log('✅ Simple Chatbot loaded for page:', detectCurrentPage());
+});
+</script>
