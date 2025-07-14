@@ -660,18 +660,17 @@ class AuthModal {
     }
 
     /**
-     * Handle login with API
+     * Handle login with Node.js API
      */
     async handleLogin(data) {
         try {
-            const response = await fetch('../backend/api/auth.php', {
+            const response = await fetch('http://localhost:3000/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include', // Include cookies for session
                 body: JSON.stringify({
-                    action: 'login',
                     email: data.email,
                     password: data.password
                 })
@@ -683,10 +682,10 @@ class AuthModal {
                 this.showSuccess('Đăng nhập thành công! Đang chuyển hướng...');
 
                 // Store user info
-                this.setUserSession(result.user);
+                this.setUserSession(result.data.user);
 
                 // Update UI
-                this.updateUIAfterLogin(result.user);
+                this.updateUIAfterLogin(result.data.user);
 
                 setTimeout(() => {
                     this.close();
@@ -698,29 +697,140 @@ class AuthModal {
             }
         } catch (error) {
             console.error('Login error:', error);
+            if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                throw new Error('Không thể kết nối đến server. Vui lòng kiểm tra server đã chạy chưa.');
+            }
             throw new Error(error.message || 'Có lỗi xảy ra khi đăng nhập');
         }
     }
 
     /**
-     * Handle registration (to be implemented with API)
+     * Handle registration with Node.js API
      */
     async handleRegister(data) {
-        // This will be implemented in the next step
-        console.log('Register attempt:', { name: data.name, email: data.email });
-        
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // Temporary success message
-        this.showSuccess('Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản.');
-        
-        setTimeout(() => {
-            this.currentMode = 'login';
-            this.updateUI();
-            this.clearForm();
-            this.clearMessages();
-        }, 2000);
+        try {
+            const response = await fetch('http://localhost:3000/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    name: data.name,
+                    email: data.email,
+                    password: data.password
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                this.showSuccess('Đăng ký thành công! Bạn có thể đăng nhập ngay bây giờ.');
+
+                setTimeout(() => {
+                    this.currentMode = 'login';
+                    this.updateUI();
+                    this.clearForm();
+                    this.clearMessages();
+
+                    // Pre-fill email for convenience
+                    document.getElementById('auth-email').value = data.email;
+                }, 2000);
+            } else {
+                throw new Error(result.message || 'Đăng ký thất bại');
+            }
+        } catch (error) {
+            console.error('Register error:', error);
+            if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                throw new Error('Không thể kết nối đến server. Vui lòng kiểm tra server đã chạy chưa.');
+            }
+            throw new Error(error.message || 'Có lỗi xảy ra khi đăng ký');
+        }
+    }
+
+    /**
+     * Set user session in localStorage
+     */
+    setUserSession(user) {
+        localStorage.setItem('user_session', JSON.stringify({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            login_time: user.login_time || Date.now()
+        }));
+    }
+
+    /**
+     * Get user session from localStorage
+     */
+    getUserSession() {
+        try {
+            const session = localStorage.getItem('user_session');
+            return session ? JSON.parse(session) : null;
+        } catch (error) {
+            console.error('Error getting user session:', error);
+            return null;
+        }
+    }
+
+    /**
+     * Clear user session
+     */
+    clearUserSession() {
+        localStorage.removeItem('user_session');
+    }
+
+    /**
+     * Update UI after successful login
+     */
+    updateUIAfterLogin(user) {
+        // This will be called to update the UI elements
+        // The actual UI update will happen on page reload
+        console.log('User logged in:', user);
+
+        // Dispatch custom event for other components
+        window.dispatchEvent(new CustomEvent('userLoggedIn', {
+            detail: { user: user }
+        }));
+    }
+
+    /**
+     * Check if user is logged in
+     */
+    isLoggedIn() {
+        return this.getUserSession() !== null;
+    }
+
+    /**
+     * Logout user
+     */
+    async logout() {
+        try {
+            const response = await fetch('http://localhost:3000/api/auth/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            });
+
+            const result = await response.json();
+
+            // Clear local session regardless of API response
+            this.clearUserSession();
+
+            // Dispatch logout event
+            window.dispatchEvent(new CustomEvent('userLoggedOut'));
+
+            // Reload page to update UI
+            window.location.reload();
+
+        } catch (error) {
+            console.error('Logout error:', error);
+            // Still clear local session on error
+            this.clearUserSession();
+            window.location.reload();
+        }
     }
 }
 

@@ -31,13 +31,16 @@
                     <a href="danh-gia.html" class="nav-link text-white hover:text-yellow-200 px-3 py-2 transition duration-300">Đánh giá & Bài viết</a>
                 </div>
                 
-                <div class="flex items-center space-x-4">
-                    <button onclick="window.authModal.openLogin()" class="bg-white text-blue-600 px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300">
-                        <i class="fas fa-sign-in-alt mr-2"></i>Đăng nhập
-                    </button>
-                    <button onclick="window.authModal.openRegister()" class="border border-white text-white px-4 py-2 rounded-full hover:bg-white hover:text-blue-600 transition duration-300">
-                        <i class="fas fa-user-plus mr-2"></i>Đăng ký
-                    </button>
+                <div class="auth-buttons">
+                    <!-- Auth buttons will be dynamically updated by user-manager.js -->
+                    <div class="flex items-center space-x-4">
+                        <button onclick="window.authModal.openLogin()" class="bg-white text-blue-600 px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Đăng nhập
+                        </button>
+                        <button onclick="window.authModal.openRegister()" class="border border-white text-white px-4 py-2 rounded-full hover:bg-white hover:text-blue-600 transition duration-300">
+                            <i class="fas fa-user-plus mr-2"></i>Đăng ký
+                        </button>
+                    </div>
                 </div>
                 
                 <button class="md:hidden text-white" onclick="toggleMobileMenu()">
@@ -221,6 +224,9 @@
 
     <!-- Authentication Modal -->
     <script src="components/auth-modal.js"></script>
+
+    <!-- User Manager -->
+    <script src="components/user-manager.js"></script>
 
     <!-- Floating Chatbot Component -->
     <script src="components/chatbot-float.js"></script>

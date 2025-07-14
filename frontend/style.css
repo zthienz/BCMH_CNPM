@@ -16,3 +16,59 @@
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: 0.375rem;
 }
+
+/* User Dropdown Menu Styles */
+.user-dropdown {
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.user-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 20px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid white;
+}
+
+.user-menu-item {
+    transition: all 0.2s ease-in-out;
+}
+
+.user-menu-item:hover {
+    transform: translateX(4px);
+}
+
+.user-avatar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Mobile User Menu Animation */
+#mobileUserModal .bg-white {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Chevron rotation animation */
+.rotate-180 {
+    transform: rotate(180deg);
+}
+
+/* Smooth transitions for all user menu elements */
+.user-menu-transition {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}

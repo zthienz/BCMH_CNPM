@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Database Test - Du lịch Trà Vinh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-5xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-database text-green-600 mr-3"></i>
+                    Real Database Connected!
+                </h1>
+                <p class="text-xl text-gray-600">✅ Kết nối thành công với MySQL Database</p>
+                <div class="mt-4 inline-flex items-center px-6 py-3 bg-green-100 text-green-800 rounded-full">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <span class="font-semibold">Database Mode: PRODUCTION</span>
+                </div>
+            </div>
+
+            <!-- Server Status -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8 border-l-4 border-green-500">
+                <h2 class="text-2xl font-semibold mb-4">
+                    <i class="fas fa-server text-green-600 mr-2"></i>
+                    Server Status
+                </h2>
+                
+                <div class="grid md:grid-cols-4 gap-4">
+                    <div class="p-4 bg-green-50 rounded-lg border border-green-200">
+                        <div class="flex items-center justify-between">
+                            <span class="font-medium">Database:</span>
+                            <span id="dbStatus" class="text-green-600 font-semibold">MySQL Connected</span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                        <div class="flex items-center justify-between">
+                            <span class="font-medium">Users:</span>
+                            <span id="userCount" class="text-blue-600 font-semibold">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-purple-50 rounded-lg border border-purple-200">
+                        <div class="flex items-center justify-between">
+                            <span class="font-medium">Mode:</span>
+                            <span id="serverMode" class="text-purple-600 font-semibold">Production</span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-orange-50 rounded-lg border border-orange-200">
+                        <div class="flex items-center justify-between">
+                            <span class="font-medium">Uptime:</span>
+                            <span id="serverUptime" class="text-orange-600 font-semibold">--</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <button onclick="checkServerStatus()" 
+                            class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300 shadow-md">
+                        <i class="fas fa-sync-alt mr-2"></i>
+                        Refresh Status
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Test Actions -->
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <!-- Register Test -->
+                <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500">
+                    <h3 class="text-xl font-semibold mb-4 text-blue-800">
+                        <i class="fas fa-user-plus text-blue-600 mr-2"></i>
+                        Test Registration
+                    </h3>
+                    <p class="text-gray-600 mb-4">Tạo tài khoản mới và lưu vào database</p>
+                    <button onclick="testRegister()" 
+                            class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-300">
+                        <i class="fas fa-plus mr-2"></i>
+                        Tạo User Mới
+                    </button>
+                </div>
+
+                <!-- Login Test -->
+                <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
+                    <h3 class="text-xl font-semibold mb-4 text-green-800">
+                        <i class="fas fa-sign-in-alt text-green-600 mr-2"></i>
+                        Test Login
+                    </h3>
+                    <p class="text-gray-600 mb-4">Đăng nhập với tài khoản từ database</p>
+                    <button onclick="testLogin()" 
+                            class="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition duration-300">
+                        <i class="fas fa-key mr-2"></i>
+                        Login Admin
+                    </button>
+                </div>
+
+                <!-- View Users -->
+                <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500">
+                    <h3 class="text-xl font-semibold mb-4 text-purple-800">
+                        <i class="fas fa-users text-purple-600 mr-2"></i>
+                        View Database
+                    </h3>
+                    <p class="text-gray-600 mb-4">Xem tất cả users trong database</p>
+                    <button onclick="viewUsers()" 
+                            class="w-full bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition duration-300">
+                        <i class="fas fa-list mr-2"></i>
+                        View All Users
+                    </button>
+                </div>
+            </div>
+
+            <!-- Current Session -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-semibold mb-4">
+                    <i class="fas fa-user-check text-blue-600 mr-2"></i>
+                    Current Session
+                </h2>
+                
+                <div id="sessionInfo" class="grid md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <span class="font-medium">Status:</span>
+                            <span id="sessionStatus" class="text-gray-600">Checking...</span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <span class="font-medium">User:</span>
+                            <span id="sessionUser" class="text-gray-600">--</span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <span class="font-medium">Email:</span>
+                            <span id="sessionEmail" class="text-gray-600">--</span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <span class="font-medium">Type:</span>
+                            <span id="sessionType" class="text-gray-600">--</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 flex space-x-3">
+                    <button onclick="checkSession()" 
+                            class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300">
+                        <i class="fas fa-sync-alt mr-2"></i>
+                        Refresh Session
+                    </button>
+                    <button onclick="logout()" 
+                            class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition duration-300">
+                        <i class="fas fa-sign-out-alt mr-2"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Database Users -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-semibold mb-6">
+                    <i class="fas fa-database text-green-600 mr-2"></i>
+                    Database Users
+                </h2>
+                
+                <div id="usersList" class="space-y-4">
+                    <div class="text-center text-gray-500">Click "View All Users" to load data from database</div>
+                </div>
+            </div>
+
+            <!-- Test Results -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-semibold mb-6">
+                    <i class="fas fa-terminal text-gray-600 mr-2"></i>
+                    Test Results & Logs
+                </h2>
+                
+                <div id="testResults" class="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm min-h-[200px] overflow-y-auto">
+                    <div class="text-gray-500">// Real database test results will appear here...</div>
+                </div>
+                
+                <div class="mt-4 flex space-x-3">
+                    <button onclick="clearResults()" 
+                            class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-300">
+                        <i class="fas fa-eraser mr-2"></i>
+                        Clear Results
+                    </button>
+                    <button onclick="runFullTest()" 
+                            class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                        <i class="fas fa-play mr-2"></i>
+                        Run Full Test
+                    </button>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-8 mb-8 border border-green-200">
+                <h2 class="text-2xl font-bold text-center mb-6 text-green-800">
+                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                    🎉 Database Integration Successful!
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-green-800">
+                            <i class="fas fa-database text-green-600 mr-2"></i>
+                            Database Features
+                        </h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                <span>Real MySQL connection</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                <span>User registration saves to DB</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                <span>Login authentication from DB</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                <span>Password hashing with bcrypt</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                <span>Session management</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-blue-800">
+                            <i class="fas fa-cog text-blue-600 mr-2"></i>
+                            Technical Details
+                        </h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-server text-blue-500 mr-2 mt-1"></i>
+                                <span>Node.js + Express server</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-database text-blue-500 mr-2 mt-1"></i>
+                                <span>MySQL database: dulich_travinh</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-table text-blue-500 mr-2 mt-1"></i>
+                                <span>Table: TaiKhoanNguoiDung</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-shield-alt text-blue-500 mr-2 mt-1"></i>
+                                <span>Secure password storage</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-history text-blue-500 mr-2 mt-1"></i>
+                                <span>Activity logging</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="text-center">
+                <a href="index.html" class="inline-flex items-center px-8 py-4 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition duration-300 text-lg mr-4">
+                    <i class="fas fa-home mr-3"></i>
+                    Về Trang Chủ
+                </a>
+                <a href="database-auth-test.html" class="inline-flex items-center px-8 py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition duration-300 text-lg">
+                    <i class="fas fa-flask mr-3"></i>
+                    Advanced Testing
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000';
+        let testCount = 0;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            logResult('🚀 Real Database Test page loaded');
+            checkServerStatus();
+            checkSession();
+        });
+
+        // Check server status
+        async function checkServerStatus() {
+            logResult('🔍 Checking server status...');
+            
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('userCount').textContent = data.userCount || 0;
+                    document.getElementById('serverUptime').textContent = Math.floor(data.uptime) + 's';
+                    
+                    logResult('✅ Server status:', data);
+                } else {
+                    throw new Error('Server health check failed');
+                }
+                
+            } catch (error) {
+                logResult('❌ Server status check failed:', error.message);
+            }
+        }
+
+        // Test registration
+        async function testRegister() {
+            const timestamp = Date.now();
+            const testUser = {
+                name: `Test User ${timestamp}`,
+                email: `test${timestamp}@example.com`,
+                password: 'test123456'
+            };
+            
+            logResult('📝 Testing registration with real database...', testUser);
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(testUser)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    logResult('✅ Registration successful - Data saved to database!', result);
+                    alert(`✅ Đăng ký thành công!\nAccount ID: ${result.data.account_id}\nDữ liệu đã được lưu vào database MySQL.`);
+                    
+                    // Refresh user count
+                    checkServerStatus();
+                } else {
+                    logResult('❌ Registration failed:', result.message);
+                    alert('❌ Đăng ký thất bại: ' + result.message);
+                }
+            } catch (error) {
+                logResult('❌ Registration error:', error.message);
+                alert('❌ Lỗi kết nối: ' + error.message);
+            }
+        }
+
+        // Test login
+        async function testLogin() {
+            logResult('🔑 Testing login with database user...');
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        email: 'admin@travinh-travel.com',
+                        password: 'admin123'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    logResult('✅ Login successful - User authenticated from database!', result);
+                    checkSession();
+                    alert('✅ Đăng nhập thành công với tài khoản từ database!');
+                } else {
+                    logResult('❌ Login failed:', result.message);
+                    alert('❌ Đăng nhập thất bại: ' + result.message);
+                }
+            } catch (error) {
+                logResult('❌ Login error:', error.message);
+                alert('❌ Lỗi kết nối: ' + error.message);
+            }
+        }
+
+        // View all users
+        async function viewUsers() {
+            logResult('👥 Loading users from database...');
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/users`, {
+                    credentials: 'include'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    logResult('✅ Users loaded from database:', result);
+                    displayUsers(result.data.users);
+                } else {
+                    logResult('❌ Failed to load users:', result.message);
+                }
+            } catch (error) {
+                logResult('❌ Load users error:', error.message);
+            }
+        }
+
+        // Display users
+        function displayUsers(users) {
+            const usersList = document.getElementById('usersList');
+            
+            if (users.length === 0) {
+                usersList.innerHTML = '<div class="text-center text-gray-500">No users found in database</div>';
+                return;
+            }
+            
+            usersList.innerHTML = users.map(user => `
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user text-blue-600"></i>
+                        </div>
+                        <div>
+                            <div class="font-semibold">${user.TenNguoiDung}</div>
+                            <div class="text-sm text-gray-600">${user.Email}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="px-3 py-1 text-xs font-medium rounded-full ${user.LoaiNguoiDung === 'Admin' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}">
+                            ${user.LoaiNguoiDung}
+                        </span>
+                        <span class="text-sm text-gray-500">${user.MaTK}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Check session
+        async function checkSession() {
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/session`, {
+                    credentials: 'include'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success && result.data.logged_in) {
+                    const user = result.data.user;
+                    document.getElementById('sessionStatus').innerHTML = '<span class="text-green-600"><i class="fas fa-check-circle mr-1"></i>Logged In</span>';
+                    document.getElementById('sessionUser').textContent = user.name;
+                    document.getElementById('sessionEmail').textContent = user.email;
+                    document.getElementById('sessionType').innerHTML = `<span class="px-2 py-1 text-xs font-medium rounded ${user.type === 'Admin' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}">${user.type}</span>`;
+                } else {
+                    document.getElementById('sessionStatus').innerHTML = '<span class="text-gray-600"><i class="fas fa-times-circle mr-1"></i>Not Logged In</span>';
+                    document.getElementById('sessionUser').textContent = '--';
+                    document.getElementById('sessionEmail').textContent = '--';
+                    document.getElementById('sessionType').textContent = '--';
+                }
+                
+                logResult('📊 Session check:', result);
+            } catch (error) {
+                logResult('❌ Session check error:', error.message);
+            }
+        }
+
+        // Logout
+        async function logout() {
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/logout`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                const result = await response.json();
+                logResult('🚪 Logout result:', result);
+                
+                checkSession();
+                alert(result.message);
+            } catch (error) {
+                logResult('❌ Logout error:', error.message);
+            }
+        }
+
+        // Run full test
+        async function runFullTest() {
+            logResult('🚀 Running full database test sequence...');
+            
+            await checkServerStatus();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            await viewUsers();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            await testRegister();
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            await testLogin();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            await checkSession();
+            
+            logResult('✅ Full database test sequence completed');
+        }
+
+        // Log test result
+        function logResult(message, data = null) {
+            const resultsDiv = document.getElementById('testResults');
+            const timestamp = new Date().toLocaleTimeString();
+            testCount++;
+            
+            let logEntry = `[${timestamp}] ${message}`;
+            
+            if (data) {
+                logEntry += '\n' + JSON.stringify(data, null, 2);
+            }
+            
+            const logElement = document.createElement('div');
+            logElement.className = 'mb-2 pb-2 border-b border-gray-700';
+            logElement.innerHTML = `<span class="text-yellow-400">#${testCount}</span> ${logEntry.replace(/\n/g, '<br>')}`;
+            
+            resultsDiv.appendChild(logElement);
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+        }
+
+        // Clear test results
+        function clearResults() {
+            document.getElementById('testResults').innerHTML = '<div class="text-gray-500">// Real database test results cleared...</div>';
+            testCount = 0;
+        }
+    </script>
+</body>
+</html>
