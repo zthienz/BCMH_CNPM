@@ -679,19 +679,17 @@ class AuthModal {
             const result = await response.json();
 
             if (result.success) {
-                this.showSuccess('Đăng nhập thành công! Đang chuyển hướng...');
+                this.showSuccess('Đăng nhập thành công!');
 
                 // Store user info
                 this.setUserSession(result.data.user);
 
-                // Update UI
+                // Update UI through userManager
                 this.updateUIAfterLogin(result.data.user);
 
                 setTimeout(() => {
                     this.close();
-                    // Reload page to update all UI elements
-                    window.location.reload();
-                }, 1500);
+                }, 1000);
             } else {
                 throw new Error(result.message || 'Đăng nhập thất bại');
             }
@@ -784,9 +782,24 @@ class AuthModal {
      * Update UI after successful login
      */
     updateUIAfterLogin(user) {
-        // This will be called to update the UI elements
-        // The actual UI update will happen on page reload
         console.log('User logged in:', user);
+
+        // Update userManager with user info
+        if (window.userManager) {
+            window.userManager.user = {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                type: user.type,
+                login_time: user.login_time || Date.now() / 1000
+            };
+            window.userManager.isLoggedIn = true;
+            window.userManager.updateUI();
+
+            console.log('✅ UserManager updated with user info:', window.userManager.user);
+        } else {
+            console.error('❌ UserManager not found');
+        }
 
         // Dispatch custom event for other components
         window.dispatchEvent(new CustomEvent('userLoggedIn', {
@@ -819,17 +832,28 @@ class AuthModal {
             // Clear local session regardless of API response
             this.clearUserSession();
 
+            // Update userManager
+            if (window.userManager) {
+                window.userManager.user = null;
+                window.userManager.isLoggedIn = false;
+                window.userManager.updateUI();
+                console.log('✅ UserManager updated after logout');
+            }
+
             // Dispatch logout event
             window.dispatchEvent(new CustomEvent('userLoggedOut'));
-
-            // Reload page to update UI
-            window.location.reload();
 
         } catch (error) {
             console.error('Logout error:', error);
             // Still clear local session on error
             this.clearUserSession();
-            window.location.reload();
+
+            // Update userManager even on error
+            if (window.userManager) {
+                window.userManager.user = null;
+                window.userManager.isLoggedIn = false;
+                window.userManager.updateUI();
+            }
         }
     }
 }
