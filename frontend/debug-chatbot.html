@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug AI Chatbot - Trà Vinh</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="components/chatbot-styles.css">
+    
+    <style>
+        .debug-panel {
+            position: fixed;
+            top: 80px;
+            left: 20px;
+            width: 400px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            z-index: 1000;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .debug-log {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 10px 0;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-online {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-offline {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .status-testing {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .test-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .test-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="vietnam-gradient shadow-lg fixed w-full top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-bug text-white text-2xl"></i>
+                    <span class="text-white text-xl font-bold">Debug AI Chatbot</span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="index.html" class="text-white hover:text-yellow-300 transition duration-300">
+                        <i class="fas fa-home mr-2"></i>Trang chủ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Debug Panel -->
+    <div class="debug-panel">
+        <h3 class="text-lg font-bold mb-4">
+            <i class="fas fa-bug mr-2"></i>Debug Panel
+        </h3>
+        
+        <!-- API Status -->
+        <div class="mb-4">
+            <div class="flex items-center justify-between mb-2">
+                <span class="font-semibold">API Status:</span>
+                <span class="status-badge status-testing" id="apiStatusBadge">
+                    <i class="fas fa-circle"></i>
+                    Testing...
+                </span>
+            </div>
+            <div class="text-sm text-gray-600" id="apiKeyInfo">
+                Checking API key...
+            </div>
+        </div>
+        
+        <!-- Test Buttons -->
+        <div class="mb-4">
+            <div class="font-semibold mb-2">Quick Tests:</div>
+            <button class="test-button" onclick="testAPIConnection()">
+                <i class="fas fa-plug mr-1"></i>Test API
+            </button>
+            <button class="test-button" onclick="testSimpleMessage()">
+                <i class="fas fa-comment mr-1"></i>Test Message
+            </button>
+            <button class="test-button" onclick="clearDebugLog()">
+                <i class="fas fa-trash mr-1"></i>Clear Log
+            </button>
+        </div>
+        
+        <!-- Debug Log -->
+        <div class="mb-4">
+            <div class="font-semibold mb-2">Debug Log:</div>
+            <div class="debug-log" id="debugLog">
+                Initializing debug panel...
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div>
+            <div class="font-semibold mb-2">Quick Actions:</div>
+            <button class="test-button" onclick="openChatbot()">
+                <i class="fas fa-robot mr-1"></i>Open Chatbot
+            </button>
+            <button class="test-button" onclick="toggleMockMode()">
+                <i class="fas fa-toggle-on mr-1"></i>Toggle Mock
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="pt-20 pb-10 ml-440">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-bug mr-3 text-red-600"></i>
+                    Debug AI Chatbot
+                </h1>
+                <p class="text-xl text-gray-600 mb-8">
+                    Kiểm tra và debug Enhanced AI Chatbot với Gemini 2.0 API
+                </p>
+                
+                <div class="bg-white rounded-2xl shadow-lg p-6 max-w-2xl mx-auto">
+                    <h3 class="text-xl font-semibold mb-4">Debug Instructions</h3>
+                    <div class="text-left space-y-3">
+                        <p><strong>1. Check API Status:</strong> Xem trạng thái kết nối Gemini API</p>
+                        <p><strong>2. Test API:</strong> Gửi test message đến API</p>
+                        <p><strong>3. Test Message:</strong> Thử gửi tin nhắn qua chatbot</p>
+                        <p><strong>4. Check Console:</strong> Mở F12 để xem detailed logs</p>
+                        <p><strong>5. Open Chatbot:</strong> Mở chatbot để test trực tiếp</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="components/gemini-config.js"></script>
+    <script src="components/gemini-ai-service.js"></script>
+    <script src="components/ai-chatbot-enhanced.js"></script>
+    
+    <script>
+        let debugService;
+        
+        // Override console.log to capture in debug panel
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        function addToDebugLog(message, type = 'log') {
+            const debugLog = document.getElementById('debugLog');
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? '#ef4444' : type === 'warn' ? '#f59e0b' : '#10b981';
+            
+            debugLog.innerHTML += `<div style="color: ${color}">[${timestamp}] ${message}</div>`;
+            debugLog.scrollTop = debugLog.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addToDebugLog(args.join(' '), 'log');
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addToDebugLog('ERROR: ' + args.join(' '), 'error');
+        };
+        
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            addToDebugLog('WARN: ' + args.join(' '), 'warn');
+        };
+        
+        // Debug functions
+        async function testAPIConnection() {
+            const button = event.target;
+            button.disabled = true;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Testing...';
+            
+            try {
+                if (window.aiChatbot && window.aiChatbot.aiService) {
+                    const result = await window.aiChatbot.aiService.testAPIConnection();
+                    updateAPIStatus(result);
+                } else {
+                    console.error('AI Chatbot service not available');
+                }
+            } catch (error) {
+                console.error('Test failed:', error);
+            } finally {
+                button.disabled = false;
+                button.innerHTML = '<i class="fas fa-plug mr-1"></i>Test API';
+            }
+        }
+        
+        async function testSimpleMessage() {
+            const button = event.target;
+            button.disabled = true;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Sending...';
+            
+            try {
+                if (window.aiChatbot && window.aiChatbot.aiService) {
+                    const response = await window.aiChatbot.aiService.sendMessage('Xin chào, bạn có thể giới thiệu về Trà Vinh không?');
+                    console.log('Test message response:', response.substring(0, 100) + '...');
+                } else {
+                    console.error('AI Chatbot service not available');
+                }
+            } catch (error) {
+                console.error('Test message failed:', error);
+            } finally {
+                button.disabled = false;
+                button.innerHTML = '<i class="fas fa-comment mr-1"></i>Test Message';
+            }
+        }
+        
+        function clearDebugLog() {
+            document.getElementById('debugLog').innerHTML = 'Debug log cleared...';
+        }
+        
+        function openChatbot() {
+            if (window.aiChatbot) {
+                window.aiChatbot.toggle();
+            } else {
+                console.error('AI Chatbot not initialized');
+            }
+        }
+        
+        function toggleMockMode() {
+            if (window.aiChatbot && window.aiChatbot.aiService) {
+                window.aiChatbot.aiService.useMockResponses = !window.aiChatbot.aiService.useMockResponses;
+                console.log('Mock mode:', window.aiChatbot.aiService.useMockResponses ? 'ON' : 'OFF');
+                updateAPIStatus(!window.aiChatbot.aiService.useMockResponses);
+            }
+        }
+        
+        function updateAPIStatus(isOnline) {
+            const badge = document.getElementById('apiStatusBadge');
+            const info = document.getElementById('apiKeyInfo');
+            
+            if (isOnline) {
+                badge.className = 'status-badge status-online';
+                badge.innerHTML = '<i class="fas fa-circle"></i>Online';
+                info.textContent = 'Gemini API working correctly';
+            } else {
+                badge.className = 'status-badge status-offline';
+                badge.innerHTML = '<i class="fas fa-circle"></i>Offline/Mock';
+                info.textContent = 'Using mock responses';
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🐛 Debug panel initialized');
+            
+            // Check API key
+            if (typeof GEMINI_CONFIG !== 'undefined') {
+                const apiKey = GEMINI_CONFIG.API_KEY;
+                document.getElementById('apiKeyInfo').textContent = 
+                    `API Key: ${apiKey ? apiKey.substring(0, 10) + '...' : 'Not found'}`;
+            }
+            
+            // Auto-test after 3 seconds
+            setTimeout(() => {
+                if (window.aiChatbot) {
+                    testAPIConnection();
+                }
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

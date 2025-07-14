@@ -15,13 +15,21 @@ class EnhancedAIChatbot {
         this.init();
     }
 
-    init() {
+    async init() {
         this.createChatbotHTML();
         this.bindEvents();
         this.showWelcomeMessage();
-        
+
         console.log(`🤖 Enhanced AI Chatbot initialized for page: ${this.currentPageType}`);
         console.log(`🔑 API Status: ${this.aiService.isReady() ? 'Ready' : 'Mock Mode'}`);
+
+        // Test API connection
+        if (!this.aiService.useMockResponses) {
+            setTimeout(async () => {
+                const isWorking = await this.aiService.testAPIConnection();
+                this.updateAPIStatus(isWorking);
+            }, 2000);
+        }
     }
 
     createChatbotHTML() {
@@ -378,6 +386,23 @@ class EnhancedAIChatbot {
         if (!chatbotContainer.contains(e.target) && this.isOpen) {
             // Uncomment to enable click-outside-to-close
             // this.close();
+        }
+    }
+
+    updateAPIStatus(isWorking) {
+        const statusIndicator = document.querySelector('.ai-status-indicator');
+        const statusText = document.querySelector('.ai-status-text');
+
+        if (statusIndicator && statusText) {
+            if (isWorking) {
+                statusIndicator.className = 'ai-status-indicator online';
+                statusText.textContent = 'Powered by Gemini 2.0';
+                console.log('✅ API status updated: Online');
+            } else {
+                statusIndicator.className = 'ai-status-indicator offline';
+                statusText.textContent = 'Demo Mode - API Issue';
+                console.log('⚠️ API status updated: Offline');
+            }
         }
     }
 }

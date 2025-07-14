@@ -1,46 +1,100 @@
 /**
  * Gemini AI Configuration
- * Cấu hình kết nối với Gemini 2.0 API
+ * Cấu hình kết nối với Gemini 2.0 API sử dụng Environment Variables
  */
 
-// Cấu hình API
-const GEMINI_CONFIG = {
-    // API key thực từ Google AI Studio
-    API_KEY: 'AIzaSyBqkGL6BqSyQi-rrJeOc8p-L1YwIv6Mb4s', // API key đã được cấu hình
-    BASE_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
-    MODEL: 'gemini-2.0-flash',
-    
-    // Cấu hình request
-    MAX_TOKENS: 1000,
-    TEMPERATURE: 0.7,
-    TOP_P: 0.8,
-    TOP_K: 40,
-    
-    // Timeout và retry
-    TIMEOUT: 30000, // 30 seconds
-    MAX_RETRIES: 3,
-    RETRY_DELAY: 1000 // 1 second
-};
+// Load environment variables
+function loadGeminiConfig() {
+    // Đảm bảo envLoader đã được khởi tạo
+    if (typeof window.envLoader === 'undefined') {
+        console.warn('⚠️ EnvLoader not found, using default config');
+        return getDefaultConfig();
+    }
 
-// System prompt cho từng trang
+    return {
+        // API key từ environment hoặc localStorage
+        API_KEY: window.envLoader.get('GEMINI_API_KEY'),
+        BASE_URL: window.envLoader.get('GEMINI_BASE_URL'),
+        MODEL: window.envLoader.get('GEMINI_MODEL'),
+
+        // Cấu hình request
+        MAX_TOKENS: parseInt(window.envLoader.get('GEMINI_MAX_TOKENS')),
+        TEMPERATURE: parseFloat(window.envLoader.get('GEMINI_TEMPERATURE')),
+        TOP_P: parseFloat(window.envLoader.get('GEMINI_TOP_P')),
+        TOP_K: parseInt(window.envLoader.get('GEMINI_TOP_K')),
+
+        // Timeout và retry
+        TIMEOUT: parseInt(window.envLoader.get('GEMINI_TIMEOUT')),
+        MAX_RETRIES: parseInt(window.envLoader.get('GEMINI_MAX_RETRIES')),
+        RETRY_DELAY: parseInt(window.envLoader.get('GEMINI_RETRY_DELAY'))
+    };
+}
+
+// Default configuration fallback - Optimized for speed and accuracy
+function getDefaultConfig() {
+    return {
+        API_KEY: 'YOUR_ACTUAL_GEMINI_API_KEY',
+        BASE_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
+        MODEL: 'gemini-2.0-flash',
+
+        // Optimized for faster response
+        MAX_TOKENS: 800,        // Reduced for faster response
+        TEMPERATURE: 0.3,       // Lower for more focused answers
+        TOP_P: 0.9,            // Higher for better quality
+        TOP_K: 20,             // Lower for more focused selection
+
+        // Optimized timeouts
+        TIMEOUT: 15000,        // Reduced to 15 seconds
+        MAX_RETRIES: 2,        // Reduced retries for faster failure
+        RETRY_DELAY: 500       // Faster retry
+    };
+}
+
+// Cấu hình API - load động từ environment
+const GEMINI_CONFIG = loadGeminiConfig();
+
+// System prompt cho từng trang - Optimized for accuracy and speed
 const SYSTEM_PROMPTS = {
-    'index': `Bạn là trợ lý AI du lịch chuyên về Trà Vinh, Việt Nam. 
-Hãy trả lời ngắn gọn, thân thiện và hữu ích về:
-- Thông tin tổng quan về Trà Vinh
-- Địa điểm du lịch nổi tiếng
-- Ẩm thực đặc sản
-- Lập kế hoạch du lịch
-- Văn hóa Khmer
-Luôn sử dụng emoji phù hợp và format markdown đơn giản.`,
+    'index': `Bạn là chuyên gia du lịch Trà Vinh với 10 năm kinh nghiệm. Trả lời NGẮN GỌN (tối đa 150 từ), CHÍNH XÁC và THỰC TẾ về:
 
-    'dia-diem': `Bạn là chuyên gia địa điểm du lịch Trà Vinh. 
-Hãy hỗ trợ về:
-- Tìm kiếm và gợi ý địa điểm
-- Thông tin chi tiết các chùa Khmer
-- Lịch trình tham quan
-- Đánh giá và review địa điểm
-- Cách di chuyển và thời gian tham quan
-Trả lời cụ thể, thực tế và có thể hành động được.`,
+🏛️ ĐỊA ĐIỂM CHÍNH:
+- Chùa Ang (kiến trúc Khmer cổ)
+- Ao Bà Om (hồ thiêng)
+- Chùa Hang (trong hang động)
+- Bảo tàng Khmer
+- Cù lao Tân Quy
+
+🍜 ẨM THỰC:
+- Bánh tét lá cẩm
+- Cháo cá linh bông điên điển
+- Bánh xèo miền Tây
+- Cà ri gà Khmer
+
+📍 THÔNG TIN THỰC TẾ:
+- Cách TP.HCM: 200km (4h xe)
+- Thời gian tốt nhất: tháng 11-4
+- Chi phí: 500k-1.5tr/người/ngày
+
+Luôn đưa ra lời khuyên CỤ THỂ, GIÁ CẢ THỰC TẾ và THỜI GIAN DI CHUYỂN.`,
+
+    'dia-diem': `Chuyên gia địa điểm Trà Vinh. Trả lời NGẮN GỌN (100 từ) với thông tin CHÍNH XÁC:
+
+🏛️ TOP CHÙA KHMER:
+- Chùa Ang: 5km từ TT, vé 0đ, mở 5h-18h
+- Chùa Hang: 8km, trong hang tự nhiên
+- Chùa Cò: có đàn cò trắng, đẹp nhất 16-18h
+
+🌿 SINH THÁI:
+- Ao Bà Om: 7km, vé 10k, thuê thúng chai 50k
+- Cù lao Tân Quy: 15km, tour 200k/người
+- Rừng tràm Trà Sư: 30km, vé 30k
+
+⏰ THỜI GIAN THAM QUAN:
+- Mỗi chùa: 45-60 phút
+- Ao Bà Om: 2-3 giờ
+- Cù lao: cả ngày
+
+Luôn đưa ra GIÁ VÉ, KHOẢNG CÁCH và THỜI GIAN cụ thể.`,
 
     'gioi-thieu': `Bạn là chuyên gia lịch sử và văn hóa Trà Vinh.
 Hãy chia sẻ kiến thức về:
@@ -83,7 +137,43 @@ function getSystemPrompt() {
     return SYSTEM_PROMPTS[pageType] || SYSTEM_PROMPTS['index'];
 }
 
+// Function để cập nhật API key động
+function updateGeminiApiKey(newApiKey) {
+    if (typeof window.envLoader !== 'undefined') {
+        const success = window.envLoader.updateApiKey(newApiKey);
+        if (success) {
+            // Reload config
+            Object.assign(GEMINI_CONFIG, loadGeminiConfig());
+            console.log('🔄 Gemini config reloaded with new API key');
+            return true;
+        }
+    }
+    return false;
+}
+
+// Function để kiểm tra API key
+function isGeminiApiKeyValid() {
+    if (typeof window.envLoader !== 'undefined') {
+        return window.envLoader.isApiKeyValid();
+    }
+
+    const apiKey = GEMINI_CONFIG.API_KEY;
+    return apiKey &&
+           apiKey !== 'YOUR_ACTUAL_GEMINI_API_KEY' &&
+           apiKey.startsWith('AIzaSy') &&
+           apiKey.length >= 35;
+}
+
+// Function để reload config
+function reloadGeminiConfig() {
+    Object.assign(GEMINI_CONFIG, loadGeminiConfig());
+    console.log('🔄 Gemini configuration reloaded');
+}
+
 // Export configuration
 window.GEMINI_CONFIG = GEMINI_CONFIG;
 window.getSystemPrompt = getSystemPrompt;
 window.getCurrentPageType = getCurrentPageType;
+window.updateGeminiApiKey = updateGeminiApiKey;
+window.isGeminiApiKeyValid = isGeminiApiKeyValid;
+window.reloadGeminiConfig = reloadGeminiConfig;

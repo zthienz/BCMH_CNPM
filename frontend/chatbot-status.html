@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trạng thái Chatbot - Du lịch Trà Vinh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-robot text-blue-600 mr-3"></i>
+                    Trạng thái Chatbot System
+                </h1>
+                <p class="text-xl text-gray-600">Kiểm tra tình trạng chatbot trên tất cả các trang</p>
+            </div>
+
+            <!-- Status Overview -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-semibold mb-4">
+                    <i class="fas fa-chart-line text-green-600 mr-2"></i>
+                    Tổng quan
+                </h2>
+                
+                <div class="grid md:grid-cols-4 gap-4">
+                    <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-600 text-2xl mr-3"></i>
+                            <div>
+                                <p class="text-green-800 font-semibold">Đã cập nhật</p>
+                                <p class="text-green-600 text-sm">5 trang</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-robot text-blue-600 text-2xl mr-3"></i>
+                            <div>
+                                <p class="text-blue-800 font-semibold">Floating Chatbot</p>
+                                <p class="text-blue-600 text-sm">Đồng bộ</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-cog text-purple-600 text-2xl mr-3"></i>
+                            <div>
+                                <p class="text-purple-800 font-semibold">Gemini API</p>
+                                <p class="text-purple-600 text-sm">Sẵn sàng</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-trash text-yellow-600 text-2xl mr-3"></i>
+                            <div>
+                                <p class="text-yellow-800 font-semibold">Chatbot cũ</p>
+                                <p class="text-yellow-600 text-sm">Đã xóa</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Status -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-semibold mb-6">
+                    <i class="fas fa-list-check text-blue-600 mr-2"></i>
+                    Trạng thái từng trang
+                </h2>
+                
+                <div class="space-y-4">
+                    <!-- Index Page -->
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-home text-blue-600 text-xl mr-4"></i>
+                            <div>
+                                <h3 class="font-semibold">index.html</h3>
+                                <p class="text-sm text-gray-600">Trang chủ</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                <i class="fas fa-check mr-1"></i>
+                                Đã cập nhật
+                            </span>
+                            <a href="index.html" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                                <i class="fas fa-external-link-alt mr-1"></i>
+                                Xem
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Dia Diem Page -->
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marked-alt text-green-600 text-xl mr-4"></i>
+                            <div>
+                                <h3 class="font-semibold">dia-diem.html</h3>
+                                <p class="text-sm text-gray-600">Địa điểm du lịch</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                <i class="fas fa-check mr-1"></i>
+                                Đã cập nhật
+                            </span>
+                            <a href="dia-diem.html" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                                <i class="fas fa-external-link-alt mr-1"></i>
+                                Xem
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Gioi Thieu Page -->
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-info-circle text-purple-600 text-xl mr-4"></i>
+                            <div>
+                                <h3 class="font-semibold">gioi-thieu.html</h3>
+                                <p class="text-sm text-gray-600">Giới thiệu</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                <i class="fas fa-check mr-1"></i>
+                                Đã cập nhật
+                            </span>
+                            <a href="gioi-thieu.html" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                                <i class="fas fa-external-link-alt mr-1"></i>
+                                Xem
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Lien He Page -->
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-phone text-orange-600 text-xl mr-4"></i>
+                            <div>
+                                <h3 class="font-semibold">lien-he.html</h3>
+                                <p class="text-sm text-gray-600">Liên hệ</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                <i class="fas fa-check mr-1"></i>
+                                Đã cập nhật
+                            </span>
+                            <a href="lien-he.html" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                                <i class="fas fa-external-link-alt mr-1"></i>
+                                Xem
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Danh Gia Page -->
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-star text-yellow-600 text-xl mr-4"></i>
+                            <div>
+                                <h3 class="font-semibold">danh-gia.html</h3>
+                                <p class="text-sm text-gray-600">Đánh giá & Bài viết</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                <i class="fas fa-check mr-1"></i>
+                                Đã cập nhật
+                            </span>
+                            <a href="danh-gia.html" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                                <i class="fas fa-external-link-alt mr-1"></i>
+                                Xem
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chatbot Tools -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-semibold mb-6">
+                    <i class="fas fa-tools text-purple-600 mr-2"></i>
+                    Công cụ Chatbot
+                </h2>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Inline Chatbot Demo -->
+                    <div class="text-center">
+                        <div class="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-6 rounded-xl mb-4">
+                            <i class="fas fa-window-restore text-4xl mb-3"></i>
+                            <h3 class="text-xl font-semibold">Inline Chatbot</h3>
+                            <p class="text-sm opacity-90 mt-2">Cửa sổ chat trong trang</p>
+                        </div>
+                        <a href="inline-chatbot-demo.html" target="_blank"
+                           class="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300">
+                            <i class="fas fa-play mr-2"></i>
+                            Demo Inline
+                        </a>
+                    </div>
+
+                    <!-- Full Chatbot -->
+                    <div class="text-center">
+                        <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-xl mb-4">
+                            <i class="fas fa-comments text-4xl mb-3"></i>
+                            <h3 class="text-xl font-semibold">Chatbot Đầy Đủ</h3>
+                            <p class="text-sm opacity-90 mt-2">Giao diện chat hoàn chỉnh</p>
+                        </div>
+                        <a href="gemini-chatbot.html" target="_blank"
+                           class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300">
+                            <i class="fas fa-external-link-alt mr-2"></i>
+                            Mở Chatbot
+                        </a>
+                    </div>
+
+                    <!-- API Manager -->
+                    <div class="text-center">
+                        <div class="bg-gradient-to-r from-yellow-500 to-orange-600 text-white p-6 rounded-xl mb-4">
+                            <i class="fas fa-key text-4xl mb-3"></i>
+                            <h3 class="text-xl font-semibold">Quản lý API</h3>
+                            <p class="text-sm opacity-90 mt-2">Cấu hình API key</p>
+                        </div>
+                        <a href="api-key-manager.html" target="_blank"
+                           class="inline-flex items-center px-6 py-3 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition duration-300">
+                            <i class="fas fa-cog mr-2"></i>
+                            Quản lý API
+                        </a>
+                    </div>
+
+                    <!-- Performance Test -->
+                    <div class="text-center">
+                        <div class="bg-gradient-to-r from-red-500 to-pink-600 text-white p-6 rounded-xl mb-4">
+                            <i class="fas fa-tachometer-alt text-4xl mb-3"></i>
+                            <h3 class="text-xl font-semibold">Performance</h3>
+                            <p class="text-sm opacity-90 mt-2">Test hiệu suất</p>
+                        </div>
+                        <a href="chatbot-performance.html" target="_blank"
+                           class="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300">
+                            <i class="fas fa-chart-line mr-2"></i>
+                            Test Performance
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Changes Summary -->
+            <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-8">
+                <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">
+                    <i class="fas fa-clipboard-list text-blue-600 mr-2"></i>
+                    Tóm tắt thay đổi
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Removed -->
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-red-800">
+                            <i class="fas fa-trash text-red-600 mr-2"></i>
+                            Đã xóa bỏ
+                        </h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-500 mr-2 mt-1"></i>
+                                <span>Chatbox cũ trong index.html</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-500 mr-2 mt-1"></i>
+                                <span>CSS chatbot cũ trong tất cả trang</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-500 mr-2 mt-1"></i>
+                                <span>JavaScript chatbot cũ</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-times text-red-500 mr-2 mt-1"></i>
+                                <span>Script dependencies cũ</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Added -->
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-green-800">
+                            <i class="fas fa-plus text-green-600 mr-2"></i>
+                            Đã thêm mới
+                        </h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                <span>Inline Chatbot Window</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                <span>Response Cache System</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                <span>Instant Quick Responses</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                <span>Mobile Responsive Design</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                                <span>Performance Optimization</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back to Home -->
+            <div class="text-center mt-8">
+                <a href="index.html" class="inline-flex items-center px-8 py-4 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition duration-300 text-lg">
+                    <i class="fas fa-home mr-3"></i>
+                    Về Trang Chủ
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Chatbot Component -->
+    <script src="components/chatbot-float.js"></script>
+</body>
+</html>

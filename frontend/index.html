@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 
-    <!-- Enhanced AI Chatbot Component -->
-    <link rel="stylesheet" href="components/chatbot-styles.css">
+
 
 
 
@@ -33,11 +32,11 @@
                 </div>
                 
                 <div class="flex items-center space-x-4">
-                    <button onclick="showLoginModal()" class="bg-white text-blue-600 px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300">
-                        <i class="fas fa-user mr-2"></i>Đăng nhập
+                    <button onclick="window.authModal.openLogin()" class="bg-white text-blue-600 px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Đăng nhập
                     </button>
-                    <button onclick="showRegisterModal()" class="border border-white text-white px-4 py-2 rounded-full hover:bg-white hover:text-blue-600 transition duration-300">
-                        Đăng ký
+                    <button onclick="window.authModal.openRegister()" class="border border-white text-white px-4 py-2 rounded-full hover:bg-white hover:text-blue-600 transition duration-300">
+                        <i class="fas fa-user-plus mr-2"></i>Đăng ký
                     </button>
                 </div>
                 
@@ -171,44 +170,7 @@
         </div>
     </div>
 
-    <!-- Chatbot -->
-    <div id="chatbot" class="fixed bottom-6 right-6 z-50">
-        <button id="chatbotToggle" onclick="toggleChatbot()" class="chatbot-icon bg-blue-600 text-white w-16 h-16 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 flex items-center justify-center">
-            <i class="fas fa-robot text-2xl"></i>
-        </button>
-        <div id="chatbotWindow" class="hidden absolute bottom-20 right-0 w-80 h-96 bg-white rounded-lg shadow-xl border">
-            <div class="vietnam-gradient text-white p-4 rounded-t-lg">
-                <div class="flex justify-between items-center">
-                    <div class="flex items-center">
-                        <i class="fas fa-robot mr-2"></i>
-                        <span class="font-semibold">Trợ lý AI Du lịch</span>
-                    </div>
-                    <button onclick="toggleChatbot()" class="text-white hover:text-gray-200">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <div id="chatbotMessages" class="p-4 h-64 overflow-y-auto">
-                <div class="bg-gray-100 p-3 rounded-lg mb-3">
-                    <p class="text-sm">Xin chào! Tôi là trợ lý AI du lịch Trà Vinh. Tôi có thể giúp bạn:</p>
-                    <ul class="text-sm mt-2 space-y-1">
-                        <li>• Tìm hiểu về địa điểm du lịch</li>
-                        <li>• Gợi ý lịch trình</li>
-                        <li>• Thông tin ẩm thực</li>
-                        <li>• Hướng dẫn đi lại</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="p-4 border-t">
-                <div class="flex space-x-2">
-                    <input type="text" id="chatbotInput" placeholder="Nhập câu hỏi của bạn..." class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-                    <button onclick="sendChatMessage()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Floating Chatbot sẽ được tự động tạo bởi chatbot-float.js -->
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-12">
@@ -257,10 +219,11 @@
 
     <script src="script.js"></script>
 
-    <!-- Enhanced AI Chatbot Scripts -->
-    <script src="components/gemini-config.js"></script>
-    <script src="components/gemini-ai-service.js"></script>
-    <script src="components/ai-chatbot-enhanced.js"></script>
+    <!-- Authentication Modal -->
+    <script src="components/auth-modal.js"></script>
+
+    <!-- Floating Chatbot Component -->
+    <script src="components/chatbot-float.js"></script>
 </body>
 </html>
 </body>
