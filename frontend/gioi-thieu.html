@@ -193,6 +193,52 @@
                 <div class="max-w-4xl mx-auto">
                     <h1 class="text-4xl font-bold text-center mb-12 text-gray-800">Giới thiệu về Trà Vinh</h1>
                     
+                    <div class="mb-12">
+                      <div id="sliderHero" class="relative w-full max-w-3xl mx-auto h-96 rounded-lg overflow-hidden shadow-lg flex items-end justify-start">
+                        <div id="sliderBg" class="absolute inset-0 bg-center bg-cover transition-all duration-700"></div>
+                        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+                        <div class="relative z-10 p-8">
+                          <span id="sliderPlace" class="text-white text-3xl font-bold drop-shadow-lg bg-black bg-opacity-40 px-6 py-3 rounded-lg"></span>
+                        </div>
+                      </div>
+                    </div>
+                    <script>
+                    const slides = [
+                      {
+                        name: 'Chùa Ang',
+                        img: 'my-server/images/chua-ang.jpg',
+                      },
+                      {
+                        name: 'Ao Bà Om',
+                        img: 'my-server/images/ao-ba-om.jpg',
+                      },
+                      {
+                        name: 'Biển Ba Động',
+                        img: 'my-server/images/bien-ba-dong.jpg',
+                      },
+                      {
+                        name: 'Rừng dừa Bảy Mẫu',
+                        img: 'my-server/images/rung-dua.jpg',
+                      },
+                      {
+                        name: 'Bảo tàng Khmer',
+                        img: 'my-server/images/bao-tang-khmer.jpg',
+                      },
+                    ];
+                    let currentSlide = 0;
+                    function showSlide(idx) {
+                      const slide = slides[idx];
+                      document.getElementById('sliderBg').style.backgroundImage = `url('${slide.img}')`;
+                      document.getElementById('sliderPlace').textContent = slide.name;
+                    }
+                    function nextSlide() {
+                      currentSlide = (currentSlide + 1) % slides.length;
+                      showSlide(currentSlide);
+                    }
+                    showSlide(currentSlide);
+                    setInterval(nextSlide, 3000);
+                    </script>
+
                     <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
                         <h2 class="text-2xl font-bold mb-6 text-blue-600">
                             <i class="fas fa-history mr-2"></i>Lịch sử & Văn hóa
