@@ -223,67 +223,29 @@
                 <!-- Reviews Section -->
                 <div class="mb-16">
                     <h2 class="text-3xl font-bold mb-8 text-center text-blue-600">Đánh giá từ du khách</h2>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <!-- Review 1 -->
-                        <div class="bg-white p-6 rounded-lg shadow-lg">
-                            <div class="flex items-center mb-4">
-                                <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
-                                    N
-                                </div>
-                                <div class="ml-4">
-                                    <h4 class="font-bold">Nguyễn Minh Anh</h4>
-                                    <div class="text-yellow-500">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="text-gray-600 italic">"Trà Vinh thật sự tuyệt vời! Văn hóa đa dạng, con người thân thiện và ẩm thực rất ngon. Đặc biệt là các ngôi chùa Khmer rất đẹp và độc đáo."</p>
-                        </div>
-
-                        <!-- Review 2 -->
-                        <div class="bg-white p-6 rounded-lg shadow-lg">
-                            <div class="flex items-center mb-4">
-                                <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
-                                    L
-                                </div>
-                                <div class="ml-4">
-                                    <h4 class="font-bold">Lê Thị Hồng</h4>
-                                    <div class="text-yellow-500">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="text-gray-600 italic">"Biển Ba Động rất đẹp và hoang sơ. Tôi đã có những giây phút thư giãn tuyệt vời ở đây. Sẽ quay lại lần nữa!"</p>
-                        </div>
-
-                        <!-- Review 3 -->
-                        <div class="bg-white p-6 rounded-lg shadow-lg">
-                            <div class="flex items-center mb-4">
-                                <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">
-                                    T
-                                </div>
-                                <div class="ml-4">
-                                    <h4 class="font-bold">Trần Văn Đức</h4>
-                                    <div class="text-yellow-500">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="text-gray-600 italic">"Rừng dừa Bảy Mẫu là nơi tuyệt vời để tìm hiểu về sinh thái miền Tây. Không khí rất trong lành và mát mẻ."</p>
-                        </div>
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-center gap-4 mb-8">
+                        <!-- Dropdown chọn số sao -->
+                        <select class="border border-blue-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" id="filterStar">
+                            <option value="">Chọn số sao</option>
+                            <option value="5">5 sao</option>
+                            <option value="4">4 sao</option>
+                            <option value="3">3 sao</option>
+                            <option value="2">2 sao</option>
+                            <option value="1">1 sao</option>
+                        </select>
+                        <!-- Dropdown phân loại địa điểm -->
+                        <select class="border border-blue-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" id="filterPlace">
+                            <option value="">Tất cả địa điểm</option>
+                            <option value="chua-ang">Chùa Ang</option>
+                            <option value="bien-ba-dong">Biển Ba Động</option>
+                            <option value="rung-dua">Rừng dừa Bảy Mẫu</option>
+                            <option value="ao-ba-om">Ao Bà Om</option>
+                            <option value="bao-tang-khmer">Bảo tàng Khmer</option>
+                        </select>
+                        <!-- Nút tất cả -->
+                        <button class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-300" id="showAllReviews">Tất cả</button>
                     </div>
+                    <div id="reviewsList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
                 </div>
 
                 <!-- Articles Section -->
@@ -342,151 +304,102 @@
 
     <!-- Floating Chatbot Component -->
     <script src="components/chatbot-float.js"></script>
-</body>
-</html>
 
-    <div class="simple-chatbot-window" id="simpleChatbotWindow">
-        <div class="simple-chatbot-header">
-            <div>
-                <h3 class="font-semibold">Hỗ trợ Đánh giá</h3>
-                <p class="text-sm opacity-90">Reviews & Bài viết</p>
-            </div>
-            <button onclick="closeSimpleChatbot()" class="text-white hover:text-gray-200">
-                <i class="fas fa-times"></i>
-            </button>
+<script>
+// Danh sách đánh giá mẫu
+const reviews = [
+  {
+    name: 'Nguyễn Minh Anh',
+    place: 'Chùa Ang',
+    placeValue: 'chua-ang',
+    stars: 5,
+    content: 'Trà Vinh thật sự tuyệt vời! Văn hóa đa dạng, con người thân thiện và ẩm thực rất ngon. Đặc biệt là các ngôi chùa Khmer rất đẹp và độc đáo.',
+    color: 'bg-blue-500',
+    avatar: 'N',
+  },
+  {
+    name: 'Lê Thị Hồng',
+    place: 'Biển Ba Động',
+    placeValue: 'bien-ba-dong',
+    stars: 5,
+    content: 'Biển Ba Động rất đẹp và hoang sơ. Tôi đã có những giây phút thư giãn tuyệt vời ở đây. Sẽ quay lại lần nữa!',
+    color: 'bg-green-500',
+    avatar: 'L',
+  },
+  {
+    name: 'Trần Văn Đức',
+    place: 'Rừng dừa Bảy Mẫu',
+    placeValue: 'rung-dua',
+    stars: 4,
+    content: 'Rừng dừa Bảy Mẫu là nơi tuyệt vời để tìm hiểu về sinh thái miền Tây. Không khí rất trong lành và mát mẻ.',
+    color: 'bg-purple-500',
+    avatar: 'T',
+  },
+  {
+    name: 'Phạm Thị Mai',
+    place: 'Ao Bà Om',
+    placeValue: 'ao-ba-om',
+    stars: 3,
+    content: 'Ao Bà Om khá đẹp, không gian yên tĩnh nhưng dịch vụ ăn uống chưa đa dạng.',
+    color: 'bg-pink-500',
+    avatar: 'M',
+  },
+  {
+    name: 'Võ Quốc Bảo',
+    place: 'Bảo tàng Khmer',
+    placeValue: 'bao-tang-khmer',
+    stars: 1,
+    content: 'Bảo tàng nhỏ, ít hiện vật, cần cải thiện thêm về trải nghiệm tham quan.',
+    color: 'bg-yellow-500',
+    avatar: 'B',
+  },
+];
+
+function renderReviews(filterStar = '', filterPlace = '') {
+  let filtered = reviews;
+  if (filterStar) filtered = filtered.filter(r => r.stars == filterStar);
+  if (filterPlace) filtered = filtered.filter(r => r.placeValue == filterPlace);
+  // Nếu không lọc gì, chỉ hiện 3 đánh giá đầu
+  if (!filterStar && !filterPlace) filtered = reviews.slice(0, 3);
+  const html = filtered.map(r => `
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <div class="flex items-center mb-4">
+        <div class="w-12 h-12 ${r.color} rounded-full flex items-center justify-center text-white font-bold">
+          ${r.avatar}
         </div>
-
-        <div class="simple-chatbot-messages" id="simpleChatbotMessages">
-            <div class="simple-quick-actions">
-                <button class="simple-quick-action-btn" onclick="sendSimpleQuickMessage('Viết đánh giá')">
-                    ⭐ Viết đánh giá
-                </button>
-                <button class="simple-quick-action-btn" onclick="sendSimpleQuickMessage('Chia sẻ trải nghiệm')">
-                    📝 Chia sẻ trải nghiệm
-                </button>
-                <button class="simple-quick-action-btn" onclick="sendSimpleQuickMessage('Xem review khác')">
-                    👀 Xem review khác
-                </button>
-                <button class="simple-quick-action-btn" onclick="sendSimpleQuickMessage('Tips du lịch')">
-                    💡 Tips du lịch
-                </button>
-            </div>
-
-            <div id="simpleMessagesContainer">
-                <div class="simple-message simple-message-ai">
-                    <div class="simple-message-bubble ai">
-                        ⭐ Xin chào! Tôi có thể hướng dẫn bạn viết đánh giá và chia sẻ trải nghiệm du lịch Trà Vinh. Bạn muốn:
-                        <br><br>
-                        • ✍️ Viết đánh giá cho địa điểm
-                        <br>• 📖 Chia sẻ câu chuyện du lịch
-                        <br>• 👀 Xem review từ du khách khác
-                        <br>• 💡 Nhận tips hay cho chuyến đi
-                        <br><br>
-                        Hãy cho tôi biết bạn cần hỗ trợ gì!
-                    </div>
-                </div>
-            </div>
+        <div class="ml-4">
+          <h4 class="font-bold">${r.name}</h4>
+          <div class="text-yellow-500 flex items-center">
+            ${'<i class=\'fas fa-star\'></i>'.repeat(r.stars)}${'<i class=\'far fa-star\'></i>'.repeat(5 - r.stars)}
+          </div>
+          <div class="text-sm text-blue-600 font-semibold mt-1">${r.place}</div>
         </div>
-
-        <div class="simple-chatbot-input-area">
-            <input type="text"
-                   class="simple-chatbot-input"
-                   id="simpleChatbotInput"
-                   placeholder="Hỏi về đánh giá, review..."
-                   onkeypress="handleSimpleKeyPress(event)">
-        </div>
+      </div>
+      <p class="text-gray-600 italic">"${r.content}"</p>
     </div>
+  `).join('');
+  document.getElementById('reviewsList').innerHTML = html || '<div class="col-span-full text-center text-gray-500 italic">Không có đánh giá phù hợp.</div>';
+}
 
-    <script>
-    // Simple Chatbot for danh-gia page
-    let isSimpleChatbotOpen = false;
+// Sự kiện lọc
+const starSelect = document.getElementById('filterStar');
+const placeSelect = document.getElementById('filterPlace');
+const allBtn = document.getElementById('showAllReviews');
 
-    function toggleSimpleChatbot() {
-        isSimpleChatbotOpen = !isSimpleChatbotOpen;
-        const window = document.getElementById('simpleChatbotWindow');
+starSelect.addEventListener('change', () => {
+  renderReviews(starSelect.value, placeSelect.value);
+});
+placeSelect.addEventListener('change', () => {
+  renderReviews(starSelect.value, placeSelect.value);
+});
+allBtn.addEventListener('click', () => {
+  starSelect.value = '';
+  placeSelect.value = '';
+  renderReviews();
+});
 
-        if (isSimpleChatbotOpen) {
-            window.classList.add('active');
-            document.getElementById('simpleChatbotInput').focus();
-        } else {
-            window.classList.remove('active');
-        }
-    }
-
-    function closeSimpleChatbot() {
-        isSimpleChatbotOpen = false;
-        document.getElementById('simpleChatbotWindow').classList.remove('active');
-    }
-
-    function handleSimpleKeyPress(event) {
-        if (event.key === 'Enter') {
-            sendSimpleChatMessage();
-        }
-    }
-
-    function sendSimpleChatMessage() {
-        const input = document.getElementById('simpleChatbotInput');
-        const message = input.value.trim();
-
-        if (message === '') return;
-
-        addSimpleMessage(message, 'user');
-        input.value = '';
-
-        setTimeout(() => {
-            const response = generateDanhGiaResponse(message.toLowerCase());
-            addSimpleMessage(response, 'ai');
-        }, 1000);
-    }
-
-    function sendSimpleQuickMessage(message) {
-        addSimpleMessage(message, 'user');
-
-        setTimeout(() => {
-            const response = generateDanhGiaResponse(message.toLowerCase());
-            addSimpleMessage(response, 'ai');
-        }, 800);
-    }
-
-    function generateDanhGiaResponse(message) {
-        if (message.includes('viết') || message.includes('đánh giá')) {
-            return '⭐ **Hướng dẫn viết đánh giá:**<br><br>**Các bước:**<br>1. Chọn địa điểm đã tham quan<br>2. Đánh giá từ 1-5 sao<br>3. Viết nhận xét chi tiết<br>4. Đính kèm hình ảnh (nếu có)<br><br>**Mẹo viết hay:**<br>• Chia sẻ cảm nhận thực tế<br>• Đề cập điểm mạnh/yếu<br>• Gợi ý thời điểm tham quan<br>• Đánh giá dịch vụ, cơ sở vật chất';
-        } else if (message.includes('chia sẻ') || message.includes('trải nghiệm')) {
-            return '📝 **Chia sẻ trải nghiệm du lịch:**<br><br>**Nội dung nên có:**<br>• 🗓️ Thời gian và thời tiết<br>• 🚗 Phương tiện di chuyển<br>• 🏨 Nơi ở và ăn uống<br>• 📸 Hình ảnh đẹp<br>• 💰 Chi phí tham khảo<br><br>**Tips viết hay:**<br>• Kể câu chuyện thú vị<br>• Chia sẻ bài học kinh nghiệm<br>• Gợi ý cho du khách khác';
-        } else if (message.includes('xem') || message.includes('review')) {
-            return '👀 **Xem review từ du khách khác:**<br><br>**Top địa điểm được review nhiều:**<br>• **Chùa Ang:** 4.8/5 ⭐ (127 reviews)<br>• **Ao Bà Om:** 4.7/5 ⭐ (98 reviews)<br>• **Chùa Hang:** 4.6/5 ⭐ (76 reviews)<br>• **Bảo tàng Khmer:** 4.5/5 ⭐ (54 reviews)<br><br>**Nhận xét chung:**<br>• Kiến trúc Khmer độc đáo<br>• Không gian yên tĩnh, linh thiêng<br>• Phù hợp chụp ảnh check-in';
-        } else if (message.includes('tips') || message.includes('mẹo')) {
-            return '💡 **Tips du lịch Trà Vinh:**<br><br>**Thời gian tốt nhất:**<br>• Mùa khô: Tháng 11 - 4<br>• Tránh mùa mưa: Tháng 5 - 10<br><br>**Phương tiện:**<br>• Xe máy: Linh hoạt, dễ đậu<br>• Xe đạp: Thân thiện môi trường<br>• Xe ôm: Tiện lợi cho khách lẻ<br><br>**Lưu ý:**<br>• Mặc trang phục lịch sự khi vào chùa<br>• Mang theo nước uống<br>• Chuẩn bị tiền lẻ cho đồ ăn vặt';
-        } else if (message.includes('chụp ảnh') || message.includes('photo')) {
-            return '📸 **Tips chụp ảnh đẹp:**<br><br>**Địa điểm hot:**<br>• **Chùa Ang:** Cổng chùa, tháp chuông<br>• **Ao Bà Om:** Bờ hồ, cây cổ thụ<br>• **Chùa Hang:** Lối vào hang động<br><br>**Thời gian đẹp:**<br>• Sáng sớm: 6:00 - 8:00<br>• Chiều muộn: 16:00 - 18:00<br><br>**Góc chụp hay:**<br>• Từ thấp lên cao (kiến trúc chùa)<br>• Phản chiếu trên mặt nước<br>• Silhouette lúc hoàng hôn';
-        } else if (message.includes('ăn uống') || message.includes('quán')) {
-            return '🍜 **Gợi ý quán ăn ngon:**<br><br>**Đặc sản phải thử:**<br>• **Bánh tét lá cẩm:** Chợ Trà Vinh<br>• **Cháo cá linh:** Quán Bà Năm<br>• **Bánh xèo:** Quán Cô Ba<br>• **Cà ri gà Khmer:** Nhà hàng Angkor<br><br>**Giá tham khảo:**<br>• Bánh tét: 15.000đ/cái<br>• Cháo cá linh: 25.000đ/tô<br>• Bánh xèo: 30.000đ/phần<br>• Cà ri gà: 80.000đ/phần';
-        } else {
-            return '⭐ Tôi có thể hỗ trợ bạn về:<br><br>• ✍️ Hướng dẫn viết đánh giá<br>• 📝 Chia sẻ trải nghiệm du lịch<br>• 👀 Xem review từ du khách khác<br>• 💡 Tips và mẹo du lịch<br>• 📸 Hướng dẫn chụp ảnh đẹp<br>• 🍜 Gợi ý quán ăn ngon<br><br>Bạn muốn tìm hiểu về chủ đề nào?';
-        }
-    }
-
-    function addSimpleMessage(text, sender) {
-        const container = document.getElementById('simpleMessagesContainer');
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `simple-message simple-message-${sender}`;
-
-        messageDiv.innerHTML = `
-            <div class="simple-message-bubble ${sender}">
-                ${text}
-            </div>
-        `;
-
-        container.appendChild(messageDiv);
-
-        const messagesArea = document.getElementById('simpleChatbotMessages');
-        messagesArea.scrollTop = messagesArea.scrollHeight;
-    }
-
-    // Event listeners
-    document.getElementById('simpleChatbotToggle').addEventListener('click', toggleSimpleChatbot);
-
-    console.log('✅ Danh-gia Chatbot loaded successfully!');
-    </script>
+// Hiện mặc định 3 đánh giá đầu
+renderReviews();
+</script>
 </body>
 </html>
