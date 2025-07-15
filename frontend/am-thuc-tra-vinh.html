@@ -48,11 +48,11 @@
                     <span>Admin</span>
                 </div>
                 <h1 class="text-3xl font-bold mb-6 text-blue-700">Hành trình khám phá ẩm thực Trà Vinh</h1>
-                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" alt="Ẩm thực Trà Vinh" class="rounded-lg mb-6 w-full h-64 object-cover">
+                <img src="/my-server/images/BNL.jpg" alt="Bún nước lèo Trà Vinh" class="rounded-lg mb-6 w-full h-64 object-cover">
                 <div class="text-gray-700 leading-relaxed space-y-4">
                     <p>Trà Vinh không chỉ nổi tiếng với những ngôi chùa Khmer cổ kính mà còn là thiên đường ẩm thực miền Tây với nhiều món ăn độc đáo, hấp dẫn. Hành trình khám phá ẩm thực Trà Vinh là chuyến đi đầy màu sắc, nơi bạn sẽ được thưởng thức những hương vị đặc trưng khó quên.</p>
-                    <h2 class="text-2xl font-semibold text-green-700 mt-6 mb-2">1. Bánh ít lá gai</h2>
-                    <p>Bánh ít lá gai là món bánh truyền thống của người Trà Vinh, có vị ngọt thanh, dẻo thơm từ lá gai và nhân đậu xanh. Đây là món quà quê giản dị nhưng đậm đà tình cảm.</p>
+                    <h2 class="text-2xl font-semibold text-green-700 mt-6 mb-2">1. Bún Suông</h2>
+                    <p> Bún suông là một trong những món ăn đặc sắc của Trà Vinh, được làm từ bột gạo mịn và nước dùng ngọt thanh từ cá lóc, kết hợp cùng mắm bò hóc tạo nên hương vị đặc trưng không nơi nào có được.</p>
                     <h2 class="text-2xl font-semibold text-green-700 mt-6 mb-2">2. Bún nước lèo</h2>
                     <p>Bún nước lèo Trà Vinh nổi tiếng với nước dùng ngọt thanh từ cá lóc, kết hợp cùng mắm bò hóc tạo nên hương vị đặc trưng không nơi nào có được. Ăn kèm rau sống tươi ngon, bún nước lèo là món ăn không thể bỏ qua.</p>
                     <h2 class="text-2xl font-semibold text-green-700 mt-6 mb-2">3. Cháo ám</h2>
@@ -67,10 +67,30 @@
             </div>
         </div>
     </main>
+    <!-- Nút vị trí nổi góc phải dưới -->
+    <button id="locationBtn" class="fixed bottom-24 right-6 w-14 h-14 rounded-full bg-green-600 shadow-lg flex items-center justify-center text-white text-2xl z-50 hover:bg-green-700 focus:outline-none">
+        <i class="fas fa-location-dot"></i>
+    </button>
+    <!-- Popup bản đồ -->
+    <div id="mapPopup" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl p-4 relative w-full max-w-xl">
+            <button onclick="closeMapPopup()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl focus:outline-none"><i class="fas fa-times"></i></button>
+            <h2 class="text-xl font-bold mb-2 text-green-700 text-center">Bản đồ vị trí Tỉnh Trà Vinh</h2>
+            <div class="w-full h-80 rounded-lg overflow-hidden">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125753.27319478593!2d106.26245430302716!3d9.95144061411913!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a017515cc705df%3A0xade5b5649cd70f79!2zVHAuIFRyw6AgVmluaCwgVHLDoCBWaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1752588719298!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
     <script>
     function toggleMobileMenu() {
         const menu = document.getElementById('mobileMenu');
         menu.classList.toggle('hidden');
+    }
+    document.getElementById('locationBtn').onclick = function() {
+        document.getElementById('mapPopup').classList.remove('hidden');
+    }
+    function closeMapPopup() {
+        document.getElementById('mapPopup').classList.add('hidden');
     }
     </script>
 </body>
