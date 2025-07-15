@@ -225,27 +225,114 @@
                         <!-- Contact Form -->
                         <div class="bg-gradient-to-b from-blue-50 to-white p-8 rounded-lg shadow-lg">
                             <h2 class="text-2xl font-bold mb-6 text-blue-600">Gửi tin nhắn cho chúng tôi</h2>
-                            <form class="space-y-6">
+                            <!-- Thông báo gửi thành công -->
+                            <div id="successMessage" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-white border border-green-300 shadow-2xl rounded-xl px-8 py-6 flex flex-col items-center space-y-3 transition-all duration-300 opacity-0 pointer-events-none">
+                                <div class="flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-2">
+                                    <i class="fas fa-check-circle text-green-500 text-4xl"></i>
+                                </div>
+                                <span class="text-green-700 text-xl font-semibold">Đã gửi thành công!</span>
+                                <span class="text-gray-500 text-base">Cảm ơn bạn đã liên hệ với chúng tôi.</span>
+                            </div>
+                            <form class="space-y-6" id="contactForm" onsubmit="showSentMessage(event)">
                                 <div>
                                     <label class="block text-gray-700 font-semibold mb-2">Họ và tên</label>
-                                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập họ và tên của bạn">
-                                </div>
-                                <div>
-                                    <label class="block text-gray-700 font-semibold mb-2">Email</label>
-                                    <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập địa chỉ email">
+                                    <input id="nameInput" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập họ và tên">
+                                    <span id="nameError" class="text-red-500 text-sm hidden">Vui lòng nhập họ và tên.</span>
                                 </div>
                                 <div>
                                     <label class="block text-gray-700 font-semibold mb-2">Số điện thoại</label>
-                                    <input type="tel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập số điện thoại">
+                                    <input id="phoneInput" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập số điện thoại">
+                                    <span id="phoneError" class="text-red-500 text-sm hidden">Số điện thoại phải đủ 10 số và bắt đầu bằng số 0.</span>
                                 </div>
                                 <div>
-                                    <label class="block text-gray-700 font-semibold mb-2">Tin nhắn</label>
-                                    <textarea rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập tin nhắn của bạn"></textarea>
+                                    <label class="block text-gray-700 font-semibold mb-2">Gmail</label>
+                                    <input id="emailInput" type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập địa chỉ Gmail">
+                                    <span id="emailError" class="text-red-500 text-sm hidden">Gmail không hợp lệ (phải đúng định dạng và kết thúc bằng @gmail.com).</span>
                                 </div>
-                                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
-                                    <i class="fas fa-paper-plane mr-2"></i>Gửi tin nhắn
+                                <div>
+                                    <label class="block text-gray-700 font-semibold mb-2">Lời nhắn</label>
+                                    <textarea id="messageInput" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập tin nhắn của bạn"></textarea>
+                                    <span id="messageError" class="text-red-500 text-sm hidden">Vui lòng nhập lời nhắn.</span>
+                                </div>
+                                <button id="sendBtn" type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300" disabled>
+                                    <i class="fas fa-paper-plane mr-2"></i>Gửi lời nhắn
                                 </button>
                             </form>
+                            <script>
+                                function validateName() {
+                                    const name = document.getElementById('nameInput').value.trim();
+                                    const error = document.getElementById('nameError');
+                                    if (!name) {
+                                        error.classList.remove('hidden');
+                                        return false;
+                                    } else {
+                                        error.classList.add('hidden');
+                                        return true;
+                                    }
+                                }
+                                function validatePhone() {
+                                    const phone = document.getElementById('phoneInput').value.trim();
+                                    const error = document.getElementById('phoneError');
+                                    const phoneRegex = /^0\d{9}$/;
+                                    if (!phoneRegex.test(phone)) {
+                                        error.classList.remove('hidden');
+                                        return false;
+                                    } else {
+                                        error.classList.add('hidden');
+                                        return true;
+                                    }
+                                }
+                                function validateEmail() {
+                                    const email = document.getElementById('emailInput').value.trim();
+                                    const error = document.getElementById('emailError');
+                                    const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+                                    if (!emailRegex.test(email)) {
+                                        error.classList.remove('hidden');
+                                        return false;
+                                    } else {
+                                        error.classList.add('hidden');
+                                        return true;
+                                    }
+                                }
+                                function validateMessage() {
+                                    const msg = document.getElementById('messageInput').value.trim();
+                                    const error = document.getElementById('messageError');
+                                    if (!msg) {
+                                        error.classList.remove('hidden');
+                                        return false;
+                                    } else {
+                                        error.classList.add('hidden');
+                                        return true;
+                                    }
+                                }
+                                function checkFormValid() {
+                                    const valid = validateName() && validatePhone() && validateEmail() && validateMessage();
+                                    document.getElementById('sendBtn').disabled = !valid;
+                                    return valid;
+                                }
+                                ['nameInput','phoneInput','emailInput','messageInput'].forEach(id => {
+                                    document.getElementById(id).addEventListener('input', checkFormValid);
+                                });
+                                function showSentMessage(event) {
+                                    event.preventDefault();
+                                    if (!checkFormValid()) return;
+                                    const msg = document.getElementById('successMessage');
+                                    msg.classList.remove('opacity-0', 'pointer-events-none');
+                                    msg.classList.add('opacity-100');
+                                    clearTimeout(window.hideMsgTimeout);
+                                    window.hideMsgTimeout = setTimeout(() => {
+                                        msg.classList.add('opacity-0');
+                                        msg.classList.remove('opacity-100');
+                                        setTimeout(() => {
+                                            msg.classList.add('pointer-events-none');
+                                        }, 300);
+                                    }, 2000);
+                                    // Reset form sau khi gửi
+                                    document.getElementById('contactForm').reset();
+                                    checkFormValid();
+                                }
+                                window.onload = checkFormValid;
+                            </script>
                         </div>
 
                         <!-- Contact Information -->
@@ -315,5 +402,18 @@
 
     <!-- Floating Chatbot Component -->
     <script src="components/chatbot-float.js"></script>
+    <script>
+function showSentMessage(e) {
+    e.preventDefault();
+    // Hiển thị thông báo đẹp
+    const alertDiv = document.createElement('div');
+    alertDiv.textContent = 'Đã gửi lời nhắn!';
+    alertDiv.className = 'fixed top-8 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-lg font-semibold animate-bounce';
+    document.body.appendChild(alertDiv);
+    setTimeout(() => {
+        alertDiv.remove();
+    }, 2000);
+}
+</script>
 </body>
 </html>
