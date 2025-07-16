@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đền Thờ Bác Hồ - Điểm đến linh thiêng tại Trà Vinh | Du lịch Trà Vinh</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+    /* Hero Section Styles */
+    .hero-section {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(239, 68, 68, 0.85)), 
+                    url('../my-server/images/den-tho-bac.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+    /* Các style khác giữ nguyên như chua-ang.html */
+    .gallery-item {transition: all 0.3s ease;cursor: pointer;}
+    .gallery-item:hover {transform: scale(1.05);box-shadow: 0 20px 40px rgba(0,0,0,0.3);}
+    .info-card {background: white;border-radius: 20px;box-shadow: 0 10px 30px rgba(0,0,0,0.1);transition: all 0.3s ease;}
+    .info-card:hover {transform: translateY(-5px);box-shadow: 0 20px 40px rgba(0,0,0,0.15);}
+    .timeline-item {position: relative;padding-left: 2rem;}
+    .timeline-item::before {content: '';position: absolute;left: 0;top: 0.5rem;width: 12px;height: 12px;background: #ef4444;border-radius: 50%;border: 3px solid white;box-shadow: 0 0 0 3px #ef4444;}
+    .timeline-item::after {content: '';position: absolute;left: 5px;top: 1.5rem;width: 2px;height: calc(100% - 1rem);background: linear-gradient(to bottom, #ef4444, transparent);}
+    .timeline-item:last-child::after {display: none;}
+    .floating-element {animation: float 6s ease-in-out infinite;}
+    @keyframes float {0%,100%{transform:translateY(0px);}50%{transform:translateY(-20px);}}
+    .parallax {background-attachment: fixed;background-position: center;background-repeat: no-repeat;background-size: cover;}
+    .modal {display: none;position: fixed;z-index: 9999;left: 0;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.9);}
+    .modal-content {position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);max-width: 90%;max-height: 90%;}
+    .modal img {width: 100%;height: auto;border-radius: 10px;}
+    .close {position: absolute;top: 15px;right: 35px;color: #f1f1f1;font-size: 40px;font-weight: bold;cursor: pointer;}
+    .close:hover {color: #ef4444;}
+    .simple-chatbot-window {position: fixed;bottom: 100px;right: 24px;width: 400px;height: 600px;background: white;border-radius: 24px;box-shadow: 0 20px 60px rgba(0,0,0,0.15);transform: translateY(20px) scale(0.95);opacity: 0;visibility: hidden;transition: all 0.3s ease;z-index: 9998;display: flex;flex-direction: column;overflow: hidden;}
+    .simple-chatbot-window.active {transform: translateY(0) scale(1);opacity: 1;visibility: visible;}
+    .simple-chatbot-header {background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);color: white;padding: 20px;display: flex;align-items: center;justify-content: space-between;}
+    .simple-chatbot-messages {flex: 1;padding: 20px;overflow-y: auto;background: #f8fafc;}
+    .simple-chatbot-input-area {padding: 20px;border-top: 1px solid #e2e8f0;background: white;}
+    .simple-chatbot-toggle {position: fixed;bottom: 24px;right: 24px;width: 64px;height: 64px;background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);border-radius: 50%;display: flex;align-items: center;justify-content: center;cursor: pointer;box-shadow: 0 8px 32px rgba(239,68,68,0.4);transition: all 0.3s ease;z-index: 9999;border: none;color: white;font-size: 24px;}
+    .simple-chatbot-toggle:hover {transform: scale(1.1);box-shadow: 0 12px 40px rgba(239,68,68,0.6);}
+    .simple-message {margin-bottom: 16px;display: flex;align-items: flex-start;}
+    .simple-message.user {justify-content: flex-end;}
+    .simple-message-content {max-width: 80%;padding: 12px 16px;border-radius: 18px;font-size: 14px;line-height: 1.4;}
+    .simple-message.user .simple-message-content {background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);color: white;border-bottom-right-radius: 4px;}
+    .simple-message.bot .simple-message-content {background: white;color: #374151;border: 1px solid #e5e7eb;border-bottom-left-radius: 4px;}
+    .simple-quick-actions {display: flex;flex-wrap: wrap;gap: 8px;margin-bottom: 20px;}
+    .simple-quick-action-btn {background: white;border: 1px solid #e5e7eb;border-radius: 20px;padding: 8px 16px;font-size: 13px;cursor: pointer;transition: all 0.3s ease;}
+    .simple-quick-action-btn:hover {background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);color: white;border-color: transparent;}
+    @media (max-width: 768px) {.simple-chatbot-window {width: calc(100vw - 32px);height: calc(100vh - 120px);right: 16px;bottom: 80px;}.simple-chatbot-toggle {width: 56px;height: 56px;bottom: 16px;right: 16px;}}
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-blue-700 shadow-lg fixed w-full top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-landmark text-blue-100 text-2xl"></i>
+                    <a href="index.html" class="text-blue-100 text-xl font-bold">Du lịch Trà Vinh</a>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Giới thiệu</a>
+                    <a href="dia-diem.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Địa điểm</a>
+                    <a href="lien-he.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Liên hệ</a>
+                    <a href="danh-gia.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Đánh giá & Bài viết</a>
+                </div>
+                <div class="auth-buttons">
+                    <div class="flex items-center space-x-4">
+                        <button onclick="window.authModal.openLogin()" class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full hover:bg-blue-200 transition duration-300">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Đăng nhập
+                        </button>
+                        <button onclick="window.authModal.openRegister()" class="border border-blue-100 text-blue-100 px-4 py-2 rounded-full hover:bg-blue-100 hover:text-blue-700 transition duration-300">
+                            <i class="fas fa-user-plus mr-2"></i>Đăng ký
+                        </button>
+                    </div>
+                </div>
+                <button class="md:hidden text-blue-100" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            <div id="mobileMenu" class="md:hidden hidden bg-blue-800 bg-opacity-90 rounded-lg mb-4">
+                <div class="px-4 py-2 space-y-2">
+                    <a href="index.html" class="block text-blue-100 hover:text-blue-300 py-2">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="block text-blue-100 hover:text-blue-300 py-2">Giới thiệu</a>
+                    <a href="dia-diem.html" class="block text-blue-100 hover:text-blue-300 py-2">Địa điểm</a>
+                    <a href="lien-he.html" class="block text-blue-100 hover:text-blue-300 py-2">Liên hệ</a>
+                    <a href="danh-gia.html" class="block text-blue-100 hover:text-blue-300 py-2">Đánh giá & Bài viết</a>
+                    <div class="mobile-auth-buttons pt-2 border-t border-blue-700 mt-2">
+                        <button onclick="window.authModal.openLogin()" class="block w-full text-left text-blue-100 hover:text-blue-300 py-2">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Đăng nhập
+                        </button>
+                        <button onclick="window.authModal.openRegister()" class="block w-full text-left text-blue-100 hover:text-blue-300 py-2">
+                            <i class="fas fa-user-plus mr-2"></i>Đăng ký
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section min-h-screen flex items-center justify-center text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <div class="floating-element">
+                <h1 class="text-6xl md:text-8xl font-bold mb-6 drop-shadow-2xl">
+                    Đền Thờ Bác Hồ
+                </h1>
+                <p class="text-2xl md:text-3xl mb-8 font-light drop-shadow-lg">
+                    Điểm đến linh thiêng, tri ân vị Cha già dân tộc
+                </p>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6">
+                    <div class="flex items-center space-x-2 text-lg">
+                        <i class="fas fa-map-marker-alt text-red-300"></i>
+                        <span>Xã Long Đức, TP. Trà Vinh</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-lg">
+                        <i class="fas fa-clock text-red-300"></i>
+                        <span>Mở cửa 7:00 - 18:00</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-lg">
+                        <i class="fas fa-ticket-alt text-red-300"></i>
+                        <span>Miễn phí tham quan</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-3xl text-white opacity-70"></i>
+        </div>
+    </section>
+
+    <!-- Quick Info Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="info-card p-8 text-center">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-landmark text-red-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Công trình lịch sử</h3>
+                    <p class="text-gray-600">Nơi tưởng niệm Chủ tịch Hồ Chí Minh, giáo dục truyền thống yêu nước</p>
+                </div>
+                <div class="info-card p-8 text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-tree text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Không gian xanh mát</h3>
+                    <p class="text-gray-600">Khuôn viên rộng lớn, nhiều cây xanh, hồ nước trong lành</p>
+                </div>
+                <div class="info-card p-8 text-center">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-star text-yellow-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Biểu tượng tri ân</h3>
+                    <p class="text-gray-600">Nơi tổ chức nhiều hoạt động kỷ niệm, lễ hội lớn của tỉnh</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <nav class="mb-8">
+                    <ol class="flex items-center space-x-2 text-sm text-gray-500">
+                        <li><a href="index.html" class="hover:text-red-600">Trang chủ</a></li>
+                        <li><i class="fas fa-chevron-right"></i></li>
+                        <li><a href="dia-diem.html" class="hover:text-red-600">Địa điểm</a></li>
+                        <li><i class="fas fa-chevron-right"></i></li>
+                        <li class="text-gray-800">Đền Thờ Bác Hồ</li>
+                    </ol>
+                </nav>
+                <article class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="p-8 md:p-12">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-800">
+                            <i class="fas fa-landmark text-red-600 mr-3"></i>
+                            Khám phá Đền Thờ Bác Hồ - Nơi hội tụ lòng dân Trà Vinh
+                        </h2>
+                        <div class="prose prose-lg max-w-none">
+                            <p class="text-gray-700 leading-relaxed mb-6">
+                                <strong>Đền Thờ Bác Hồ</strong> tại Trà Vinh là một trong những công trình tưởng niệm Chủ tịch Hồ Chí Minh lớn nhất miền Tây Nam Bộ. Đền được xây dựng trang nghiêm, hài hòa với thiên nhiên, là nơi giáo dục truyền thống yêu nước, lý tưởng cách mạng cho thế hệ trẻ.
+                            </p>
+                            <p class="text-gray-700 leading-relaxed mb-6">
+                                Đây là điểm đến linh thiêng, nơi người dân và du khách đến dâng hương, tưởng nhớ công lao to lớn của Bác Hồ đối với dân tộc Việt Nam.
+                            </p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Gallery -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">
+                    <i class="fas fa-images text-red-600 mr-3"></i>
+                    Thư viện hình ảnh
+                </h2>
+                <p class="text-gray-600 text-lg">Khám phá vẻ đẹp của Đền Thờ Bác Hồ qua những hình ảnh ý nghĩa</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('../my-server/images/den-tho-bac.jpg')">
+                    <img src="../my-server/images/den-tho-bac.jpg" alt="Toàn cảnh Đền Thờ Bác Hồ" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Toàn cảnh Đền Thờ Bác Hồ</h3>
+                        <p class="text-gray-600 text-sm">Công trình trang nghiêm, hài hòa thiên nhiên</p>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&h=600&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=300&fit=crop" alt="Khuôn viên xanh mát" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Khuôn viên xanh mát</h3>
+                        <p class="text-gray-600 text-sm">Nhiều cây xanh, hồ nước trong lành</p>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('https://images.unsplash.com/photo-1464983953574-0892a716854b?w=800&h=600&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?w=400&h=300&fit=crop" alt="Lễ dâng hương tưởng niệm" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Lễ dâng hương tưởng niệm</h3>
+                        <p class="text-gray-600 text-sm">Nhiều hoạt động tri ân, lễ hội lớn</p>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=800&h=600&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=400&h=300&fit=crop" alt="Không gian lễ hội" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Không gian lễ hội</h3>
+                        <p class="text-gray-600 text-sm">Nơi tổ chức nhiều sự kiện lớn của tỉnh</p>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop" alt="Học sinh tham quan" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Học sinh tham quan</h3>
+                        <p class="text-gray-600 text-sm">Giáo dục truyền thống cho thế hệ trẻ</p>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=800&h=600&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=400&h=300&fit=crop" alt="Cổng đền thờ" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Cổng đền thờ</h3>
+                        <p class="text-gray-600 text-sm">Kiến trúc truyền thống, uy nghiêm</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- History & Legend -->
+    <section class="py-16 bg-gradient-to-br from-red-50 to-green-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">
+                        <i class="fas fa-book-open text-red-600 mr-3"></i>
+                        Lịch sử & Ý nghĩa
+                    </h2>
+                    <p class="text-gray-600 text-lg">Tìm hiểu lịch sử và ý nghĩa của Đền Thờ Bác Hồ tại Trà Vinh</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-8">
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Lịch sử xây dựng</h3>
+                            <p class="text-gray-700">
+                                Đền Thờ Bác Hồ được xây dựng năm 1970, là một trong ba đền thờ Bác lớn nhất miền Nam, là nơi ghi dấu tình cảm sâu nặng của nhân dân Trà Vinh với Bác Hồ.
+                            </p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Ý nghĩa tâm linh</h3>
+                            <p class="text-gray-700">
+                                Đền là nơi linh thiêng, giáo dục truyền thống yêu nước, lý tưởng cách mạng cho các thế hệ trẻ.
+                            </p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Hoạt động lễ hội</h3>
+                            <p class="text-gray-700">
+                                Hàng năm, nơi đây tổ chức nhiều hoạt động kỷ niệm ngày sinh, ngày mất của Bác và các sự kiện lớn của tỉnh.
+                            </p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Bảo tồn giá trị lịch sử</h3>
+                            <p class="text-gray-700">
+                                Đền Thờ Bác là di tích lịch sử cấp quốc gia, được bảo tồn, tôn tạo và phát huy giá trị văn hóa, lịch sử.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="bg-white rounded-2xl shadow-xl p-8">
+                            <div class="text-center mb-6">
+                                <div class="w-20 h-20 bg-gradient-to-br from-red-500 to-green-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-landmark text-white text-3xl"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-800">Thông tin quan trọng</h3>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-map-marker-alt text-red-600"></i>
+                                    <span class="text-gray-700"><strong>Địa chỉ:</strong> ấp Vĩnh Hội, xã Long Đức, TP. Trà Vinh</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-clock text-green-600"></i>
+                                    <span class="text-gray-700"><strong>Giờ mở cửa:</strong> 7:00 - 18:00</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-ticket-alt text-purple-600"></i>
+                                    <span class="text-gray-700"><strong>Phí tham quan:</strong> Miễn phí</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-route text-orange-600"></i>
+                                    <span class="text-gray-700"><strong>Cách trung tâm:</strong> 5km từ trung tâm TP. Trà Vinh</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-calendar-alt text-red-600"></i>
+                                    <span class="text-gray-700"><strong>Thời gian lý tưởng:</strong> Tháng 5 (kỷ niệm sinh nhật Bác), các dịp lễ lớn</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Activities Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">
+                    <i class="fas fa-hiking text-red-600 mr-3"></i>
+                    Hoạt động tại Đền Thờ Bác Hồ
+                </h2>
+                <p class="text-gray-600 text-lg">Những trải nghiệm ý nghĩa bạn có thể tham gia</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-pray text-red-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">Dâng hương tưởng niệm</h3>
+                    <p class="text-gray-600 text-sm">Thành kính tri ân Chủ tịch Hồ Chí Minh</p>
+                </div>
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-tree text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">Tham quan, chụp ảnh</h3>
+                    <p class="text-gray-600 text-sm">Khám phá kiến trúc, không gian xanh mát</p>
+                </div>
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-users text-yellow-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">Tham gia lễ hội</h3>
+                    <p class="text-gray-600 text-sm">Tham dự các sự kiện, hoạt động kỷ niệm lớn</p>
+                </div>
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-graduation-cap text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">Giáo dục truyền thống</h3>
+                    <p class="text-gray-600 text-sm">Tìm hiểu lịch sử, truyền thống yêu nước</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tips Section -->
+    <section class="py-16 bg-gradient-to-r from-red-600 to-green-400 text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">
+                    <i class="fas fa-lightbulb mr-3"></i>
+                    Lời khuyên cho du khách
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white bg-opacity-10 rounded-2xl p-6 backdrop-blur-sm">
+                        <h3 class="text-xl font-bold mb-4">
+                            <i class="fas fa-clock mr-2"></i>Thời gian tốt nhất
+                        </h3>
+                        <ul class="text-left space-y-2">
+                            <li>• Sáng sớm (7:00-9:00): Không khí trong lành, yên tĩnh</li>
+                            <li>• Chiều tà (16:00-18:00): Ánh sáng đẹp cho chụp ảnh</li>
+                            <li>• Tháng 5: Tham gia lễ kỷ niệm sinh nhật Bác</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-2xl p-6 backdrop-blur-sm">
+                        <h3 class="text-xl font-bold mb-4">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>Lưu ý quan trọng
+                        </h3>
+                        <ul class="text-left space-y-2">
+                            <li>• Ăn mặc lịch sự, giữ trật tự nơi linh thiêng</li>
+                            <li>• Không xả rác, bảo vệ cảnh quan</li>
+                            <li>• Tôn trọng các quy định của khu di tích</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="">
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-red-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-landmark text-red-400 text-2xl"></i>
+                        <span class="text-xl font-bold">Du lịch Trà Vinh</span>
+                    </div>
+                    <p class="text-gray-400">Khám phá vẻ đẹp văn hóa và thiên nhiên của Trà Vinh</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Liên kết nhanh</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white">Trang chủ</a></li>
+                        <li><a href="dia-diem.html" class="text-gray-400 hover:text-white">Địa điểm</a></li>
+                        <li><a href="gioi-thieu.html" class="text-gray-400 hover:text-white">Giới thiệu</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Địa điểm nổi bật</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Đền Thờ Bác Hồ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Chùa Âng</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Ao Bà Om</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Liên hệ</h3>
+                    <div class="space-y-2">
+                        <p class="text-gray-400"><i class="fas fa-phone mr-2"></i>0294.123.456</p>
+                        <p class="text-gray-400"><i class="fas fa-envelope mr-2"></i>info@dulichtravinh.com</p>
+                        <p class="text-gray-400"><i class="fas fa-map-marker-alt mr-2"></i>Trà Vinh, Việt Nam</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-red-700 mt-8 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2024 Du lịch Trà Vinh. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="components/auth-modal.js"></script>
+    <script src="components/user-manager.js"></script>
+    <script src="components/chatbot-float.js"></script>
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        }
+        // Image modal functions
+        function openModal(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImage.src = imageSrc;
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero-section');
+            const speed = scrolled * 0.5;
+            if (parallax) {
+                parallax.style.transform = `translateY(${speed}px)`;
+            }
+        });
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        document.addEventListener('DOMContentLoaded', function() {
+            const animateElements = document.querySelectorAll('.info-card, .gallery-item, .timeline-item');
+            animateElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+        const backToTopButton = document.createElement('button');
+        backToTopButton.innerHTML = '<i class="fas fa-chevron-up"></i>';
+        backToTopButton.className = 'fixed bottom-32 right-6 w-12 h-12 bg-red-600 text-white rounded-full shadow-lg hover:bg-red-700 transition-all duration-300 opacity-0 pointer-events-none z-40';
+        backToTopButton.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.body.appendChild(backToTopButton);
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTopButton.style.opacity = '1';
+                backToTopButton.style.pointerEvents = 'auto';
+            } else {
+                backToTopButton.style.opacity = '0';
+                backToTopButton.style.pointerEvents = 'none';
+            }
+        });
+    </script>
+    <!-- Popup bản đồ -->
+    <div id="mapPopup" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl p-4 relative w-full max-w-xl">
+            <button onclick="closeMapPopup()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl focus:outline-none"><i class="fas fa-times"></i></button>
+            <h2 class="text-xl font-bold mb-2 text-red-700 text-center">Bản đồ vị trí Đền Thờ Bác Hồ</h2>
+            <div class="w-full h-80 rounded-lg overflow-hidden">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2475.3683811806945!2d106.3280315162329!3d9.983591711095556!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a010627413352d%3A0xd357fe02183b7464!2zxJDhu4FuIHRo4budIELDoWM!5e0!3m2!1svi!2s!4v1752680819052!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>            </div>
+        </div>
+    </div>
+    <button id="locationBtn" class="fixed bottom-24 right-6 w-14 h-14 rounded-full bg-green-600 shadow-lg flex items-center justify-center text-white text-2xl z-50 hover:bg-green-700 focus:outline-none">
+        <i class="fas fa-location-dot"></i>
+    </button>
+    <script>
+        document.getElementById('locationBtn').onclick = function() {
+            document.getElementById('mapPopup').classList.remove('hidden');
+        }
+        function closeMapPopup() {
+            document.getElementById('mapPopup').classList.add('hidden');
+        }
+    </script>
+</body>
+</html> 
