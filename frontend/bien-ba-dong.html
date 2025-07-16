@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biển Ba Động - Bãi biển đẹp nhất Trà Vinh | Du lịch Trà Vinh</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+    /* Hero Section Styles */
+    .hero-section {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(16, 185, 129, 0.9)), 
+                    url('../my-server/images/bien-ba-dong.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    /* Image Gallery Styles */
+    .gallery-item {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .gallery-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Info Cards */
+    .info-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .info-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Timeline Styles */
+    .timeline-item {
+        position: relative;
+        padding-left: 2rem;
+    }
+
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0.5rem;
+        width: 12px;
+        height: 12px;
+        background: #3B82F6;
+        border-radius: 50%;
+        border: 3px solid white;
+        box-shadow: 0 0 0 3px #3B82F6;
+    }
+
+    .timeline-item::after {
+        content: '';
+        position: absolute;
+        left: 5px;
+        top: 1.5rem;
+        width: 2px;
+        height: calc(100% - 1rem);
+        background: linear-gradient(to bottom, #3B82F6, transparent);
+    }
+
+    .timeline-item:last-child::after {
+        display: none;
+    }
+
+    /* Floating Elements */
+    .floating-element {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    /* Parallax Effect */
+    .parallax {
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+    }
+
+    .modal-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 90%;
+        max-height: 90%;
+    }
+
+    .modal img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close:hover {
+        color: #3B82F6;
+    }
+
+    /* Chatbot Styles */
+    .simple-chatbot-window {
+        position: fixed;
+        bottom: 100px;
+        right: 24px;
+        width: 400px;
+        height: 600px;
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        transform: translateY(20px) scale(0.95);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 9998;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .simple-chatbot-window.active {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .simple-chatbot-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .simple-chatbot-messages {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        background: #f8fafc;
+    }
+
+    .simple-chatbot-input-area {
+        padding: 20px;
+        border-top: 1px solid #e2e8f0;
+        background: white;
+    }
+
+    .simple-chatbot-toggle {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
+        transition: all 0.3s ease;
+        z-index: 9999;
+        border: none;
+        color: white;
+        font-size: 24px;
+    }
+
+    .simple-chatbot-toggle:hover {
+        transform: scale(1.1);
+        box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6);
+    }
+
+    .simple-message {
+        margin-bottom: 16px;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .simple-message.user {
+        justify-content: flex-end;
+    }
+
+    .simple-message-content {
+        max-width: 80%;
+        padding: 12px 16px;
+        border-radius: 18px;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .simple-message.user .simple-message-content {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-bottom-right-radius: 4px;
+    }
+
+    .simple-message.bot .simple-message-content {
+        background: white;
+        color: #374151;
+        border: 1px solid #e5e7eb;
+        border-bottom-left-radius: 4px;
+    }
+
+    .simple-quick-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .simple-quick-action-btn {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 20px;
+        padding: 8px 16px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .simple-quick-action-btn:hover {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-color: transparent;
+    }
+
+    @media (max-width: 768px) {
+        .simple-chatbot-window {
+            width: calc(100vw - 32px);
+            height: calc(100vh - 120px);
+            right: 16px;
+            bottom: 80px;
+        }
+
+        .simple-chatbot-toggle {
+            width: 56px;
+            height: 56px;
+            bottom: 16px;
+            right: 16px;
+        }
+    }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-blue-700 shadow-lg fixed w-full top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-umbrella-beach text-blue-100 text-2xl"></i>
+                    <a href="index.html" class="text-blue-100 text-xl font-bold">Du lịch Trà Vinh</a>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Giới thiệu</a>
+                    <a href="dia-diem.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Địa điểm</a>
+                    <a href="lien-he.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Liên hệ</a>
+                    <a href="danh-gia.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Đánh giá & Bài viết</a>
+                </div>
+                <div class="auth-buttons">
+                    <div class="flex items-center space-x-4">
+                        <button onclick="window.authModal.openLogin()" class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full hover:bg-blue-200 transition duration-300">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Đăng nhập
+                        </button>
+                        <button onclick="window.authModal.openRegister()" class="border border-blue-100 text-blue-100 px-4 py-2 rounded-full hover:bg-blue-100 hover:text-blue-700 transition duration-300">
+                            <i class="fas fa-user-plus mr-2"></i>Đăng ký
+                        </button>
+                    </div>
+                </div>
+                <button class="md:hidden text-blue-100" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            <div id="mobileMenu" class="md:hidden hidden bg-blue-800 bg-opacity-90 rounded-lg mb-4">
+                <div class="px-4 py-2 space-y-2">
+                    <a href="index.html" class="block text-blue-100 hover:text-blue-300 py-2">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="block text-blue-100 hover:text-blue-300 py-2">Giới thiệu</a>
+                    <a href="dia-diem.html" class="block text-blue-100 hover:text-blue-300 py-2">Địa điểm</a>
+                    <a href="lien-he.html" class="block text-blue-100 hover:text-blue-300 py-2">Liên hệ</a>
+                    <a href="danh-gia.html" class="block text-blue-100 hover:text-blue-300 py-2">Đánh giá & Bài viết</a>
+                    <div class="mobile-auth-buttons pt-2 border-t border-blue-700 mt-2">
+                        <button onclick="window.authModal.openLogin()" class="block w-full text-left text-blue-100 hover:text-blue-300 py-2">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Đăng nhập
+                        </button>
+                        <button onclick="window.authModal.openRegister()" class="block w-full text-left text-blue-100 hover:text-blue-300 py-2">
+                            <i class="fas fa-user-plus mr-2"></i>Đăng ký
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section min-h-screen flex items-center justify-center text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <div class="floating-element">
+                <h1 class="text-6xl md:text-8xl font-bold mb-6 drop-shadow-2xl">
+                    Biển Ba Động
+                </h1>
+                <p class="text-2xl md:text-3xl mb-8 font-light drop-shadow-lg">
+                    Bãi biển đẹp nhất Trà Vinh
+                </p>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6">
+                    <div class="flex items-center space-x-2 text-lg">
+                        <i class="fas fa-map-marker-alt text-blue-300"></i>
+                        <span>Duyên Hải, Trà Vinh</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-lg">
+                        <i class="fas fa-clock text-blue-300"></i>
+                        <span>Mở cửa 24/7</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-lg">
+                        <i class="fas fa-ticket-alt text-blue-300"></i>
+                        <span>Miễn phí tham quan</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-3xl text-white opacity-70"></i>
+        </div>
+    </section>
+
+    <!-- Quick Info Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="info-card p-8 text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-water text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Bãi biển tự nhiên</h3>
+                    <p class="text-gray-600">Bãi biển dài, cát mịn, sóng êm, không khí trong lành</p>
+                </div>
+                <div class="info-card p-8 text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-tree text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Rừng phi lao</h3>
+                    <p class="text-gray-600">Hàng phi lao xanh mát trải dài ven biển tạo bóng mát dễ chịu</p>
+                </div>
+                <div class="info-card p-8 text-center">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-swimmer text-yellow-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Tắm biển & vui chơi</h3>
+                    <p class="text-gray-600">Nhiều hoạt động giải trí, tắm biển, thưởng thức hải sản tươi ngon</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <nav class="mb-8">
+                    <ol class="flex items-center space-x-2 text-sm text-gray-500">
+                        <li><a href="index.html" class="hover:text-blue-600">Trang chủ</a></li>
+                        <li><i class="fas fa-chevron-right"></i></li>
+                        <li><a href="dia-diem.html" class="hover:text-blue-600">Địa điểm</a></li>
+                        <li><i class="fas fa-chevron-right"></i></li>
+                        <li class="text-gray-800">Biển Ba Động</li>
+                    </ol>
+                </nav>
+                <article class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="p-8 md:p-12">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-800">
+                            <i class="fas fa-umbrella-beach text-blue-600 mr-3"></i>
+                            Khám phá Biển Ba Động - Vẻ đẹp hoang sơ của Trà Vinh
+                        </h2>
+                        <div class="prose prose-lg max-w-none">
+                            <p class="text-gray-700 leading-relaxed mb-6">
+                                <strong>Biển Ba Động</strong> là một trong những bãi biển đẹp và nổi tiếng nhất miền Tây Nam Bộ, thuộc huyện Duyên Hải, tỉnh Trà Vinh. Với bãi cát dài, nước biển trong xanh, không khí mát mẻ, nơi đây là điểm đến lý tưởng cho du khách muốn tận hưởng vẻ đẹp hoang sơ và bình yên của biển cả.
+                            </p>
+                            <p class="text-gray-700 leading-relaxed mb-6">
+                                Biển Ba Động còn nổi tiếng với rừng phi lao xanh mát, những hàng dừa nghiêng bóng và các món hải sản tươi ngon. Đây là nơi lý tưởng để tắm biển, dã ngoại, cắm trại, thưởng thức đặc sản biển và trải nghiệm cuộc sống của ngư dân địa phương.
+                            </p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Gallery -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">
+                    <i class="fas fa-images text-blue-600 mr-3"></i>
+                    Thư viện hình ảnh
+                </h2>
+                <p class="text-gray-600 text-lg">Khám phá vẻ đẹp của Biển Ba Động qua những hình ảnh tuyệt đẹp</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('../my-server/images/bien-ba-dong.jpg')">
+                    <img src="../my-server/images/bien-ba-dong.jpg" alt="Toàn cảnh Biển Ba Động" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Toàn cảnh Biển Ba Động</h3>
+                        <p class="text-gray-600 text-sm">Bãi biển dài, cát mịn, sóng êm</p>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=600&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=300&fit=crop" alt="Sóng biển Ba Động" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Sóng biển Ba Động</h3>
+                        <p class="text-gray-600 text-sm">Sóng biển dịu êm, thích hợp tắm biển</p>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('https://images.unsplash.com/photo-1464983953574-0892a716854b?w=800&h=600&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?w=400&h=300&fit=crop" alt="Rừng phi lao ven biển" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Rừng phi lao ven biển</h3>
+                        <p class="text-gray-600 text-sm">Không gian xanh mát, lý tưởng dã ngoại</p>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=800&h=600&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=400&h=300&fit=crop" alt="Hoàng hôn trên biển" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Hoàng hôn trên biển</h3>
+                        <p class="text-gray-600 text-sm">Khung cảnh lãng mạn lúc chiều tà</p>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&h=600&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=300&fit=crop" alt="Hải sản tươi sống" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Hải sản tươi sống</h3>
+                        <p class="text-gray-600 text-sm">Thưởng thức đặc sản biển hấp dẫn</p>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=800&h=600&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=400&h=300&fit=crop" alt="Cắm trại bên biển" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Cắm trại bên biển</h3>
+                        <p class="text-gray-600 text-sm">Trải nghiệm đêm biển thú vị</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- History & Legend -->
+    <section class="py-16 bg-gradient-to-br from-blue-50 to-green-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">
+                        <i class="fas fa-book-open text-green-600 mr-3"></i>
+                        Lịch sử & Truyền thuyết
+                    </h2>
+                    <p class="text-gray-600 text-lg">Khám phá những câu chuyện thú vị về Biển Ba Động</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-8">
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Nguồn gốc tên gọi</h3>
+                            <p class="text-gray-700">
+                                Biển Ba Động có tên gọi độc đáo vì bãi biển này có ba dải cồn cát nhô ra biển, tạo thành ba "động" sóng liên tiếp rất đặc trưng.
+                            </p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Ý nghĩa du lịch</h3>
+                            <p class="text-gray-700">
+                                Đây là điểm đến nghỉ dưỡng, vui chơi, tắm biển nổi tiếng của Trà Vinh, thu hút đông đảo du khách mỗi dịp hè.
+                            </p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Truyền thuyết địa phương</h3>
+                            <p class="text-gray-700">
+                                Theo người dân, ba dải cát này là dấu tích của ba nàng tiên giáng trần, tạo nên vẻ đẹp kỳ thú cho vùng biển này.
+                            </p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Bảo tồn sinh thái</h3>
+                            <p class="text-gray-700">
+                                Biển Ba Động còn là nơi bảo tồn nhiều loài sinh vật biển quý hiếm, góp phần giữ gìn hệ sinh thái ven biển Trà Vinh.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="bg-white rounded-2xl shadow-xl p-8">
+                            <div class="text-center mb-6">
+                                <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-green-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-water text-white text-3xl"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-800">Thông tin quan trọng</h3>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-map-marker-alt text-blue-600"></i>
+                                    <span class="text-gray-700"><strong>Địa chỉ:</strong> Xã Trường Long Hòa, huyện Duyên Hải, tỉnh Trà Vinh</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-clock text-green-600"></i>
+                                    <span class="text-gray-700"><strong>Giờ mở cửa:</strong> 24/7 (tốt nhất từ 5:00 - 18:00)</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-ticket-alt text-purple-600"></i>
+                                    <span class="text-gray-700"><strong>Phí tham quan:</strong> Miễn phí</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-route text-orange-600"></i>
+                                    <span class="text-gray-700"><strong>Cách trung tâm:</strong> 55km về phía Đông Nam thành phố Trà Vinh</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-calendar-alt text-red-600"></i>
+                                    <span class="text-gray-700"><strong>Thời gian lý tưởng:</strong> Tháng 3-9 (mùa hè)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Activities Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">
+                    <i class="fas fa-hiking text-green-600 mr-3"></i>
+                    Hoạt động tại Biển Ba Động
+                </h2>
+                <p class="text-gray-600 text-lg">Những trải nghiệm thú vị bạn có thể tham gia</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-swimmer text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">Tắm biển</h3>
+                    <p class="text-gray-600 text-sm">Thỏa thích bơi lội, vui chơi dưới làn nước mát</p>
+                </div>
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-tree text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">Dã ngoại, cắm trại</h3>
+                    <p class="text-gray-600 text-sm">Tổ chức picnic, cắm trại cùng bạn bè, gia đình</p>
+                </div>
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-fish text-yellow-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">Thưởng thức hải sản</h3>
+                    <p class="text-gray-600 text-sm">Nếm thử các món hải sản tươi ngon đặc trưng</p>
+                </div>
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-camera text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">Chụp ảnh check-in</h3>
+                    <p class="text-gray-600 text-sm">Lưu giữ khoảnh khắc đẹp bên biển xanh cát trắng</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tips Section -->
+    <section class="py-16 bg-gradient-to-r from-blue-600 to-green-400 text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">
+                    <i class="fas fa-lightbulb mr-3"></i>
+                    Lời khuyên cho du khách
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white bg-opacity-10 rounded-2xl p-6 backdrop-blur-sm">
+                        <h3 class="text-xl font-bold mb-4">
+                            <i class="fas fa-clock mr-2"></i>Thời gian tốt nhất
+                        </h3>
+                        <ul class="text-left space-y-2">
+                            <li>• Sáng sớm (5:00-7:00): Không khí trong lành, biển lặng</li>
+                            <li>• Chiều tà (16:00-18:00): Ngắm hoàng hôn tuyệt đẹp</li>
+                            <li>• Tháng 6-8: Hải sản tươi ngon nhất</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-2xl p-6 backdrop-blur-sm">
+                        <h3 class="text-xl font-bold mb-4">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>Lưu ý quan trọng
+                        </h3>
+                        <ul class="text-left space-y-2">
+                            <li>• Không bơi quá xa bờ, chú ý an toàn</li>
+                            <li>• Giữ gìn vệ sinh, không xả rác bừa bãi</li>
+                            <li>• Mang theo kem chống nắng, mũ, kính râm</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="">
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-umbrella-beach text-blue-400 text-2xl"></i>
+                        <span class="text-xl font-bold">Du lịch Trà Vinh</span>
+                    </div>
+                    <p class="text-gray-400">Khám phá vẻ đẹp văn hóa và thiên nhiên của Trà Vinh</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Liên kết nhanh</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white">Trang chủ</a></li>
+                        <li><a href="dia-diem.html" class="text-gray-400 hover:text-white">Địa điểm</a></li>
+                        <li><a href="gioi-thieu.html" class="text-gray-400 hover:text-white">Giới thiệu</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Địa điểm nổi bật</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Biển Ba Động</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Chùa Ang</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Rừng dừa Bảy Mẫu</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Liên hệ</h3>
+                    <div class="space-y-2">
+                        <p class="text-gray-400"><i class="fas fa-phone mr-2"></i>0294.123.456</p>
+                        <p class="text-gray-400"><i class="fas fa-envelope mr-2"></i>info@dulichtravinh.com</p>
+                        <p class="text-gray-400"><i class="fas fa-map-marker-alt mr-2"></i>Trà Vinh, Việt Nam</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2024 Du lịch Trà Vinh. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="components/auth-modal.js"></script>
+    <script src="components/user-manager.js"></script>
+    <script src="components/chatbot-float.js"></script>
+    <script>
+        // ... existing code ...
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        }
+        // Image modal functions
+        function openModal(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImage.src = imageSrc;
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero-section');
+            const speed = scrolled * 0.5;
+            if (parallax) {
+                parallax.style.transform = `translateY(${speed}px)`;
+            }
+        });
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        document.addEventListener('DOMContentLoaded', function() {
+            const animateElements = document.querySelectorAll('.info-card, .gallery-item, .timeline-item');
+            animateElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+        const backToTopButton = document.createElement('button');
+        backToTopButton.innerHTML = '<i class="fas fa-chevron-up"></i>';
+        backToTopButton.className = 'fixed bottom-32 right-6 w-12 h-12 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 opacity-0 pointer-events-none z-40';
+        backToTopButton.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.body.appendChild(backToTopButton);
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTopButton.style.opacity = '1';
+                backToTopButton.style.pointerEvents = 'auto';
+            } else {
+                backToTopButton.style.opacity = '0';
+                backToTopButton.style.pointerEvents = 'none';
+            }
+        });
+    </script>
+    <!-- Location Button -->
+    <button id="locationBtn" class="fixed bottom-24 right-6 w-14 h-14 rounded-full bg-green-600 shadow-lg flex items-center justify-center text-white text-2xl z-50 hover:bg-green-700 focus:outline-none">
+        <i class="fas fa-location-dot"></i>
+    </button>
+    <script>
+        document.getElementById('locationBtn').addEventListener('click', function() {
+            // Tọa độ của Biển Ba Động
+            const lat = 9.6333;
+            const lng = 106.4833;
+            window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank');
+        });
+    </script>
+</body>
+</html> 
