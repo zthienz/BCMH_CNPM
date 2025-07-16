@@ -77,15 +77,15 @@
                         </div>
 
                         <!-- Category Filter -->
-                        <!-- <div class="md:w-64">
+                        <div class="md:w-64">
                             <select
                                 id="categoryFilter"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-300"
                             >
                                 <option value="">Tất cả loại hình</option>
                                 <!-- Options will be loaded dynamically from database -->
-                            <!-- </select>
-                        </div> --
+                            </select>
+                        </div>
 
                         <!-- Search Button -->
                         <button
@@ -232,21 +232,27 @@
         });
 
         // Search functionality
-        searchBtn.addEventListener('click', function() {
-            loadDestinations();
-        });
+        if (searchBtn) {
+            searchBtn.addEventListener('click', function() {
+                loadDestinations();
+            });
+        }
 
         // Search on Enter key
-        searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                loadDestinations();
-            }
-        });
+        if (searchInput) {
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    loadDestinations();
+                }
+            });
+        }
 
         // Filter change
-        categoryFilter.addEventListener('change', function() {
-            loadDestinations();
-        });
+        if (categoryFilter) {
+            categoryFilter.addEventListener('change', function() {
+                loadDestinations();
+            });
+        }
 
         // Real-time search (debounced)
         let searchTimeout;
@@ -288,8 +294,8 @@
             hideNoResults();
 
             try {
-                const searchTerm = searchInput.value.trim();
-                const category = categoryFilter.value;
+                const searchTerm = searchInput ? searchInput.value.trim() : '';
+                const category = categoryFilter ? categoryFilter.value : '';
 
                 let url = `${API_BASE_URL}/api/diadiemdulich`;
                 const params = new URLSearchParams();
