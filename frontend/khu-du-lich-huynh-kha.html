@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khu du lịch Huỳnh Kha - Thiên đường sinh thái giữa lòng Trà Vinh | Du lịch Trà Vinh</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+    /* Hero Section Styles */
+    .hero-section {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.9), rgba(34, 197, 94, 0.9)), 
+                    url('../my-server/images/khu-du-lich-huynh-kha.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    /* Image Gallery Styles */
+    .gallery-item {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .gallery-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Info Cards */
+    .info-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .info-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Timeline Styles */
+    .timeline-item {
+        position: relative;
+        padding-left: 2rem;
+    }
+
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0.5rem;
+        width: 12px;
+        height: 12px;
+        background: #10B981;
+        border-radius: 50%;
+        border: 3px solid white;
+        box-shadow: 0 0 0 3px #10B981;
+    }
+
+    .timeline-item::after {
+        content: '';
+        position: absolute;
+        left: 5px;
+        top: 1.5rem;
+        width: 2px;
+        height: calc(100% - 1rem);
+        background: linear-gradient(to bottom, #10B981, transparent);
+    }
+
+    .timeline-item:last-child::after {
+        display: none;
+    }
+
+    /* Floating Elements */
+    .floating-element {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    /* Parallax Effect */
+    .parallax {
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .modal-content {
+        position: relative;
+        margin: auto;
+        padding: 20px;
+        width: 90%;
+        max-width: 800px;
+        top: 50%;
+        transform: translateY(-50%);
+        animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+        from { transform: translateY(-50%) scale(0.8); }
+        to { transform: translateY(-50%) scale(1); }
+    }
+
+    .modal img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 25px;
+        color: white;
+        font-size: 35px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 10000;
+    }
+
+    .close:hover {
+        color: #10B981;
+    }
+
+    /* Scroll Animations */
+    .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease;
+    }
+
+    .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #10B981;
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #059669;
+    }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-gradient-to-r from-emerald-600 via-green-600 to-green-700 shadow-lg fixed w-full top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-pagoda text-white text-2xl"></i>
+                    <a href="index.html" class="text-white text-xl font-bold">Du lịch Trà Vinh</a>
+                </div>
+                
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="nav-link text-emerald-100 hover:text-emerald-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="nav-link text-emerald-100 hover:text-emerald-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Giới thiệu</a>
+                    <a href="dia-diem.html" class="nav-link text-emerald-100 hover:text-emerald-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Địa điểm</a>
+                    <a href="lien-he.html" class="nav-link text-emerald-100 hover:text-emerald-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Liên hệ</a>
+                    <a href="danh-gia.html" class="nav-link text-emerald-100 hover:text-emerald-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Đánh giá & Bài viết</a>
+                </div>
+                
+                <div class="auth-buttons">
+                    <div class="flex items-center space-x-4">
+                        <button onclick="window.authModal.openLogin()" class="bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full hover:bg-emerald-200 transition duration-300">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Đăng nhập
+                        </button>
+                        <button onclick="window.authModal.openRegister()" class="border border-emerald-100 text-emerald-100 px-4 py-2 rounded-full hover:bg-emerald-100 hover:text-emerald-700 transition duration-300">
+                            <i class="fas fa-user-plus mr-2"></i>Đăng ký
+                        </button>
+                    </div>
+                </div>
+                
+                <button class="md:hidden text-white" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <div id="mobileMenu" class="md:hidden hidden bg-white bg-opacity-20 rounded-lg mb-4">
+                <div class="px-4 py-2 space-y-2">
+                    <a href="index.html" class="block text-emerald-100 hover:text-emerald-300 py-2">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="block text-emerald-100 hover:text-emerald-300 py-2">Giới thiệu</a>
+                    <a href="dia-diem.html" class="block text-emerald-100 hover:text-emerald-300 py-2">Địa điểm</a>
+                    <a href="lien-he.html" class="block text-emerald-100 hover:text-emerald-300 py-2">Liên hệ</a>
+                    <a href="danh-gia.html" class="block text-emerald-100 hover:text-emerald-300 py-2">Đánh giá & Bài viết</a>
+                    <div class="mobile-auth-buttons pt-2 border-t border-emerald-700 mt-2">
+                        <button onclick="window.authModal.openLogin()" class="block w-full text-left text-emerald-100 hover:text-emerald-300 py-2">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Đăng nhập
+                        </button>
+                        <button onclick="window.authModal.openRegister()" class="block w-full text-left text-emerald-100 hover:text-emerald-300 py-2">
+                            <i class="fas fa-user-plus mr-2"></i>Đăng ký
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section min-h-screen flex items-center justify-center text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <div class="floating-element">
+                <h1 class="text-6xl md:text-8xl font-bold mb-6 drop-shadow-2xl">
+                    Khu du lịch Huỳnh Kha
+                </h1>
+                <p class="text-2xl md:text-3xl mb-8 font-light drop-shadow-lg">
+                    Thiên đường sinh thái giữa lòng Trà Vinh
+                </p>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6 mb-8">
+                    <div class="flex items-center space-x-2 text-lg">
+                        <i class="fas fa-map-marker-alt text-emerald-300"></i>
+                        <span>Xã Lưu Nghiệp Anh, huyện Châu Thành, Trà Vinh</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-lg">
+                        <i class="fas fa-clock text-emerald-300"></i>
+                        <span>Mở cửa: 6:00 - 18:00</span>
+                    </div>
+                </div>
+                <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4">
+                    <a href="#gallery" class="bg-white text-emerald-600 px-8 py-3 rounded-full text-lg font-semibold hover:bg-emerald-50 transition duration-300 inline-flex items-center">
+                        <i class="fas fa-images mr-2"></i>Thư viện ảnh
+                    </a>
+                    <a href="#info" class="border-2 border-white text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-white hover:text-emerald-600 transition duration-300 inline-flex items-center">
+                        <i class="fas fa-info-circle mr-2"></i>Thông tin chi tiết
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </div>
+    </section>
+
+    <!-- Quick Info Section -->
+    <section class="py-16 bg-white fade-in">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-tree text-emerald-600 mr-3"></i>
+                    Khám phá thiên đường sinh thái
+                </h2>
+                <p class="text-gray-600 text-lg max-w-3xl mx-auto">
+                    Khu du lịch Huỳnh Kha là điểm đến sinh thái tuyệt vời với hệ sinh thái đa dạng,
+                    rừng tràm nguyên sinh và trải nghiệm du lịch xanh độc đáo tại Trà Vinh.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-leaf text-emerald-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-800">Sinh thái đa dạng</h3>
+                    <p class="text-gray-600">Hệ sinh thái rừng tràm nguyên sinh với động thực vật phong phú</p>
+                </div>
+
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-water text-emerald-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-800">Kênh rạch chằng chịt</h3>
+                    <p class="text-gray-600">Hệ thống sông nước tự nhiên tạo cảnh quan thơ mộng</p>
+                </div>
+
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-hiking text-emerald-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-800">Hoạt động phong phú</h3>
+                    <p class="text-gray-600">Kayak, trekking, quan sát động vật và trải nghiệm nông thôn</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Gallery -->
+    <section id="gallery" class="py-16 bg-gray-50 fade-in">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-images text-emerald-600 mr-3"></i>
+                    Thư viện hình ảnh
+                </h2>
+                <p class="text-gray-600 text-lg">Khám phá vẻ đẹp của Khu du lịch Huỳnh Kha qua những hình ảnh tuyệt đẹp</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('../my-server/images/khu-du-lich-huynh-kha.jpg')">
+                    <img src="../my-server/images/khu-du-lich-huynh-kha.jpg" alt="Toàn cảnh Khu du lịch Huỳnh Kha" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Toàn cảnh khu du lịch</h3>
+                        <p class="text-gray-600 text-sm">Thiên đường sinh thái xanh mướt</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop" alt="Rừng tràm nguyên sinh" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Rừng tràm nguyên sinh</h3>
+                        <p class="text-gray-600 text-sm">Hệ sinh thái đa dạng và phong phú</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=400&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=400&fit=crop" alt="Động vật hoang dã" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Động vật hoang dã</h3>
+                        <p class="text-gray-600 text-sm">Đa dạng sinh học phong phú</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=600&h=400&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=600&h=400&fit=crop" alt="Kênh rạch" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Kênh rạch</h3>
+                        <p class="text-gray-600 text-sm">Hệ thống sông nước chằng chịt</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop" alt="Tour thuyền kayak" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Tour thuyền kayak</h3>
+                        <p class="text-gray-600 text-sm">Trải nghiệm khám phá thiên nhiên</p>
+                    </div>
+                </div>
+
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=600&h=400&fit=crop')">
+                    <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=600&h=400&fit=crop" alt="Khu nghỉ dưỡng" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Khu nghỉ dưỡng</h3>
+                        <p class="text-gray-600 text-sm">Không gian thư giãn giữa thiên nhiên</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Information -->
+    <section id="info" class="py-16 bg-white fade-in">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4">
+                        <i class="fas fa-info-circle text-emerald-600 mr-3"></i>
+                        Thông tin chi tiết
+                    </h2>
+                    <p class="text-gray-600 text-lg">Tìm hiểu thêm về Khu du lịch Huỳnh Kha</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6">
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Hệ sinh thái đa dạng</h3>
+                            <p class="text-gray-700">
+                                Khu du lịch có hệ sinh thái phong phú với rừng tràm nguyên sinh, đầm lầy, kênh rạch và nhiều loài động thực vật quý hiếm, tạo nên một môi trường sinh thái độc đáo.
+                            </p>
+                        </div>
+
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Hoạt động du lịch</h3>
+                            <p class="text-gray-700">
+                                Du khách có thể tham gia các hoạt động như chèo thuyền kayak, trekking, quan sát động vật hoang dã, câu cá và trải nghiệm đời sống nông thôn.
+                            </p>
+                        </div>
+
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Bảo tồn môi trường</h3>
+                            <p class="text-gray-700">
+                                Khu du lịch cam kết bảo vệ môi trường và phát triển du lịch bền vững, góp phần bảo tồn hệ sinh thái quý giá của vùng đất Trà Vinh.
+                            </p>
+                        </div>
+
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Trải nghiệm độc đáo</h3>
+                            <p class="text-gray-700">
+                                Nơi đây mang đến những trải nghiệm du lịch sinh thái độc đáo, giúp du khách hiểu thêm về thiên nhiên và văn hóa địa phương.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div class="info-card p-8">
+                            <div class="text-center mb-6">
+                                <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-green-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-tree text-white text-3xl"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-800">Thông tin tham quan</h3>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-map-marker-alt text-emerald-600"></i>
+                                    <span class="text-gray-700"><strong>Địa chỉ:</strong> Xã Lưu Nghiệp Anh, huyện Châu Thành, Trà Vinh</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-clock text-emerald-600"></i>
+                                    <span class="text-gray-700"><strong>Giờ mở cửa:</strong> 6:00 - 18:00 hàng ngày</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-ticket-alt text-emerald-600"></i>
+                                    <span class="text-gray-700"><strong>Vé vào cửa:</strong> 50.000 VNĐ/người lớn</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-car text-emerald-600"></i>
+                                    <span class="text-gray-700"><strong>Phương tiện:</strong> Xe máy, ô tô, thuyền</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-phone text-emerald-600"></i>
+                                    <span class="text-gray-700"><strong>Liên hệ:</strong> 0294.123.456</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Activities Section -->
+    <section class="py-16 bg-gradient-to-br from-emerald-50 to-green-50 fade-in">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-hiking text-emerald-600 mr-3"></i>
+                    Hoạt động trải nghiệm
+                </h2>
+                <p class="text-gray-600 text-lg">Khám phá những hoạt động thú vị tại Khu du lịch Huỳnh Kha</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-ship text-emerald-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">Chèo thuyền Kayak</h3>
+                    <p class="text-gray-600 text-sm">Khám phá kênh rạch và ngắm cảnh thiên nhiên</p>
+                </div>
+
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-hiking text-emerald-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">Trekking rừng tràm</h3>
+                    <p class="text-gray-600 text-sm">Đi bộ khám phá rừng tràm nguyên sinh</p>
+                </div>
+
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-binoculars text-emerald-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">Quan sát động vật</h3>
+                    <p class="text-gray-600 text-sm">Ngắm nhìn các loài chim và động vật hoang dã</p>
+                </div>
+
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-fish text-emerald-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">Câu cá sinh thái</h3>
+                    <p class="text-gray-600 text-sm">Trải nghiệm câu cá trong môi trường tự nhiên</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tips Section -->
+    <section class="py-16 bg-gradient-to-r from-emerald-600 via-green-600 to-green-700 text-white fade-in">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4">
+                    <i class="fas fa-lightbulb mr-3"></i>
+                    Lời khuyên cho du khách
+                </h2>
+                <p class="text-emerald-100 text-lg">Những điều cần biết khi tham quan Khu du lịch Huỳnh Kha</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white bg-opacity-10 rounded-2xl p-6 backdrop-blur-sm">
+                    <h3 class="text-xl font-bold mb-4">
+                        <i class="fas fa-clock mr-2"></i>Thời gian tốt nhất
+                    </h3>
+                    <ul class="space-y-2">
+                        <li>• Sáng sớm (6:00-8:00): Không khí trong lành, động vật hoạt động</li>
+                        <li>• Chiều tà (16:00-18:00): Ánh nắng đẹp, nhiệt độ dễ chịu</li>
+                        <li>• Mùa khô (11-4): Đường đi thuận lợi, ít mưa</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white bg-opacity-10 rounded-2xl p-6 backdrop-blur-sm">
+                    <h3 class="text-xl font-bold mb-4">
+                        <i class="fas fa-backpack mr-2"></i>Chuẩn bị
+                    </h3>
+                    <ul class="space-y-2">
+                        <li>• Mang theo thuốc chống muỗi và kem chống nắng</li>
+                        <li>• Mặc quần áo dài tay, giày chống trượt</li>
+                        <li>• Chuẩn bị nước uống và đồ ăn nhẹ</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white bg-opacity-10 rounded-2xl p-6 backdrop-blur-sm">
+                    <h3 class="text-xl font-bold mb-4">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>Lưu ý quan trọng
+                    </h3>
+                    <ul class="space-y-2">
+                        <li>• Không xả rác, bảo vệ môi trường</li>
+                        <li>• Không làm phiền động vật hoang dã</li>
+                        <li>• Tuân thủ hướng dẫn của nhân viên</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="">
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-pagoda text-2xl mr-2"></i>
+                        <h3 class="text-xl font-bold">Du lịch Trà Vinh</h3>
+                    </div>
+                    <p class="text-gray-300">Khám phá vẻ đẹp độc đáo của đồng bằng sông Cửu Long</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Liên kết nhanh</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white transition duration-300">Trang chủ</a></li>
+                        <li><a href="gioi-thieu.html" class="text-gray-400 hover:text-white transition duration-300">Giới thiệu</a></li>
+                        <li><a href="dia-diem.html" class="text-gray-400 hover:text-white transition duration-300">Địa điểm</a></li>
+                        <li><a href="lien-he.html" class="text-gray-400 hover:text-white transition duration-300">Liên hệ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Địa điểm nổi bật</h3>
+                    <ul class="space-y-2">
+                        <li><a href="ao-ba-om.html" class="text-gray-400 hover:text-white transition duration-300">Ao Bà Om</a></li>
+                        <li><a href="den-tho-bac.html" class="text-gray-400 hover:text-white transition duration-300">Đền Thờ Bác Hồ</a></li>
+                        <li><a href="chua-co.html" class="text-gray-400 hover:text-white transition duration-300">Chùa Cò</a></li>
+                        <li><a href="khu-du-lich-huynh-kha.html" class="text-gray-400 hover:text-white transition duration-300">Khu du lịch Huỳnh Kha</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Liên hệ</h3>
+                    <div class="space-y-2">
+                        <p class="text-gray-400"><i class="fas fa-phone mr-2"></i>0294.123.456</p>
+                        <p class="text-gray-400"><i class="fas fa-envelope mr-2"></i>info@dulichtravinh.com</p>
+                        <p class="text-gray-400"><i class="fas fa-map-marker-alt mr-2"></i>Trà Vinh, Việt Nam</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-400">© 2024 Du lịch Trà Vinh. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script src="components/auth-modal.js"></script>
+    <script src="components/user-manager.js"></script>
+    <script src="components/chatbot-float.js"></script>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // Image modal functions
+        function openModal(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImage.src = imageSrc;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside the image
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Back to top button
+        const backToTopButton = document.createElement('button');
+        backToTopButton.innerHTML = '<i class="fas fa-chevron-up"></i>';
+        backToTopButton.className = 'fixed bottom-8 right-8 w-12 h-12 bg-emerald-600 text-white rounded-full shadow-lg hover:bg-emerald-700 transition-all duration-300 opacity-0 pointer-events-none z-50';
+        backToTopButton.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.body.appendChild(backToTopButton);
+
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTopButton.style.opacity = '1';
+                backToTopButton.style.pointerEvents = 'auto';
+            } else {
+                backToTopButton.style.opacity = '0';
+                backToTopButton.style.pointerEvents = 'none';
+            }
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero-section');
+            const speed = scrolled * 0.5;
+            parallax.style.transform = `translateY(${speed}px)`;
+        });
+
+        // Loading animation
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
+        });
+    </script>
+
+</body>
+</html>
