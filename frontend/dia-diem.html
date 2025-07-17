@@ -232,6 +232,9 @@
             document.addEventListener('click', function(e) {
                 if (e.target.closest('.details-btn')) {
                     console.log('Details button clicked!', e.target);
+                    const button = e.target.closest('.details-btn');
+                    const onclick = button.getAttribute('onclick');
+                    console.log('Button onclick:', onclick);
                 }
             });
         });
@@ -433,7 +436,12 @@
                 window.location.href = 'bao-tang-khmer.html';
                 return;
             }
-            if (id === 'DD03' || id === 'DD11') { // Chợ Trà Vinh
+            if (id === 'DD03') { // Chùa Âng
+                console.log('Redirecting to chua-ang.html');
+                window.location.href = 'chua-ang.html';
+                return;
+            }
+            if (id === 'DD11') { // Chợ Trà Vinh
                 console.log('Redirecting to cho-tra-vinh.html');
                 window.location.href = 'cho-tra-vinh.html';
                 return;
@@ -447,6 +455,16 @@
                 }
 
                 const destination = await response.json();
+
+                // Check if this is Chùa Âng by name
+                if (destination.TenDDDL && (
+                    destination.TenDDDL.toLowerCase().includes('chùa âng') ||
+                    destination.TenDDDL.toLowerCase().includes('âng')
+                )) {
+                    console.log('Found Chùa Âng by name, redirecting...');
+                    window.location.href = 'chua-ang.html';
+                    return;
+                }
 
                 // Check if this is Chợ Trà Vinh by name or specific content
                 if (destination.TenDDDL && (
