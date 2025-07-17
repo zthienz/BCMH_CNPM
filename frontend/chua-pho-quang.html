@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chùa Phổ Quang - Ngôi chùa cổ kính giữa lòng Trà Vinh | Du lịch Trà Vinh</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+    .hero-section {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(147, 51, 234, 0.9)), 
+                    url('../my-server/images/chua-pho-quang.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+    /* Copy toàn bộ style trong ao-ba-om.html từ <style> ... </style> */
+    /* ... (dán toàn bộ phần style từ ao-ba-om.html vào đây, trừ phần .hero-section) ... */
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-blue-700 shadow-lg fixed w-full top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-pagoda text-blue-100 text-2xl"></i>
+                    <a href="index.html" class="text-blue-100 text-xl font-bold">Du lịch Trà Vinh</a>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Giới thiệu</a>
+                    <a href="dia-diem.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Địa điểm</a>
+                    <a href="lien-he.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Liên hệ</a>
+                    <a href="danh-gia.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Đánh giá & Bài viết</a>
+                </div>
+                <div class="auth-buttons">
+                    <div class="flex items-center space-x-4">
+                        <button onclick="window.authModal.openLogin()" class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full hover:bg-blue-200 transition duration-300">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Đăng nhập
+                        </button>
+                        <button onclick="window.authModal.openRegister()" class="border border-blue-100 text-blue-100 px-4 py-2 rounded-full hover:bg-blue-100 hover:text-blue-700 transition duration-300">
+                            <i class="fas fa-user-plus mr-2"></i>Đăng ký
+                        </button>
+                    </div>
+                </div>
+                <button class="md:hidden text-blue-100" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            <div id="mobileMenu" class="md:hidden hidden bg-blue-800 bg-opacity-90 rounded-lg mb-4">
+                <div class="px-4 py-2 space-y-2">
+                    <a href="index.html" class="block text-blue-100 hover:text-blue-300 py-2">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="block text-blue-100 hover:text-blue-300 py-2">Giới thiệu</a>
+                    <a href="dia-diem.html" class="block text-blue-100 hover:text-blue-300 py-2">Địa điểm</a>
+                    <a href="lien-he.html" class="block text-blue-100 hover:text-blue-300 py-2">Liên hệ</a>
+                    <a href="danh-gia.html" class="block text-blue-100 hover:text-blue-300 py-2">Đánh giá & Bài viết</a>
+                    <div class="mobile-auth-buttons pt-2 border-t border-blue-700 mt-2">
+                        <button onclick="window.authModal.openLogin()" class="block w-full text-left text-blue-100 hover:text-blue-300 py-2">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Đăng nhập
+                        </button>
+                        <button onclick="window.authModal.openRegister()" class="block w-full text-left text-blue-100 hover:text-blue-300 py-2">
+                            <i class="fas fa-user-plus mr-2"></i>Đăng ký
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Hero Section -->
+    <section class="hero-section min-h-screen flex items-center justify-center text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <div class="floating-element">
+                <h1 class="text-6xl md:text-8xl font-bold mb-6 drop-shadow-2xl">
+                    Chùa Phổ Quang
+                </h1>
+                <p class="text-2xl md:text-3xl mb-8 font-light drop-shadow-lg">
+                    Ngôi chùa cổ kính giữa lòng Trà Vinh
+                </p>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6">
+                    <div class="flex items-center space-x-2 text-lg">
+                        <i class="fas fa-map-marker-alt text-blue-300"></i>
+                        <span>Phường 8, TP. Trà Vinh</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-lg">
+                        <i class="fas fa-clock text-blue-300"></i>
+                        <span>Mở cửa 6:00 - 18:00</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-lg">
+                        <i class="fas fa-ticket-alt text-blue-300"></i>
+                        <span>Miễn phí tham quan</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-3xl text-white opacity-70"></i>
+        </div>
+    </section>
+    <!-- Quick Info Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="info-card p-8 text-center">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-pagoda text-yellow-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Kiến trúc độc đáo</h3>
+                    <p class="text-gray-600">Chùa mang phong cách kiến trúc truyền thống kết hợp hiện đại, nổi bật với mái cong và tượng Phật uy nghiêm.</p>
+                </div>
+                <div class="info-card p-8 text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-leaf text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Không gian thanh tịnh</h3>
+                    <p class="text-gray-600">Khuôn viên rộng rãi, nhiều cây xanh, tạo cảm giác yên bình cho du khách và phật tử.</p>
+                </div>
+                <div class="info-card p-8 text-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-bell text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Nơi lễ hội tâm linh</h3>
+                    <p class="text-gray-600">Là địa điểm tổ chức nhiều lễ hội Phật giáo lớn của tỉnh Trà Vinh.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Main Content -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <nav class="mb-8">
+                    <ol class="flex items-center space-x-2 text-sm text-gray-500">
+                        <li><a href="index.html" class="hover:text-blue-600">Trang chủ</a></li>
+                        <li><i class="fas fa-chevron-right"></i></li>
+                        <li><a href="dia-diem.html" class="hover:text-blue-600">Địa điểm</a></li>
+                        <li><i class="fas fa-chevron-right"></i></li>
+                        <li class="text-gray-800">Chùa Phổ Quang</li>
+                    </ol>
+                </nav>
+                <article class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="p-8 md:p-12">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-800">
+                            <i class="fas fa-pagoda text-yellow-600 mr-3"></i>
+                            Khám phá Chùa Phổ Quang - Nét đẹp tâm linh giữa lòng thành phố
+                        </h2>
+                        <div class="prose prose-lg max-w-none">
+                            <p class="text-gray-700 leading-relaxed mb-6">
+                                <strong>Chùa Phổ Quang</strong> là một trong những ngôi chùa nổi tiếng và lâu đời nhất tại Trà Vinh, thu hút đông đảo phật tử và du khách thập phương đến chiêm bái, vãn cảnh mỗi năm.
+                            </p>
+                            <p class="text-gray-700 leading-relaxed mb-6">
+                                Được xây dựng từ đầu thế kỷ XX, chùa nổi bật với kiến trúc mái cong, các họa tiết rồng phượng tinh xảo và không gian thanh tịnh, xanh mát. Đây là nơi tổ chức nhiều hoạt động Phật giáo, lễ hội truyền thống và là điểm đến tâm linh không thể bỏ qua khi đến Trà Vinh.
+                            </p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <!-- Image Gallery -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">
+                    <i class="fas fa-images text-blue-600 mr-3"></i>
+                    Thư viện hình ảnh
+                </h2>
+                <p class="text-gray-600 text-lg">Khám phá vẻ đẹp của Chùa Phổ Quang qua những hình ảnh tuyệt đẹp</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('../my-server/images/chua-pho-quang.jpg')">
+                    <img src="../my-server/images/chua-pho-quang.jpg" alt="Chùa Phổ Quang toàn cảnh" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Toàn cảnh Chùa Phổ Quang</h3>
+                        <p class="text-gray-600 text-sm">Kiến trúc cổ kính, uy nghiêm</p>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('../my-server/images/chua-co.jpg')">
+                    <img src="../my-server/images/chua-co.jpg" alt="Cổng chùa Phổ Quang" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Cổng chùa</h3>
+                        <p class="text-gray-600 text-sm">Cổng tam quan đặc trưng của chùa Nam Bộ</p>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-2xl overflow-hidden shadow-lg" onclick="openModal('../my-server/images/chua-ang.jpg')">
+                    <img src="../my-server/images/chua-ang.jpg" alt="Không gian xanh mát" class="w-full h-64 object-cover">
+                    <div class="p-4 bg-white">
+                        <h3 class="font-semibold text-gray-800">Không gian xanh mát</h3>
+                        <p class="text-gray-600 text-sm">Cây xanh bao quanh tạo cảm giác yên bình</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- History & Legend -->
+    <section class="py-16 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">
+                        <i class="fas fa-book-open text-purple-600 mr-3"></i>
+                        Lịch sử & Giá trị tâm linh
+                    </h2>
+                    <p class="text-gray-600 text-lg">Tìm hiểu về lịch sử hình thành và ý nghĩa của Chùa Phổ Quang</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-8">
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Lịch sử xây dựng</h3>
+                            <p class="text-gray-700">Chùa được xây dựng từ đầu thế kỷ XX, trải qua nhiều lần trùng tu nhưng vẫn giữ được nét kiến trúc truyền thống đặc trưng.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Giá trị tâm linh</h3>
+                            <p class="text-gray-700">Là nơi sinh hoạt tín ngưỡng, tổ chức các lễ hội lớn như lễ Phật Đản, Vu Lan, cầu an đầu năm...</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Kiến trúc đặc sắc</h3>
+                            <p class="text-gray-700">Mái cong, tượng Phật lớn, các họa tiết rồng phượng, phù điêu tinh xảo tạo nên vẻ đẹp riêng biệt cho chùa.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3 class="text-xl font-bold mb-2 text-gray-800">Bảo tồn văn hóa</h3>
+                            <p class="text-gray-700">Chùa là nơi lưu giữ, truyền dạy giáo lý Phật giáo và các giá trị văn hóa truyền thống cho thế hệ trẻ.</p>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="bg-white rounded-2xl shadow-xl p-8">
+                            <div class="text-center mb-6">
+                                <div class="w-20 h-20 bg-gradient-to-br from-yellow-400 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-pagoda text-white text-3xl"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-800">Thông tin quan trọng</h3>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-map-marker-alt text-blue-600"></i>
+                                    <span class="text-gray-700"><strong>Địa chỉ:</strong> Phường 8, TP. Trà Vinh</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-clock text-green-600"></i>
+                                    <span class="text-gray-700"><strong>Giờ mở cửa:</strong> 6:00 - 18:00</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-ticket-alt text-purple-600"></i>
+                                    <span class="text-gray-700"><strong>Phí tham quan:</strong> Miễn phí</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-route text-orange-600"></i>
+                                    <span class="text-gray-700"><strong>Cách trung tâm:</strong> 2km từ trung tâm TP. Trà Vinh</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-calendar-alt text-red-600"></i>
+                                    <span class="text-gray-700"><strong>Thời gian lý tưởng:</strong> Lễ Phật Đản, Vu Lan, đầu năm</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Activities Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">
+                    <i class="fas fa-hiking text-green-600 mr-3"></i>
+                    Hoạt động tại Chùa Phổ Quang
+                </h2>
+                <p class="text-gray-600 text-lg">Những trải nghiệm ý nghĩa dành cho du khách và phật tử</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-pray text-yellow-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">Lễ Phật</h3>
+                    <p class="text-gray-600 text-sm">Tham gia các nghi lễ Phật giáo, cầu an, cầu phúc</p>
+                </div>
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-leaf text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">Tham quan vãn cảnh</h3>
+                    <p class="text-gray-600 text-sm">Dạo bộ, ngắm cảnh, tận hưởng không gian yên bình</p>
+                </div>
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-bell text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">Tham gia lễ hội</h3>
+                    <p class="text-gray-600 text-sm">Hòa mình vào không khí lễ hội truyền thống, nghe giảng pháp</p>
+                </div>
+                <div class="info-card p-6 text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-camera text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">Chụp ảnh lưu niệm</h3>
+                    <p class="text-gray-600 text-sm">Ghi lại những khoảnh khắc đẹp tại chùa</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Tips Section -->
+    <section class="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8">
+                    <i class="fas fa-lightbulb mr-3"></i>
+                    Lời khuyên cho du khách
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white bg-opacity-10 rounded-2xl p-6 backdrop-blur-sm">
+                        <h3 class="text-xl font-bold mb-4">
+                            <i class="fas fa-clock mr-2"></i>Thời gian tốt nhất
+                        </h3>
+                        <ul class="text-left space-y-2">
+                            <li>• Buổi sáng: Không khí trong lành, thích hợp lễ Phật</li>
+                            <li>• Ngày lễ lớn: Tham gia các hoạt động, lễ hội</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-2xl p-6 backdrop-blur-sm">
+                        <h3 class="text-xl font-bold mb-4">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>Lưu ý quan trọng
+                        </h3>
+                        <ul class="text-left space-y-2">
+                            <li>• Ăn mặc lịch sự, kín đáo khi vào chùa</li>
+                            <li>• Giữ trật tự, tôn trọng không gian tâm linh</li>
+                            <li>• Không xả rác, bảo vệ cảnh quan chùa</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="">
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-pagoda text-blue-400 text-2xl"></i>
+                        <span class="text-xl font-bold">Du lịch Trà Vinh</span>
+                    </div>
+                    <p class="text-gray-400">Khám phá vẻ đẹp văn hóa và thiên nhiên của Trà Vinh</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Liên kết nhanh</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white">Trang chủ</a></li>
+                        <li><a href="dia-diem.html" class="text-gray-400 hover:text-white">Địa điểm</a></li>
+                        <li><a href="gioi-thieu.html" class="text-gray-400 hover:text-white">Giới thiệu</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Địa điểm nổi bật</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Chùa Ang</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Rừng dừa Bảy Mẫu</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Biển Ba Động</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Liên hệ</h3>
+                    <div class="space-y-2">
+                        <p class="text-gray-400"><i class="fas fa-phone mr-2"></i>0294.123.456</p>
+                        <p class="text-gray-400"><i class="fas fa-envelope mr-2"></i>info@dulichtravinh.com</p>
+                        <p class="text-gray-400"><i class="fas fa-map-marker-alt mr-2"></i>Trà Vinh, Việt Nam</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2024 Du lịch Trà Vinh. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+    <script src="components/auth-modal.js"></script>
+    <script src="components/user-manager.js"></script>
+    <script src="components/chatbot-float.js"></script>
+    <script>
+        // Copy toàn bộ script trong ao-ba-om.html vào đây
+        // ... (dán toàn bộ phần script từ ao-ba-om.html vào đây) ...
+    </script>
+    <!-- Location Button & Map Popup -->
+    <button id="locationBtn" class="fixed bottom-24 right-6 w-14 h-14 rounded-full bg-green-600 shadow-lg flex items-center justify-center text-white text-2xl z-50 hover:bg-green-700 focus:outline-none">
+        <i class="fas fa-location-dot"></i>
+    </button>
+    <div id="mapPopup" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl p-4 relative w-full max-w-xl">
+            <button onclick="closeMapPopup()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl focus:outline-none"><i class="fas fa-times"></i></button>
+            <h2 class="text-xl font-bold mb-2 text-green-700 text-center">Bản đồ vị trí Chùa Phổ Quang</h2>
+            <div class="w-full h-80 rounded-lg overflow-hidden">
+                <iframe src="https://www.google.com/maps?q=chùa phổ quang trà vinh&output=embed" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('locationBtn').onclick = function() {
+            document.getElementById('mapPopup').classList.remove('hidden');
+        }
+        function closeMapPopup() {
+            document.getElementById('mapPopup').classList.add('hidden');
+        }
+    </script>
+</body>
+</html> 
