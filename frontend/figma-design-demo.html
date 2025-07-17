@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figma Design Demo - Du lịch Trà Vinh</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        /* Custom Design System */
+        :root {
+            --primary-blue: #1D4ED8;
+            --light-blue: #3B82F6;
+            --blue-light: #DBEAFE;
+            --dark-gray: #1F2937;
+            --medium-gray: #6B7280;
+            --light-gray: #F9FAFB;
+            --success-green: #10B981;
+            --warning-yellow: #F59E0B;
+            --purple-start: #667eea;
+            --purple-end: #764ba2;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--light-gray);
+        }
+
+        /* Design Showcase Styles */
+        .design-section {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .design-header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
+            color: white;
+            padding: 1.5rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .design-content {
+            padding: 2rem;
+        }
+
+        /* Color Palette Display */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .color-swatch {
+            height: 80px;
+            border-radius: 8px;
+            display: flex;
+            align-items: end;
+            padding: 0.5rem;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Typography Display */
+        .typography-sample {
+            margin: 1rem 0;
+            padding: 1rem;
+            border-left: 4px solid var(--primary-blue);
+            background: #f8fafc;
+        }
+
+        /* Component Preview */
+        .component-preview {
+            border: 2px dashed #e5e7eb;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 1rem 0;
+            background: #fafafa;
+        }
+
+        /* Navigation Preview */
+        .nav-preview {
+            background: var(--primary-blue);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: #DBEAFE;
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #93C5FD;
+        }
+
+        /* Hero Preview */
+        .hero-preview {
+            background: linear-gradient(rgba(29, 78, 216, 0.18), rgba(29, 78, 216, 0.18)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%2310B981" width="1200" height="600"/><text x="600" y="300" text-anchor="middle" fill="white" font-size="48" font-family="Arial">Ao Bà Om Background</text></svg>');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 24px rgba(0,0,0,0.25);
+            letter-spacing: 0.08em;
+        }
+
+        .hero-subtitle {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary-blue);
+            padding: 1rem 2.5rem;
+            border-radius: 9999px;
+            font-weight: 800;
+            text-decoration: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary {
+            border: 4px solid white;
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 9999px;
+            font-weight: 800;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #DBEAFE;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: var(--primary-blue);
+        }
+
+        /* Feature Cards */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .feature-card.culture {
+            background: linear-gradient(to bottom, #DBEAFE, white);
+        }
+
+        .feature-card.nature {
+            background: linear-gradient(to bottom, #D1FAE5, white);
+        }
+
+        .feature-card.food {
+            background: linear-gradient(to bottom, #FEF3C7, white);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-icon.culture { color: var(--light-blue); }
+        .feature-icon.nature { color: var(--success-green); }
+        .feature-icon.food { color: var(--warning-yellow); }
+
+        /* Floating Elements */
+        .floating-demo {
+            position: relative;
+            height: 200px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .chatbot-toggle {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple-start), var(--purple-end));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .location-btn {
+            position: absolute;
+            bottom: 5rem;
+            right: 1rem;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--success-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .location-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Animation */
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Code Display */
+        .code-block {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .spec-table th,
+        .spec-table td {
+            border: 1px solid #e5e7eb;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .spec-table th {
+            background: #f9fafb;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-palette text-blue-600 mr-3"></i>
+                Figma Design Demo - Du lịch Trà Vinh
+            </h1>
+            <p class="text-xl text-gray-600">Thiết kế UI/UX hoàn chỉnh dựa trên phân tích website hiện tại</p>
+        </div>
+
+        <!-- Design System -->
+        <div class="design-section fade-in">
+            <div class="design-header">
+                <i class="fas fa-swatchbook mr-2"></i>
+                1. Design System - Hệ thống thiết kế
+            </div>
+            <div class="design-content">
+                <h3 class="text-xl font-bold mb-4">🎨 Color Palette</h3>
+                <div class="color-grid">
+                    <div class="color-swatch" style="background: #1D4ED8;">Primary Blue<br>#1D4ED8</div>
+                    <div class="color-swatch" style="background: #3B82F6;">Light Blue<br>#3B82F6</div>
+                    <div class="color-swatch" style="background: #DBEAFE; color: #1D4ED8;">Blue Light<br>#DBEAFE</div>
+                    <div class="color-swatch" style="background: #1F2937;">Dark Gray<br>#1F2937</div>
+                    <div class="color-swatch" style="background: #10B981;">Success Green<br>#10B981</div>
+                    <div class="color-swatch" style="background: #F59E0B;">Warning Yellow<br>#F59E0B</div>
+                    <div class="color-swatch" style="background: linear-gradient(135deg, #667eea, #764ba2);">Purple Gradient<br>#667eea → #764ba2</div>
+                </div>
+
+                <h3 class="text-xl font-bold mb-4 mt-8">🔤 Typography Scale</h3>
+                <div class="typography-sample">
+                    <div style="font-size: 4rem; font-weight: 800; line-height: 1.1; letter-spacing: 0.08em;">H1 Hero Title</div>
+                    <small>96px/104px, font-weight: 800, letter-spacing: 0.08em</small>
+                </div>
+                <div class="typography-sample">
+                    <div style="font-size: 3rem; font-weight: 700;">H2 Section Title</div>
+                    <small>48px/56px, font-weight: 700</small>
+                </div>
+                <div class="typography-sample">
+                    <div style="font-size: 1.5rem; font-weight: 600;">H3 Card Title</div>
+                    <small>24px/32px, font-weight: 600</small>
+                </div>
+                <div class="typography-sample">
+                    <div style="font-size: 1.25rem;">Body Large Text</div>
+                    <small>20px/28px, font-weight: 400</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Component -->
+        <div class="design-section fade-in">
+            <div class="design-header">
+                <i class="fas fa-bars mr-2"></i>
+                2. Navigation Component - Thanh điều hướng
+            </div>
+            <div class="design-content">
+                <div class="component-preview">
+                    <div class="nav-preview">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-pagoda text-2xl"></i>
+                            <span class="text-xl font-bold">Du lịch Trà Vinh</span>
+                        </div>
+                        <div class="nav-links">
+                            <a href="#" class="nav-link">Trang chủ</a>
+                            <a href="#" class="nav-link">Giới thiệu</a>
+                            <a href="#" class="nav-link">Địa điểm</a>
+                            <a href="#" class="nav-link">Liên hệ</a>
+                            <a href="#" class="nav-link">Đánh giá & Bài viết</a>
+                        </div>
+                        <div class="flex space-x-4">
+                            <button class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold">
+                                <i class="fas fa-sign-in-alt mr-2"></i>Đăng nhập
+                            </button>
+                            <button class="border border-blue-100 text-blue-100 px-4 py-2 rounded-full font-semibold">
+                                <i class="fas fa-user-plus mr-2"></i>Đăng ký
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="code-block">
+/* Navigation Specifications */
+Height: 80px (fixed)
+Background: #1D4ED8 (Primary Blue)
+Logo: fas fa-pagoda + "Du lịch Trà Vinh"
+Links: 18px, font-weight: 700, spacing: 24px
+Auth Buttons: rounded-full, 16px padding
+Mobile: Hamburger menu toggle
+                </div>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="design-section fade-in">
+            <div class="design-header">
+                <i class="fas fa-mountain mr-2"></i>
+                3. Hero Section - Phần giới thiệu chính
+            </div>
+            <div class="design-content">
+                <div class="component-preview">
+                    <div class="hero-preview">
+                        <div class="hero-content">
+                            <h1>Trà Vinh</h1>
+                            <div class="hero-subtitle">
+                                Khám phá vẻ đẹp <span style="color: #FEF3C7; font-weight: bold;">độc đáo</span> của đồng bằng sông Cửu Long
+                            </div>
+                            <div class="cta-buttons">
+                                <a href="#" class="btn-primary">
+                                    <i class="fas fa-map-marked-alt mr-2"></i>
+                                    Khám phá ngay
+                                </a>
+                                <a href="#" class="btn-secondary">
+                                    <i class="fas fa-info-circle mr-2"></i>
+                                    Tìm hiểu thêm
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="code-block">
+/* Hero Section Specifications */
+Height: 100vh (full viewport)
+Background: Ao Bà Om image + rgba(16, 52, 166, 0.18) overlay
+Title: 96px desktop / 64px mobile, font-weight: 800
+Subtitle: backdrop-filter blur, white opacity 20%
+CTA Buttons: 40px padding, rounded-full, shadow-xl
+Text-shadow: 0 4px 24px rgba(0,0,0,0.25)
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="design-section fade-in">
+            <div class="design-header">
+                <i class="fas fa-star mr-2"></i>
+                4. Features Section - Tính năng nổi bật
+            </div>
+            <div class="design-content">
+                <h2 class="text-4xl font-bold text-center mb-8 text-gray-800">Tại sao chọn Trà Vinh?</h2>
+                <div class="features-grid">
+                    <div class="feature-card culture">
+                        <i class="fas fa-landmark feature-icon culture"></i>
+                        <h3 class="text-xl font-bold mb-4">Văn hóa đa dạng</h3>
+                        <p class="text-gray-600">Khám phá sự hòa quyện độc đáo giữa văn hóa Kinh, Khmer và Hoa</p>
+                    </div>
+                    <div class="feature-card nature">
+                        <i class="fas fa-leaf feature-icon nature"></i>
+                        <h3 class="text-xl font-bold mb-4">Thiên nhiên hoang sơ</h3>
+                        <p class="text-gray-600">Trải nghiệm cảnh quan đồng bằng sông nước tuyệt đẹp</p>
+                    </div>
+                    <div class="feature-card food">
+                        <i class="fas fa-utensils feature-icon food"></i>
+                        <h3 class="text-xl font-bold mb-4">Ẩm thực đặc sắc</h3>
+                        <p class="text-gray-600">Thưởng thức các món ăn truyền thống với hương vị đậm đà</p>
+                    </div>
+                </div>
+                <div class="code-block">
+/* Features Section Specifications */
+Layout: CSS Grid, 3 columns, gap: 32px
+Card Background: gradient from color-50 to white
+Card Padding: 24px, border-radius: 8px
+Icons: 48px, colors: blue-600, green-600, yellow-600
+Title: 24px, font-weight: 700
+Description: 16px, color: gray-600
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Elements -->
+        <div class="design-section fade-in">
+            <div class="design-header">
+                <i class="fas fa-comment-dots mr-2"></i>
+                5. Floating Elements - Các thành phần nổi
+            </div>
+            <div class="design-content">
+                <div class="component-preview">
+                    <div class="floating-demo">
+                        <div class="text-center pt-16 text-gray-500">
+                            <i class="fas fa-desktop text-4xl mb-4"></i>
+                            <p>Website Content Area</p>
+                            <p class="text-sm">Floating elements positioned at bottom-right</p>
+                        </div>
+                        <div class="location-btn">
+                            <i class="fas fa-location-dot"></i>
+                        </div>
+                        <div class="chatbot-toggle">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="code-block">
+/* Floating Elements Specifications */
+Chatbot Toggle:
+- Size: 64px circle
+- Background: linear-gradient(135deg, #667eea, #764ba2)
+- Position: fixed, bottom: 24px, right: 24px
+- Hover: scale(1.1)
+
+Location Button:
+- Size: 56px circle
+- Background: #10B981 (Success Green)
+- Position: above chatbot
+- Hover: #059669 + translateY(-2px)
+                </div>
+            </div>
+        </div>
+
+        <!-- Layout Specifications -->
+        <div class="design-section fade-in">
+            <div class="design-header">
+                <i class="fas fa-ruler-combined mr-2"></i>
+                6. Layout & Responsive Specifications
+            </div>
+            <div class="design-content">
+                <table class="spec-table">
+                    <thead>
+                        <tr>
+                            <th>Breakpoint</th>
+                            <th>Width</th>
+                            <th>Container</th>
+                            <th>Grid</th>
+                            <th>Changes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>📱 Mobile</td>
+                            <td>0-767px</td>
+                            <td>100% - 32px</td>
+                            <td>1 column</td>
+                            <td>Stack layout, mobile menu, smaller text</td>
+                        </tr>
+                        <tr>
+                            <td>💻 Tablet</td>
+                            <td>768-1023px</td>
+                            <td>100% - 48px</td>
+                            <td>2 columns</td>
+                            <td>2-column features, adjusted spacing</td>
+                        </tr>
+                        <tr>
+                            <td>🖥️ Desktop</td>
+                            <td>1024px+</td>
+                            <td>1200px max</td>
+                            <td>3+ columns</td>
+                            <td>Full layout, horizontal nav</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 class="text-xl font-bold mb-4 mt-8">📐 Grid System</h3>
+                <div class="code-block">
+Container: 1200px max-width, centered
+Grid: 12 columns system
+Gutters: 24px between columns
+Margins: 24px on mobile, 48px on desktop
+Vertical Rhythm: 8px base unit (8, 16, 24, 32, 48, 64px)
+                </div>
+            </div>
+        </div>
+
+        <!-- Component Library -->
+        <div class="design-section fade-in">
+            <div class="design-header">
+                <i class="fas fa-puzzle-piece mr-2"></i>
+                7. Component Library - Thư viện thành phần
+            </div>
+            <div class="design-content">
+                <h3 class="text-xl font-bold mb-4">🔘 Button Components</h3>
+                <div class="flex flex-wrap gap-4 mb-6">
+                    <button class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">Primary Button</button>
+                    <button class="border-2 border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 hover:text-white transition">Secondary Button</button>
+                    <button class="bg-green-600 text-white px-4 py-2 rounded-full font-semibold hover:bg-green-700 transition">Success Button</button>
+                    <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded font-semibold hover:bg-gray-300 transition">Neutral Button</button>
+                </div>
+
+                <h3 class="text-xl font-bold mb-4">📝 Form Components</h3>
+                <div class="grid md:grid-cols-2 gap-4 mb-6">
+                    <input type="text" placeholder="Text Input" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        <option>Select Option</option>
+                    </select>
+                </div>
+
+                <h3 class="text-xl font-bold mb-4">🏷️ Badge Components</h3>
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">Primary</span>
+                    <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Success</span>
+                    <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-semibold">Warning</span>
+                    <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">Error</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="design-section fade-in">
+            <div class="design-header">
+                <i class="fas fa-grip-horizontal mr-2"></i>
+                8. Footer Component
+            </div>
+            <div class="design-content">
+                <div class="component-preview">
+                    <footer class="bg-gray-800 text-white p-8 rounded-lg">
+                        <div class="grid md:grid-cols-4 gap-8">
+                            <div>
+                                <div class="flex items-center mb-4">
+                                    <i class="fas fa-pagoda text-2xl mr-2"></i>
+                                    <h3 class="text-xl font-bold">Du lịch Trà Vinh</h3>
+                                </div>
+                                <p class="text-gray-300">Khám phá vẻ đẹp độc đáo của đồng bằng sông Cửu Long</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-4">Liên kết nhanh</h4>
+                                <ul class="space-y-2 text-gray-300">
+                                    <li><a href="#" class="hover:text-white transition">Trang chủ</a></li>
+                                    <li><a href="#" class="hover:text-white transition">Giới thiệu</a></li>
+                                    <li><a href="#" class="hover:text-white transition">Địa điểm</a></li>
+                                    <li><a href="#" class="hover:text-white transition">Liên hệ</a></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-4">Dịch vụ</h4>
+                                <ul class="space-y-2 text-gray-300">
+                                    <li><a href="#" class="hover:text-white transition">Tour du lịch</a></li>
+                                    <li><a href="#" class="hover:text-white transition">Đặt phòng</a></li>
+                                    <li><a href="#" class="hover:text-white transition">Thuê xe</a></li>
+                                    <li><a href="#" class="hover:text-white transition">Hướng dẫn viên</a></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-4">Theo dõi chúng tôi</h4>
+                                <div class="flex space-x-4">
+                                    <a href="#" class="text-gray-300 hover:text-white text-xl transition"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#" class="text-gray-300 hover:text-white text-xl transition"><i class="fab fa-twitter"></i></a>
+                                    <a href="#" class="text-gray-300 hover:text-white text-xl transition"><i class="fab fa-instagram"></i></a>
+                                    <a href="#" class="text-gray-300 hover:text-white text-xl transition"><i class="fab fa-youtube"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+                            <p>© 2024 Du lịch Trà Vinh. Tất cả quyền được bảo lưu.</p>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="design-section fade-in">
+            <div class="design-header">
+                <i class="fas fa-check-circle mr-2"></i>
+                9. Design Summary - Tổng kết thiết kế
+            </div>
+            <div class="design-content">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 text-green-600">✅ Điểm mạnh của thiết kế</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li>• <strong>Modern & Clean:</strong> Thiết kế hiện đại, gọn gàng</li>
+                            <li>• <strong>Responsive:</strong> Tương thích mọi thiết bị</li>
+                            <li>• <strong>Accessible:</strong> Dễ sử dụng cho mọi người</li>
+                            <li>• <strong>Brand Consistent:</strong> Nhất quán về thương hiệu</li>
+                            <li>• <strong>Performance:</strong> Tối ưu tốc độ tải</li>
+                            <li>• <strong>Interactive:</strong> Tương tác mượt mà</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 text-blue-600">🎯 Key Features</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li>• <strong>Hero Section:</strong> Ấn tượng với background image</li>
+                            <li>• <strong>Navigation:</strong> Rõ ràng, dễ điều hướng</li>
+                            <li>• <strong>Feature Cards:</strong> Highlight điểm mạnh</li>
+                            <li>• <strong>AI Chatbot:</strong> Hỗ trợ khách hàng 24/7</li>
+                            <li>• <strong>Location Map:</strong> Tích hợp Google Maps</li>
+                            <li>• <strong>Authentication:</strong> Đăng nhập/đăng ký</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-6 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                    <h4 class="font-bold text-blue-800 mb-2">📋 Figma File Structure</h4>
+                    <div class="text-sm text-blue-700">
+                        <p><strong>📁 Du lịch Trà Vinh Website</strong></p>
+                        <p class="ml-4">├── 🎨 Design System (Colors, Typography, Icons)</p>
+                        <p class="ml-4">├── 📱 Mobile Design (375px)</p>
+                        <p class="ml-4">├── 💻 Desktop Design (1440px)</p>
+                        <p class="ml-4">├── 🧩 Component Library</p>
+                        <p class="ml-4">└── 🎯 Prototyping & Interactions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="text-center mt-12 p-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl text-white">
+            <h2 class="text-3xl font-bold mb-4">🚀 Ready to Build?</h2>
+            <p class="text-xl mb-6">Thiết kế này sẵn sàng để implement thành website thực tế!</p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="index.html" class="bg-white text-blue-600 px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition">
+                    <i class="fas fa-eye mr-2"></i>Xem Website Hiện Tại
+                </a>
+                <a href="#" class="border-2 border-white text-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-blue-600 transition">
+                    <i class="fab fa-figma mr-2"></i>Tạo Figma File
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add smooth scrolling and animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate elements on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all design sections
+            document.querySelectorAll('.design-section').forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                section.style.transition = 'all 0.6s ease';
+                observer.observe(section);
+            });
+
+            // Add click effects to interactive elements
+            document.querySelectorAll('button, .nav-link').forEach(element => {
+                element.addEventListener('click', function(e) {
+                    // Create ripple effect
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+
+                    this.appendChild(ripple);
+
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+        });
+    </script>
+
+    <style>
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</body>
+</html>
