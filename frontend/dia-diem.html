@@ -85,17 +85,6 @@
                             >
                         </div>
 
-                        <!-- Category Filter -->
-                        <div class="md:w-64">
-                            <select
-                                id="categoryFilter"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-300"
-                            >
-                                <option value="">Tất cả loại hình</option>
-                                <!-- Options will be loaded dynamically from database -->
-                            </select>
-                        </div>
-
                         <!-- Search Button -->
                         <button
                             id="searchBtn"
@@ -238,6 +227,13 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadCategories();
             loadDestinations();
+
+            // Add click event listener for debugging
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.details-btn')) {
+                    console.log('Details button clicked!', e.target);
+                }
+            });
         });
 
         // Search functionality
@@ -426,9 +422,20 @@
 
         // View destination details
         async function viewDestinationDetails(id) {
-            // Special handling for Ao Bà Om - redirect to dedicated page
-            if (id === 'DD15') { // Assuming DD15 is the ID for Ao Bà Om
+            console.log('viewDestinationDetails called with ID:', id);
+
+            // Special handling for dedicated pages
+            if (id === 'DD15') { // Ao Bà Om
                 window.location.href = 'ao-ba-om.html';
+                return;
+            }
+            if (id === 'DD04') { // Bảo tàng Văn hóa Khmer
+                window.location.href = 'bao-tang-khmer.html';
+                return;
+            }
+            if (id === 'DD03' || id === 'DD11') { // Chợ Trà Vinh
+                console.log('Redirecting to cho-tra-vinh.html');
+                window.location.href = 'cho-tra-vinh.html';
                 return;
             }
 
@@ -440,6 +447,17 @@
                 }
 
                 const destination = await response.json();
+
+                // Check if this is Chợ Trà Vinh by name or specific content
+                if (destination.TenDDDL && (
+                    destination.TenDDDL.toLowerCase().includes('chợ') ||
+                    destination.TenDDDL.toLowerCase().includes('trà vinh')
+                )) {
+                    console.log('Found Chợ Trà Vinh by name, redirecting...');
+                    window.location.href = 'cho-tra-vinh.html';
+                    return;
+                }
+
                 showDestinationModal(destination);
 
             } catch (error) {
