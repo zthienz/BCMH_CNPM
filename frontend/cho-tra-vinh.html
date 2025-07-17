@@ -1152,14 +1152,25 @@
         <i class="fas fa-location-dot"></i>
     </button>
 
+    <div class="fixed bottom-24 right-6 z-50 w-[90vw] max-w-xl" id="mapModal" style="display:none;">
+        <div class="bg-white rounded-2xl shadow-2xl border-2 border-green-600 relative">
+            <button onclick="document.getElementById('mapModal').style.display='none'" class="absolute top-2 right-2 text-gray-600 hover:text-red-500 text-2xl z-10">
+                <i class="fas fa-times"></i>
+            </button>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3929.9848640184173!2d106.34065137523365!3d9.935216990166936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a017543aee1d03%3A0xd4993464099847f5!2zQ2jhu6MgVHLDoCBWaW5oLCBQaMaw4budbmcgMywgVHLDoCBWaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1752770861075!5m2!1svi!2s" width="100%" height="450" style="border:0; border-radius: 1rem;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
     <script>
         document.getElementById('locationBtn').addEventListener('click', function() {
-            // Tọa độ của Chợ Trà Vinh
-            const lat = 9.9351;
-            const lng = 106.3432;
-
-            // Mở Google Maps
-            window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank');
+            // Hiển thị modal bản đồ Google Maps nhúng
+            document.getElementById('mapModal').style.display = 'block';
+        });
+        // Đóng modal khi nhấn ra ngoài (nâng cao trải nghiệm)
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('mapModal');
+            if (modal && modal.style.display === 'block' && !modal.contains(e.target) && e.target.id !== 'locationBtn') {
+                modal.style.display = 'none';
+            }
         });
     </script>
 </body>
