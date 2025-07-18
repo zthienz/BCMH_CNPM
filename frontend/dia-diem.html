@@ -476,6 +476,11 @@
                 window.location.href = 'cho-tra-vinh.html';
                 return;
             }
+            if (id === 'DD12') { // Giáo đường Mặc Bắc
+                console.log('Redirecting to giao-duong-mac-bac.html');
+                window.location.href = 'giao-duong-mac-bac.html';
+                return;
+            }
             if (id === 'DD14') { // Đền thờ Bác Hồ
                 console.log('Redirecting to den-tho-bac.html');
                 window.location.href = 'den-tho-bac.html';
@@ -564,6 +569,18 @@
                 )) {
                     console.log('Found Chùa Âng by name, redirecting...');
                     window.location.href = 'chua-ang.html';
+                    return;
+                }
+
+                // Check if this is Giáo đường Mặc Bắc by name
+                if (destination.TenDDDL && (
+                    destination.TenDDDL.toLowerCase().includes('giáo đường mặc bắc') ||
+                    destination.TenDDDL.toLowerCase().includes('mặc bắc') ||
+                    destination.TenDDDL.toLowerCase().includes('giáo đường') ||
+                    destination.TenDDDL.toLowerCase().includes('nhà thờ')
+                )) {
+                    console.log('Found Giáo đường Mặc Bắc by name, redirecting...');
+                    window.location.href = 'giao-duong-mac-bac.html';
                     return;
                 }
 
