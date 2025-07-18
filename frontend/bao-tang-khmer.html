@@ -1093,19 +1093,27 @@
     </script>
 
     <!-- Location Button -->
+    <!-- Nút vị trí nổi góc phải dưới -->
     <button id="locationBtn" class="fixed bottom-24 right-6 w-14 h-14 rounded-full bg-green-600 shadow-lg flex items-center justify-center text-white text-2xl z-50 hover:bg-green-700 focus:outline-none">
         <i class="fas fa-location-dot"></i>
     </button>
-
+    <!-- Popup bản đồ -->
+    <div id="mapPopup" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl p-4 relative w-full max-w-xl">
+            <button onclick="closeMapPopup()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl focus:outline-none"><i class="fas fa-times"></i></button>
+            <h2 class="text-xl font-bold mb-2 text-green-700 text-center">Bản đồ vị trí Bảo tàng Văn hóa Khmer</h2>
+            <div class="w-full h-80 rounded-lg overflow-hidden">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3930.2132980489473!2d106.30244187523331!3d9.916185790184993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a017194c649b2b%3A0x2cc0e5910c2ee12f!2zQuG6o28gVMOgbmcgVsSDbiBIw7NhIETDom4gVOG7mWMgS2htZXI!5e0!3m2!1svi!2s!4v1752817925145!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
     <script>
-        document.getElementById('locationBtn').addEventListener('click', function() {
-            // Tọa độ của Bảo tàng Văn hóa Khmer
-            const lat = 9.9342;
-            const lng = 106.3425;
-
-            // Mở Google Maps
-            window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank');
-        });
+        document.getElementById('locationBtn').onclick = function() {
+            document.getElementById('mapPopup').classList.remove('hidden');
+        }
+        function closeMapPopup() {
+            document.getElementById('mapPopup').classList.add('hidden');
+        }
     </script>
 </body>
 </html>
