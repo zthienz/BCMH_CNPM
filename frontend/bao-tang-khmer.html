@@ -1035,22 +1035,7 @@
         // Initialize floating elements
         createFloatingElements();
 
-        // Back to top button
-        const backToTopButton = document.createElement('button');
-        backToTopButton.innerHTML = '<i class="fas fa-chevron-up"></i>';
-        backToTopButton.className = 'fixed bottom-32 right-6 w-12 h-12 bg-purple-600 text-white rounded-full shadow-lg hover:bg-purple-700 transition-all duration-300 opacity-0 pointer-events-none z-40';
-        backToTopButton.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-        document.body.appendChild(backToTopButton);
 
-        window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 300) {
-                backToTopButton.style.opacity = '1';
-                backToTopButton.style.pointerEvents = 'auto';
-            } else {
-                backToTopButton.style.opacity = '0';
-                backToTopButton.style.pointerEvents = 'none';
-            }
-        });
 
         // Gallery hover effects
         document.querySelectorAll('.gallery-item').forEach(item => {
