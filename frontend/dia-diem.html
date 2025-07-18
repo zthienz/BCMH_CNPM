@@ -451,14 +451,34 @@
                 window.location.href = 'chua-co.html';
                 return;
             }
+            if (id === 'DD05') { // Chùa Vàm Rây
+                console.log('Redirecting to chua-vam-ray.html');
+                window.location.href = 'chua-vam-ray.html';
+                return;
+            }
             if (id === 'DD06') { // Chùa Phổ Quang
                 console.log('Redirecting to chua-pho-quang.html');
                 window.location.href = 'chua-pho-quang.html';
                 return;
             }
+            if (id === 'DD09') { // Cù lao Tân Quy
+                console.log('Redirecting to cu-lao-tan-quy.html');
+                window.location.href = 'cu-lao-tan-quy.html';
+                return;
+            }
+            if (id === 'DD10') { // Cù lao Long Trị
+                console.log('Redirecting to cu-lao-long-tri.html');
+                window.location.href = 'cu-lao-long-tri.html';
+                return;
+            }
             if (id === 'DD11') { // Chợ Trà Vinh
                 console.log('Redirecting to cho-tra-vinh.html');
                 window.location.href = 'cho-tra-vinh.html';
+                return;
+            }
+            if (id === 'DD14') { // Đền thờ Bác Hồ
+                console.log('Redirecting to den-tho-bac.html');
+                window.location.href = 'den-tho-bac.html';
                 return;
             }
 
@@ -471,6 +491,17 @@
 
                 const destination = await response.json();
 
+                // Check if this is Chùa Vàm Rây by name
+                if (destination.TenDDDL && (
+                    destination.TenDDDL.toLowerCase().includes('chùa vàm rây') ||
+                    destination.TenDDDL.toLowerCase().includes('vàm rây') ||
+                    destination.TenDDDL.toLowerCase().includes('khmer lớn nhất')
+                )) {
+                    console.log('Found Chùa Vàm Rây by name, redirecting...');
+                    window.location.href = 'chua-vam-ray.html';
+                    return;
+                }
+
                 // Check if this is Chùa Phổ Quang by name
                 if (destination.TenDDDL && (
                     destination.TenDDDL.toLowerCase().includes('chùa phổ quang') ||
@@ -479,6 +510,28 @@
                 )) {
                     console.log('Found Chùa Phổ Quang by name, redirecting...');
                     window.location.href = 'chua-pho-quang.html';
+                    return;
+                }
+
+                // Check if this is Cù lao Tân Quy by name
+                if (destination.TenDDDL && (
+                    destination.TenDDDL.toLowerCase().includes('cù lao tân quy') ||
+                    destination.TenDDDL.toLowerCase().includes('tân quy') ||
+                    destination.TenDDDL.toLowerCase().includes('vườn trái cây')
+                )) {
+                    console.log('Found Cù lao Tân Quy by name, redirecting...');
+                    window.location.href = 'cu-lao-tan-quy.html';
+                    return;
+                }
+
+                // Check if this is Cù lao Long Trị by name
+                if (destination.TenDDDL && (
+                    destination.TenDDDL.toLowerCase().includes('cù lao long trị') ||
+                    destination.TenDDDL.toLowerCase().includes('long trị') ||
+                    destination.TenDDDL.toLowerCase().includes('miệt vườn')
+                )) {
+                    console.log('Found Cù lao Long Trị by name, redirecting...');
+                    window.location.href = 'cu-lao-long-tri.html';
                     return;
                 }
 
@@ -511,6 +564,17 @@
                 )) {
                     console.log('Found Chùa Âng by name, redirecting...');
                     window.location.href = 'chua-ang.html';
+                    return;
+                }
+
+                // Check if this is Đền thờ Bác Hồ by name
+                if (destination.TenDDDL && (
+                    destination.TenDDDL.toLowerCase().includes('đền thờ bác hồ') ||
+                    destination.TenDDDL.toLowerCase().includes('bác hồ') ||
+                    destination.TenDDDL.toLowerCase().includes('đền thờ')
+                )) {
+                    console.log('Found Đền thờ Bác Hồ by name, redirecting...');
+                    window.location.href = 'den-tho-bac.html';
                     return;
                 }
 
