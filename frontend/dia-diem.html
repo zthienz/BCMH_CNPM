@@ -451,6 +451,11 @@
                 window.location.href = 'chua-co.html';
                 return;
             }
+            if (id === 'DD06') { // Chùa Phổ Quang
+                console.log('Redirecting to chua-pho-quang.html');
+                window.location.href = 'chua-pho-quang.html';
+                return;
+            }
             if (id === 'DD11') { // Chợ Trà Vinh
                 console.log('Redirecting to cho-tra-vinh.html');
                 window.location.href = 'cho-tra-vinh.html';
@@ -465,6 +470,17 @@
                 }
 
                 const destination = await response.json();
+
+                // Check if this is Chùa Phổ Quang by name
+                if (destination.TenDDDL && (
+                    destination.TenDDDL.toLowerCase().includes('chùa phổ quang') ||
+                    destination.TenDDDL.toLowerCase().includes('phổ quang') ||
+                    destination.TenDDDL.toLowerCase().includes('tâm linh')
+                )) {
+                    console.log('Found Chùa Phổ Quang by name, redirecting...');
+                    window.location.href = 'chua-pho-quang.html';
+                    return;
+                }
 
                 // Check if this is Chùa Hang by name
                 if (destination.TenDDDL && (
