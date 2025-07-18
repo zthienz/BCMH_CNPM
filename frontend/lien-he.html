@@ -250,7 +250,7 @@
                                 </div>
                                 <div>
                                     <label class="block text-gray-700 font-semibold mb-2">Số điện thoại</label>
-                                    <input id="phoneInput" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập số điện thoại">
+                                    <input id="phoneInput" type="tel" maxlength="10" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập số điện thoại (10 số)">
                                     <span id="phoneError" class="text-red-500 text-sm hidden">Số điện thoại phải đủ 10 số và bắt đầu bằng số 0.</span>
                                 </div>
                                 <div>
@@ -282,14 +282,42 @@
                                 function validatePhone() {
                                     const phone = document.getElementById('phoneInput').value.trim();
                                     const error = document.getElementById('phoneError');
-                                    const phoneRegex = /^0\d{9}$/;
-                                    if (!phoneRegex.test(phone)) {
+
+                                    // Kiểm tra nếu trống
+                                    if (!phone) {
+                                        error.textContent = 'Vui lòng nhập số điện thoại.';
                                         error.classList.remove('hidden');
                                         return false;
-                                    } else {
-                                        error.classList.add('hidden');
-                                        return true;
                                     }
+
+                                    // Kiểm tra chỉ chứa số
+                                    if (!/^\d+$/.test(phone)) {
+                                        error.textContent = 'Số điện thoại chỉ được chứa các chữ số.';
+                                        error.classList.remove('hidden');
+                                        return false;
+                                    }
+
+                                    // Kiểm tra độ dài
+                                    if (phone.length < 10) {
+                                        error.textContent = `Số điện thoại phải đủ 10 số (hiện tại: ${phone.length} số).`;
+                                        error.classList.remove('hidden');
+                                        return false;
+                                    } else if (phone.length > 10) {
+                                        error.textContent = `Số điện thoại chỉ được 10 số (hiện tại: ${phone.length} số).`;
+                                        error.classList.remove('hidden');
+                                        return false;
+                                    }
+
+                                    // Kiểm tra bắt đầu bằng số 0
+                                    if (!phone.startsWith('0')) {
+                                        error.textContent = 'Số điện thoại phải bắt đầu bằng số 0.';
+                                        error.classList.remove('hidden');
+                                        return false;
+                                    }
+
+                                    // Tất cả điều kiện đều hợp lệ
+                                    error.classList.add('hidden');
+                                    return true;
                                 }
                                 function validateEmail() {
                                     const email = document.getElementById('emailInput').value.trim();
@@ -321,6 +349,18 @@
                                 }
                                 ['nameInput','phoneInput','emailInput','messageInput'].forEach(id => {
                                     document.getElementById(id).addEventListener('input', checkFormValid);
+                                });
+
+                                // Thêm validation real-time cho số điện thoại
+                                document.getElementById('phoneInput').addEventListener('input', function(e) {
+                                    // Chỉ cho phép nhập số
+                                    let value = e.target.value.replace(/\D/g, '');
+                                    // Giới hạn tối đa 10 số
+                                    if (value.length > 10) {
+                                        value = value.substring(0, 10);
+                                    }
+                                    e.target.value = value;
+                                    checkFormValid();
                                 });
                                 function showSentMessage(event) {
                                     event.preventDefault();
