@@ -481,6 +481,11 @@
                 window.location.href = 'giao-duong-mac-bac.html';
                 return;
             }
+            if (id === 'DD13') { // Di tích Chùa Giác Linh
+                console.log('Redirecting to chua-giac-linh.html');
+                window.location.href = 'chua-giac-linh.html';
+                return;
+            }
             if (id === 'DD14') { // Đền thờ Bác Hồ
                 console.log('Redirecting to den-tho-bac.html');
                 window.location.href = 'den-tho-bac.html';
@@ -581,6 +586,18 @@
                 )) {
                     console.log('Found Giáo đường Mặc Bắc by name, redirecting...');
                     window.location.href = 'giao-duong-mac-bac.html';
+                    return;
+                }
+
+                // Check if this is Di tích Chùa Giác Linh by name
+                if (destination.TenDDDL && (
+                    destination.TenDDDL.toLowerCase().includes('di tích chùa giác linh') ||
+                    destination.TenDDDL.toLowerCase().includes('chùa giác linh') ||
+                    destination.TenDDDL.toLowerCase().includes('giác linh') ||
+                    destination.TenDDDL.toLowerCase().includes('di tích')
+                )) {
+                    console.log('Found Di tích Chùa Giác Linh by name, redirecting...');
+                    window.location.href = 'chua-giac-linh.html';
                     return;
                 }
 
