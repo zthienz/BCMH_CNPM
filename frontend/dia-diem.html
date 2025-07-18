@@ -461,6 +461,16 @@
                 window.location.href = 'chua-pho-quang.html';
                 return;
             }
+            if (id === 'DD07') { // Khu sinh thái rừng đước
+                console.log('Redirecting to khu-sinh-thai-rung-duoc.html');
+                window.location.href = 'khu-sinh-thai-rung-duoc.html';
+                return;
+            }
+            if (id === 'DD08') { // Khu sinh thái Huỳnh Kha
+                console.log('Redirecting to khu-du-lich-huynh-kha.html');
+                window.location.href = 'khu-du-lich-huynh-kha.html';
+                return;
+            }
             if (id === 'DD09') { // Cù lao Tân Quy
                 console.log('Redirecting to cu-lao-tan-quy.html');
                 window.location.href = 'cu-lao-tan-quy.html';
@@ -520,6 +530,30 @@
                 )) {
                     console.log('Found Chùa Phổ Quang by name, redirecting...');
                     window.location.href = 'chua-pho-quang.html';
+                    return;
+                }
+
+                // Check if this is Khu sinh thái rừng đước by name
+                if (destination.TenDDDL && (
+                    destination.TenDDDL.toLowerCase().includes('khu sinh thái rừng đước') ||
+                    destination.TenDDDL.toLowerCase().includes('rừng đước') ||
+                    destination.TenDDDL.toLowerCase().includes('sinh thái rừng') ||
+                    destination.TenDDDL.toLowerCase().includes('đước')
+                )) {
+                    console.log('Found Khu sinh thái rừng đước by name, redirecting...');
+                    window.location.href = 'khu-sinh-thai-rung-duoc.html';
+                    return;
+                }
+
+                // Check if this is Khu sinh thái Huỳnh Kha by name
+                if (destination.TenDDDL && (
+                    destination.TenDDDL.toLowerCase().includes('khu sinh thái huỳnh kha') ||
+                    destination.TenDDDL.toLowerCase().includes('huỳnh kha') ||
+                    destination.TenDDDL.toLowerCase().includes('sinh thái') ||
+                    destination.TenDDDL.toLowerCase().includes('du lịch sinh thái')
+                )) {
+                    console.log('Found Khu sinh thái Huỳnh Kha by name, redirecting...');
+                    window.location.href = 'khu-du-lich-huynh-kha.html';
                     return;
                 }
 
