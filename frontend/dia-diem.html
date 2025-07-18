@@ -428,6 +428,11 @@
             console.log('viewDestinationDetails called with ID:', id);
 
             // Special handling for dedicated pages
+            if (id === 'DD01') { // Chùa Hang
+                console.log('Redirecting to chua-hang.html');
+                window.location.href = 'chua-hang.html';
+                return;
+            }
             if (id === 'DD15') { // Ao Bà Om
                 window.location.href = 'ao-ba-om.html';
                 return;
@@ -439,6 +444,11 @@
             if (id === 'DD03') { // Chùa Âng
                 console.log('Redirecting to chua-ang.html');
                 window.location.href = 'chua-ang.html';
+                return;
+            }
+            if (id === 'DD02') { // Chùa Cò (Nôđol)
+                console.log('Redirecting to chua-co.html');
+                window.location.href = 'chua-co.html';
                 return;
             }
             if (id === 'DD11') { // Chợ Trà Vinh
@@ -455,6 +465,28 @@
                 }
 
                 const destination = await response.json();
+
+                // Check if this is Chùa Hang by name
+                if (destination.TenDDDL && (
+                    destination.TenDDDL.toLowerCase().includes('chùa hang') ||
+                    destination.TenDDDL.toLowerCase().includes('hang động') ||
+                    destination.TenDDDL.toLowerCase().includes('vườn chim')
+                )) {
+                    console.log('Found Chùa Hang by name, redirecting...');
+                    window.location.href = 'chua-hang.html';
+                    return;
+                }
+
+                // Check if this is Chùa Cò by name
+                if (destination.TenDDDL && (
+                    destination.TenDDDL.toLowerCase().includes('chùa cò') ||
+                    destination.TenDDDL.toLowerCase().includes('nôđol') ||
+                    destination.TenDDDL.toLowerCase().includes('nodol')
+                )) {
+                    console.log('Found Chùa Cò by name, redirecting...');
+                    window.location.href = 'chua-co.html';
+                    return;
+                }
 
                 // Check if this is Chùa Âng by name
                 if (destination.TenDDDL && (
