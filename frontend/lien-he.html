@@ -255,7 +255,7 @@
                                 </div>
                                 <div>
                                     <label class="block text-gray-700 font-semibold mb-2">Gmail</label>
-                                    <input id="emailInput" type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập địa chỉ Gmail">
+                                    <input id="emailInput" type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ví dụ: tenvacuaban@gmail.com">
                                     <span id="emailError" class="text-red-500 text-sm hidden">Gmail không hợp lệ (phải đúng định dạng và kết thúc bằng @gmail.com).</span>
                                 </div>
                                 <div>
@@ -322,14 +322,47 @@
                                 function validateEmail() {
                                     const email = document.getElementById('emailInput').value.trim();
                                     const error = document.getElementById('emailError');
-                                    const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-                                    if (!emailRegex.test(email)) {
+
+                                    // Kiểm tra nếu trống
+                                    if (!email) {
+                                        error.textContent = 'Vui lòng nhập địa chỉ Gmail.';
                                         error.classList.remove('hidden');
                                         return false;
-                                    } else {
-                                        error.classList.add('hidden');
-                                        return true;
                                     }
+
+                                    // Kiểm tra có chứa @ không
+                                    if (!email.includes('@')) {
+                                        error.textContent = 'Gmail phải chứa ký tự @.';
+                                        error.classList.remove('hidden');
+                                        return false;
+                                    }
+
+                                    // Kiểm tra có kết thúc bằng @gmail.com không
+                                    if (!email.endsWith('@gmail.com')) {
+                                        error.textContent = 'Gmail phải kết thúc bằng @gmail.com.';
+                                        error.classList.remove('hidden');
+                                        return false;
+                                    }
+
+                                    // Kiểm tra phần trước @ có hợp lệ không
+                                    const localPart = email.split('@')[0];
+                                    if (!localPart || localPart.length === 0) {
+                                        error.textContent = 'Gmail phải có tên người dùng trước @gmail.com.';
+                                        error.classList.remove('hidden');
+                                        return false;
+                                    }
+
+                                    // Kiểm tra định dạng tổng thể
+                                    const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+                                    if (!emailRegex.test(email)) {
+                                        error.textContent = 'Gmail chứa ký tự không hợp lệ. Chỉ được dùng chữ, số, dấu chấm, gạch dưới.';
+                                        error.classList.remove('hidden');
+                                        return false;
+                                    }
+
+                                    // Tất cả điều kiện đều hợp lệ
+                                    error.classList.add('hidden');
+                                    return true;
                                 }
                                 function validateMessage() {
                                     const msg = document.getElementById('messageInput').value.trim();
@@ -360,6 +393,26 @@
                                         value = value.substring(0, 10);
                                     }
                                     e.target.value = value;
+                                    checkFormValid();
+                                });
+
+                                // Thêm validation real-time cho Gmail
+                                document.getElementById('emailInput').addEventListener('blur', function(e) {
+                                    let value = e.target.value.trim();
+
+                                    // Nếu có nội dung nhưng chưa có @gmail.com thì tự động thêm
+                                    if (value && !value.includes('@') && value.length > 0) {
+                                        e.target.value = value + '@gmail.com';
+                                    }
+                                    // Nếu có @ nhưng không phải @gmail.com
+                                    else if (value && value.includes('@') && !value.endsWith('@gmail.com')) {
+                                        // Chỉ giữ phần trước @ đầu tiên và thêm @gmail.com
+                                        const username = value.split('@')[0];
+                                        if (username) {
+                                            e.target.value = username + '@gmail.com';
+                                        }
+                                    }
+
                                     checkFormValid();
                                 });
                                 function showSentMessage(event) {
