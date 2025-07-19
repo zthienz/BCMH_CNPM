@@ -245,11 +245,23 @@
                         <!-- Dropdown phân loại địa điểm -->
                         <select class="border border-blue-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" id="filterPlace">
                             <option value="">Tất cả địa điểm</option>
-                            <option value="chua-ang">Chùa Ang</option>
-                            <option value="bien-ba-dong">Biển Ba Động</option>
-                            <option value="rung-dua">Rừng dừa Bảy Mẫu</option>
                             <option value="ao-ba-om">Ao Bà Om</option>
                             <option value="bao-tang-khmer">Bảo tàng Khmer</option>
+                            <option value="bien-ba-dong">Biển Ba Động</option>
+                            <option value="cho-tra-vinh">Chợ Trà Vinh</option>
+                            <option value="chua-ang">Chùa Âng</option>
+                            <option value="chua-co">Chùa Cổ</option>
+                            <option value="chua-giac-linh">Chùa Giác Linh</option>
+                            <option value="chua-hang">Chùa Hang</option>
+                            <option value="chua-pho-quang">Chùa Phổ Quang</option>
+                            <option value="chua-vam-ray">Chùa Vàm Ray</option>
+                            <option value="cu-lao-long-tri">Cù lao Long Trí</option>
+                            <option value="cu-lao-tan-quy">Cù lao Tân Quy</option>
+                            <option value="den-tho-bac">Đền Thờ Bác</option>
+                            <option value="giao-duong-mac-bac">Giáo đường Mặc Bác</option>
+                            <option value="khu-du-lich-huynh-kha">Khu du lịch Huỳnh Kha</option>
+                            <option value="khu-sinh-thai-rung-duoc">Khu sinh thái rừng dược</option>
+                            <option value="am-thuc-dac-sac">Ẩm thực đặc sắc</option>
                         </select>
                         <!-- Nút tất cả -->
                         <button class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-300" id="showAllReviews">Tất cả</button>
@@ -323,59 +335,344 @@
 <script>
 // Danh sách đánh giá mẫu
 const reviews = [
+  // Ao Bà Om
   {
     name: 'Nguyễn Minh Anh',
-    place: 'Chùa Ang',
-    placeValue: 'chua-ang',
+    place: 'Ao Bà Om',
+    placeValue: 'ao-ba-om',
     stars: 5,
-    content: 'Trà Vinh thật sự tuyệt vời! Văn hóa đa dạng, con người thân thiện và ẩm thực rất ngon. Đặc biệt là các ngôi chùa Khmer rất đẹp và độc đáo.',
+    content: 'Ao Bà Om thật sự là một khu du lịch sinh thái tuyệt vời! Không gian xanh mát, yên tĩnh, rất phù hợp để thư giãn và tìm hiểu về văn hóa Khmer. Các hoạt động trải nghiệm rất thú vị.',
     color: 'bg-blue-500',
     avatar: 'N',
   },
   {
-    name: 'Lê Thị Hồng',
-    place: 'Biển Ba Động',
-    placeValue: 'bien-ba-dong',
-    stars: 5,
-    content: 'Biển Ba Động rất đẹp và hoang sơ. Tôi đã có những giây phút thư giãn tuyệt vời ở đây. Sẽ quay lại lần nữa!',
+    name: 'Trần Thị Lan',
+    place: 'Ao Bà Om',
+    placeValue: 'ao-ba-om',
+    stars: 4,
+    content: 'Khu du lịch đẹp, có nhiều cây xanh và không khí trong lành. Tuy nhiên, giá vé hơi cao so với các dịch vụ được cung cấp. Nhìn chung vẫn đáng để ghé thăm một lần.',
     color: 'bg-green-500',
     avatar: 'L',
   },
+
+  // Bảo tàng Khmer
   {
-    name: 'Trần Văn Đức',
-    place: 'Rừng dừa Bảy Mẫu',
-    placeValue: 'rung-dua',
+    name: 'Lê Văn Đức',
+    place: 'Bảo tàng Khmer',
+    placeValue: 'bao-tang-khmer',
     stars: 4,
-    content: 'Rừng dừa Bảy Mẫu là nơi tuyệt vời để tìm hiểu về sinh thái miền Tây. Không khí rất trong lành và mát mẻ.',
+    content: 'Bảo tàng có nhiều hiện vật quý giá về văn hóa Khmer. Tôi đã học được rất nhiều về lịch sử và truyền thống của dân tộc Khmer ở Trà Vinh. Nhân viên hướng dẫn rất nhiệt tình.',
     color: 'bg-purple-500',
-    avatar: 'T',
+    avatar: 'D',
   },
   {
     name: 'Phạm Thị Mai',
-    place: 'Ao Bà Om',
-    placeValue: 'ao-ba-om',
+    place: 'Bảo tàng Khmer',
+    placeValue: 'bao-tang-khmer',
     stars: 3,
-    content: 'Ao Bà Om khá đẹp, không gian yên tĩnh nhưng dịch vụ ăn uống chưa đa dạng.',
+    content: 'Bảo tàng nhỏ nhưng có những hiện vật thú vị. Cần cải thiện thêm về hệ thống chiếu sáng và bảo quản hiện vật. Giá vé hợp lý.',
     color: 'bg-pink-500',
     avatar: 'M',
   },
+
+  // Biển Ba Động
   {
-    name: 'Nguyễn Văn Ba',
-    place: 'Chùa Ang',
+    name: 'Hoàng Minh Tuấn',
+    place: 'Biển Ba Động',
+    placeValue: 'bien-ba-dong',
+    stars: 5,
+    content: 'Biển Ba Động thật sự tuyệt vời! Bãi biển hoang sơ, cát trắng mịn, nước biển trong xanh. Rất thích hợp để cắm trại và ngắm hoàng hôn. Sẽ quay lại nhiều lần nữa!',
+    color: 'bg-blue-600',
+    avatar: 'T',
+  },
+  {
+    name: 'Nguyễn Thị Hoa',
+    place: 'Biển Ba Động',
+    placeValue: 'bien-ba-dong',
+    stars: 4,
+    content: 'Bãi biển đẹp và yên tĩnh, ít du khách nên rất thích hợp để thư giãn. Tuy nhiên, đường đi hơi khó khăn và thiếu các dịch vụ tiện ích.',
+    color: 'bg-green-600',
+    avatar: 'H',
+  },
+
+  // Chợ Trà Vinh
+  {
+    name: 'Võ Quốc Bảo',
+    place: 'Chợ Trà Vinh',
+    placeValue: 'cho-tra-vinh',
+    stars: 4,
+    content: 'Chợ Trà Vinh rất sôi động và đa dạng. Có thể mua được nhiều đặc sản địa phương với giá cả hợp lý. Đặc biệt là các món ăn vặt rất ngon.',
+    color: 'bg-yellow-500',
+    avatar: 'B',
+  },
+  {
+    name: 'Lê Thị Hương',
+    place: 'Chợ Trà Vinh',
+    placeValue: 'cho-tra-vinh',
+    stars: 5,
+    content: 'Chợ truyền thống với nhiều món ăn đặc sản. Tôi đã mua được rất nhiều quà lưu niệm và thưởng thức các món ăn ngon. Người bán hàng rất thân thiện.',
+    color: 'bg-red-500',
+    avatar: 'H',
+  },
+
+  // Chùa Âng
+  {
+    name: 'Trần Văn Nam',
+    place: 'Chùa Âng',
     placeValue: 'chua-ang',
-    stars: 2,
-    content: 'Trà Vinh thật sự tuyệt vời! Văn hóa đa dạng, con người thân thiện và ẩm thực rất ngon. Đặc biệt là các ngôi chùa Khmer rất đẹp và độc đáo.',
-    color: 'bg-blue-500',
+    stars: 5,
+    content: 'Chùa Âng là một trong những ngôi chùa Khmer đẹp nhất Trà Vinh. Kiến trúc độc đáo, không gian linh thiêng và yên tĩnh. Rất phù hợp để tìm hiểu về văn hóa tâm linh.',
+    color: 'bg-indigo-500',
     avatar: 'N',
   },
   {
-    name: 'Võ Quốc Bảo',
-    place: 'Bảo tàng Khmer',
-    placeValue: 'bao-tang-khmer',
-    stars: 1,
-    content: 'Bảo tàng nhỏ, ít hiện vật, cần cải thiện thêm về trải nghiệm tham quan.',
-    color: 'bg-yellow-500',
+    name: 'Phan Thị Lan',
+    place: 'Chùa Âng',
+    placeValue: 'chua-ang',
+    stars: 4,
+    content: 'Ngôi chùa rất đẹp với kiến trúc Khmer truyền thống. Các bức tượng và tranh vẽ rất tinh xảo. Tuy nhiên, cần có thêm bảng thông tin để du khách hiểu rõ hơn.',
+    color: 'bg-teal-500',
+    avatar: 'L',
+  },
+
+  // Chùa Cổ
+  {
+    name: 'Nguyễn Văn Hải',
+    place: 'Chùa Cổ',
+    placeValue: 'chua-co',
+    stars: 5,
+    content: 'Chùa Cổ có lịch sử lâu đời và kiến trúc rất đặc biệt. Không gian yên tĩnh, linh thiêng. Đây là nơi tuyệt vời để tìm hiểu về lịch sử Phật giáo Khmer ở Trà Vinh.',
+    color: 'bg-gray-600',
+    avatar: 'H',
+  },
+  {
+    name: 'Lý Thị Nga',
+    place: 'Chùa Cổ',
+    placeValue: 'chua-co',
+    stars: 4,
+    content: 'Ngôi chùa cổ kính với nhiều giá trị lịch sử. Kiến trúc độc đáo và có nhiều hiện vật quý. Cần bảo tồn tốt hơn để giữ gìn di sản văn hóa.',
+    color: 'bg-purple-600',
+    avatar: 'N',
+  },
+
+  // Chùa Giác Linh
+  {
+    name: 'Đặng Minh Quân',
+    place: 'Chùa Giác Linh',
+    placeValue: 'chua-giac-linh',
+    stars: 4,
+    content: 'Chùa Giác Linh có không gian rộng rãi và kiến trúc đẹp mắt. Các lễ hội tại đây rất sôi động và ý nghĩa. Đây là nơi tốt để tìm hiểu về văn hóa tâm linh của người Khmer.',
+    color: 'bg-orange-500',
+    avatar: 'Q',
+  },
+  {
+    name: 'Vũ Thị Hạnh',
+    place: 'Chùa Giác Linh',
+    placeValue: 'chua-giac-linh',
+    stars: 5,
+    content: 'Ngôi chùa rất linh thiêng và trang nghiêm. Tôi đã tham gia lễ hội Ok Om Bok tại đây và có những trải nghiệm tuyệt vời về văn hóa Khmer.',
+    color: 'bg-pink-600',
+    avatar: 'H',
+  },
+
+  // Chùa Hang
+  {
+    name: 'Bùi Văn Thành',
+    place: 'Chùa Hang',
+    placeValue: 'chua-hang',
+    stars: 5,
+    content: 'Chùa Hang có kiến trúc nghệ thuật tinh xảo nhất trong các chùa Khmer ở Trà Vinh. Các chi tiết trang trí rất đẹp và ấn tượng. Đây là điểm đến không thể bỏ qua.',
+    color: 'bg-blue-700',
+    avatar: 'T',
+  },
+  {
+    name: 'Cao Thị Linh',
+    place: 'Chùa Hang',
+    placeValue: 'chua-hang',
+    stars: 4,
+    content: 'Ngôi chùa có kiến trúc rất đẹp và độc đáo. Các hoạt động văn hóa tại đây rất phong phú. Tuy nhiên, cần có thêm khu vực đỗ xe cho du khách.',
+    color: 'bg-green-700',
+    avatar: 'L',
+  },
+
+  // Chùa Phổ Quang
+  {
+    name: 'Đinh Văn Long',
+    place: 'Chùa Phổ Quang',
+    placeValue: 'chua-pho-quang',
+    stars: 4,
+    content: 'Chùa Phổ Quang có không gian yên tĩnh và trang nghiêm. Kiến trúc đẹp với nhiều chi tiết trang trí tinh tế. Rất thích hợp để tham quan và tìm hiểu văn hóa.',
+    color: 'bg-red-600',
+    avatar: 'L',
+  },
+  {
+    name: 'Hồ Thị Xuân',
+    place: 'Chùa Phổ Quang',
+    placeValue: 'chua-pho-quang',
+    stars: 5,
+    content: 'Ngôi chùa rất đẹp và linh thiêng. Tôi đã có những giây phút thiền định tuyệt vời tại đây. Các sư thầy rất từ bi và nhiệt tình hướng dẫn.',
+    color: 'bg-yellow-600',
+    avatar: 'X',
+  },
+
+  // Chùa Vàm Ray
+  {
+    name: 'Lương Văn Đạt',
+    place: 'Chùa Vàm Ray',
+    placeValue: 'chua-vam-ray',
+    stars: 4,
+    content: 'Chùa Vàm Ray nằm bên bờ sông rất thơ mộng. Kiến trúc Khmer cổ kính và có nhiều giá trị lịch sử. Cảnh quan xung quanh rất đẹp.',
+    color: 'bg-teal-600',
+    avatar: 'D',
+  },
+  {
+    name: 'Mai Thị Hồng',
+    place: 'Chùa Vàm Ray',
+    placeValue: 'chua-vam-ray',
+    stars: 5,
+    content: 'Ngôi chùa có vị trí đẹp bên sông, không gian yên tĩnh và linh thiêng. Đặc biệt đẹp vào lúc hoàng hôn. Đây là nơi tuyệt vời để chụp ảnh và thư giãn.',
+    color: 'bg-indigo-600',
+    avatar: 'H',
+  },
+
+  // Cù lao Long Trí
+  {
+    name: 'Phạm Văn Tài',
+    place: 'Cù lao Long Trí',
+    placeValue: 'cu-lao-long-tri',
+    stars: 4,
+    content: 'Cù lao Long Trí có cảnh quan thiên nhiên tuyệt đẹp. Cuộc sống bình dị của người dân địa phương rất thú vị. Tuy nhiên, giao thông đi lại hơi bất tiện.',
+    color: 'bg-gray-500',
+    avatar: 'T',
+  },
+  {
+    name: 'Ngô Thị Bích',
+    place: 'Cù lao Long Trí',
+    placeValue: 'cu-lao-long-tri',
+    stars: 5,
+    content: 'Hòn đảo nhỏ xinh với cảnh quan sông nước miền Tây đặc trưng. Tôi đã có những trải nghiệm tuyệt vời về cuộc sống nông thôn và thưởng thức các món ăn dân dã.',
+    color: 'bg-purple-700',
     avatar: 'B',
+  },
+
+  // Cù lao Tân Quy
+  {
+    name: 'Huỳnh Văn Minh',
+    place: 'Cù lao Tân Quy',
+    placeValue: 'cu-lao-tan-quy',
+    stars: 5,
+    content: 'Cù lao Tân Quy là một điểm đến tuyệt vời để trải nghiệm cuộc sống miền sông nước. Cảnh quan đẹp, người dân thân thiện và có nhiều hoạt động thú vị.',
+    color: 'bg-blue-800',
+    avatar: 'M',
+  },
+  {
+    name: 'Trịnh Thị Lan',
+    place: 'Cù lao Tân Quy',
+    placeValue: 'cu-lao-tan-quy',
+    stars: 4,
+    content: 'Hòn đảo có cảnh quan thiên nhiên đẹp và yên bình. Các hoạt động du lịch sinh thái rất thú vị. Cần cải thiện thêm về cơ sở hạ tầng du lịch.',
+    color: 'bg-green-800',
+    avatar: 'L',
+  },
+
+  // Đền Thờ Bác
+  {
+    name: 'Lê Văn Hùng',
+    place: 'Đền Thờ Bác',
+    placeValue: 'den-tho-bac',
+    stars: 4,
+    content: 'Đền Thờ Bác có ý nghĩa lịch sử quan trọng và kiến trúc trang nghiêm. Đây là nơi tốt để tìm hiểu về lịch sử cách mạng và giáo dục truyền thống.',
+    color: 'bg-red-700',
+    avatar: 'H',
+  },
+  {
+    name: 'Võ Thị Kim',
+    place: 'Đền Thờ Bác',
+    placeValue: 'den-tho-bac',
+    stars: 5,
+    content: 'Nơi thiêng liêng và trang nghiêm để tưởng nhớ Bác Hồ. Kiến trúc đẹp và có nhiều giá trị giáo dục. Rất phù hợp cho các chuyến tham quan học tập.',
+    color: 'bg-yellow-700',
+    avatar: 'K',
+  },
+
+  // Giáo đường Mặc Bác
+  {
+    name: 'Đỗ Văn Phúc',
+    place: 'Giáo đường Mặc Bác',
+    placeValue: 'giao-duong-mac-bac',
+    stars: 4,
+    content: 'Giáo đường Mặc Bác có kiến trúc độc đáo và là nơi sinh hoạt tôn giáo quan trọng của cộng đồng người Hoa. Rất thú vị để tìm hiểu về văn hóa đa dạng.',
+    color: 'bg-teal-700',
+    avatar: 'P',
+  },
+  {
+    name: 'Châu Thị Hạnh',
+    place: 'Giáo đường Mặc Bác',
+    placeValue: 'giao-duong-mac-bac',
+    stars: 3,
+    content: 'Giáo đường có kiến trúc truyền thống của người Hoa. Tuy nhiên, cần có thêm thông tin hướng dẫn cho du khách để hiểu rõ hơn về văn hóa tôn giáo.',
+    color: 'bg-indigo-700',
+    avatar: 'H',
+  },
+
+  // Khu du lịch Huỳnh Kha
+  {
+    name: 'Nguyễn Văn Tú',
+    place: 'Khu du lịch Huỳnh Kha',
+    placeValue: 'khu-du-lich-huynh-kha',
+    stars: 4,
+    content: 'Khu du lịch Huỳnh Kha có nhiều hoạt động giải trí thú vị và cảnh quan đẹp. Rất phù hợp cho gia đình có trẻ em. Dịch vụ ăn uống đa dạng.',
+    color: 'bg-pink-700',
+    avatar: 'T',
+  },
+  {
+    name: 'Lê Thị Oanh',
+    place: 'Khu du lịch Huỳnh Kha',
+    placeValue: 'khu-du-lich-huynh-kha',
+    stars: 5,
+    content: 'Khu du lịch rất đẹp với nhiều hoạt động hấp dẫn. Tôi và gia đình đã có những giây phút vui vẻ và thư giãn tuyệt vời. Sẽ quay lại lần nữa!',
+    color: 'bg-gray-700',
+    avatar: 'O',
+  },
+
+  // Khu sinh thái rừng dược
+  {
+    name: 'Trần Văn Dũng',
+    place: 'Khu sinh thái rừng dược',
+    placeValue: 'khu-sinh-thai-rung-duoc',
+    stars: 5,
+    content: 'Khu sinh thái rừng dược là nơi tuyệt vời để tìm hiểu về thảo dược và thiên nhiên. Không khí trong lành, cảnh quan đẹp và có nhiều kiến thức bổ ích.',
+    color: 'bg-green-900',
+    avatar: 'D',
+  },
+  {
+    name: 'Phan Thị Thu',
+    place: 'Khu sinh thái rừng dược',
+    placeValue: 'khu-sinh-thai-rung-duoc',
+    stars: 4,
+    content: 'Nơi có nhiều loài cây dược liệu quý hiếm và cảnh quan thiên nhiên đẹp. Rất phù hợp cho những ai yêu thích tìm hiểu về y học cổ truyền.',
+    color: 'bg-blue-900',
+    avatar: 'T',
+  },
+
+  // Ẩm thực đặc sắc
+  {
+    name: 'Hoàng Văn Đức',
+    place: 'Ẩm thực đặc sắc',
+    placeValue: 'am-thuc-dac-sac',
+    stars: 5,
+    content: 'Ẩm thực Trà Vinh thật sự tuyệt vời! Bún nước lèo, bánh ít lá gai, cơm dẻo... tất cả đều rất ngon và có hương vị đặc trưng. Giá cả hợp lý.',
+    color: 'bg-red-800',
+    avatar: 'D',
+  },
+  {
+    name: 'Lý Thị Hương',
+    place: 'Ẩm thực đặc sắc',
+    placeValue: 'am-thuc-dac-sac',
+    stars: 4,
+    content: 'Các món ăn đặc sản rất ngon và đa dạng. Đặc biệt thích bánh tét cốm dẹp và dừa sáp. Cần có thêm nhiều quán ăn để phục vụ du khách.',
+    color: 'bg-yellow-800',
+    avatar: 'H',
   },
 ];
 
