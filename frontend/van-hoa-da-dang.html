@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Văn hóa đa dạng Trà Vinh - Sự hòa quyện của ba dân tộc</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-blue-700 shadow-lg fixed w-full top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-pagoda text-blue-100 text-2xl"></i>
+                    <a href="index.html" class="text-blue-100 text-xl font-bold">Du lịch Trà Vinh</a>
+                </div>
+                
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Giới thiệu</a>
+                    <a href="dia-diem.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Địa điểm</a>
+                    <a href="lien-he.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Liên hệ</a>
+                    <a href="danh-gia.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Đánh giá & Bài viết</a>
+                </div>
+                
+                <button class="md:hidden text-blue-100" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <div id="mobileMenu" class="md:hidden hidden bg-blue-800 bg-opacity-90 rounded-lg mb-4">
+                <div class="px-4 py-2 space-y-2">
+                    <a href="index.html" class="block text-blue-100 hover:text-blue-300 py-2">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="block text-blue-100 hover:text-blue-300 py-2">Giới thiệu</a>
+                    <a href="dia-diem.html" class="block text-blue-100 hover:text-blue-300 py-2">Địa điểm</a>
+                    <a href="lien-he.html" class="block text-blue-100 hover:text-blue-300 py-2">Liên hệ</a>
+                    <a href="danh-gia.html" class="block text-blue-100 hover:text-blue-300 py-2">Đánh giá & Bài viết</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="min-h-96 flex items-center pt-16" style="background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/my-server/images/chua-ang.jpg') center center/cover no-repeat;">
+        <div class="container mx-auto px-4 text-center text-white">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-4 drop-shadow-lg">
+                Văn hóa đa dạng Trà Vinh
+            </h1>
+            <p class="text-xl md:text-2xl mb-6 font-semibold drop-shadow-md">
+                Sự hòa quyện độc đáo của ba dân tộc Kinh - Khmer - Hoa
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="py-16">
+        <div class="container mx-auto px-4">
+            <!-- Introduction -->
+            <div class="max-w-4xl mx-auto mb-16">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-3xl font-bold text-blue-700 mb-6 text-center">
+                        <i class="fas fa-landmark mr-3"></i>
+                        Bức tranh văn hóa đa sắc màu
+                    </h2>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                        Trà Vinh là một trong những tỉnh có bản sắc văn hóa đa dạng nhất Việt Nam, nơi ba dân tộc Kinh, Khmer và Hoa cùng chung sống hòa thuận, tạo nên một bức tranh văn hóa đầy màu sắc. Mỗi dân tộc đều giữ gìn và phát huy những giá trị văn hóa truyền thống riêng biệt, đồng thời hòa quyện tạo nên nét đặc trưng không thể nhầm lẫn của vùng đất này.
+                    </p>
+                    <div class="grid md:grid-cols-3 gap-6 text-center">
+                        <div class="bg-red-50 p-4 rounded-lg">
+                            <i class="fas fa-flag text-3xl text-red-600 mb-2"></i>
+                            <h3 class="font-bold text-red-700">Dân tộc Kinh</h3>
+                            <p class="text-sm text-gray-600">Chiếm 70% dân số</p>
+                        </div>
+                        <div class="bg-orange-50 p-4 rounded-lg">
+                            <i class="fas fa-pagoda text-3xl text-orange-600 mb-2"></i>
+                            <h3 class="font-bold text-orange-700">Dân tộc Khmer</h3>
+                            <p class="text-sm text-gray-600">Chiếm 25% dân số</p>
+                        </div>
+                        <div class="bg-yellow-50 p-4 rounded-lg">
+                            <i class="fas fa-yin-yang text-3xl text-yellow-600 mb-2"></i>
+                            <h3 class="font-bold text-yellow-700">Dân tộc Hoa</h3>
+                            <p class="text-sm text-gray-600">Chiếm 5% dân số</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cultural Features -->
+            <div class="grid lg:grid-cols-2 gap-8 mb-16">
+                <!-- Văn hóa Kinh -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div class="h-64 bg-gradient-to-br from-red-400 to-pink-500 flex items-center justify-center">
+                        <i class="fas fa-flag text-8xl text-white"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-red-700 mb-3">
+                            <i class="fas fa-home mr-2"></i>
+                            Văn hóa Kinh
+                        </h3>
+                        <p class="text-gray-700 mb-4">
+                            Dân tộc Kinh mang đến những giá trị văn hóa truyền thống Việt Nam với lễ hội đầu năm, tết Nguyên đán, các làng nghề truyền thống và nghệ thuật dân gian như hát bội, đờn ca tài tử.
+                        </p>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li><i class="fas fa-star text-yellow-500 mr-2"></i>Lễ hội Nghinh Ông</li>
+                            <li><i class="fas fa-star text-yellow-500 mr-2"></i>Nghệ thuật đờn ca tài tử</li>
+                            <li><i class="fas fa-star text-yellow-500 mr-2"></i>Làng nghề dệt chiếu</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Văn hóa Khmer -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="/my-server/images/chua-ang.jpg" alt="Chùa Khmer" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-orange-700 mb-3">
+                            <i class="fas fa-pagoda mr-2"></i>
+                            Văn hóa Khmer
+                        </h3>
+                        <p class="text-gray-700 mb-4">
+                            Văn hóa Khmer với hơn 140 ngôi chùa cổ kính, lễ hội Ok Om Bok, Chol Chnam Thmay và nghệ thuật điêu khắc, kiến trúc độc đáo mang đậm dấu ấn Phật giáo Nam tông.
+                        </p>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li><i class="fas fa-star text-yellow-500 mr-2"></i>Lễ hội Ok Om Bok</li>
+                            <li><i class="fas fa-star text-yellow-500 mr-2"></i>Chùa Ang, Chùa Hang</li>
+                            <li><i class="fas fa-star text-yellow-500 mr-2"></i>Nghệ thuật điêu khắc</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- More Cultural Aspects -->
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-center text-blue-700 mb-12">
+                    Những nét văn hóa đặc sắc
+                </h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Kiến trúc tôn giáo -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-br from-purple-400 to-blue-500 flex items-center justify-center">
+                            <img src="/my-server/images/kien-truc-chua.jpg" alt="chua" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-blue-700 mb-2">Kiến trúc tôn giáo</h3>
+                            <p class="text-gray-600 text-sm mb-3">
+                                Hơn 140 ngôi chùa Khmer, đình làng Kinh và miếu thờ Hoa tạo nên cảnh quan tâm linh đa dạng.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Lễ hội truyền thống -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-br from-green-400 to-teal-500 flex items-center justify-center">
+                            <img src="/my-server/images/le.jpeg" alt="le" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-blue-700 mb-2">Lễ hội truyền thống</h3>
+                            <p class="text-gray-600 text-sm mb-3">
+                                Ok Om Bok, Chol Chnam Thmay của Khmer, Tết Nguyên đán của Kinh và Tết Nguyên tiêu của Hoa.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Nghệ thuật dân gian -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-br from-pink-400 to-red-500 flex items-center justify-center">
+                            <img src="/my-server/images/don-ca-tai-tu.jpg" alt="nhac" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-blue-700 mb-2">Nghệ thuật dân gian</h3>
+                            <p class="text-gray-600 text-sm mb-3">
+                                Đờn ca tài tử, hát bội của Kinh, múa Robam của Khmer và nghệ thuật thư pháp của Hoa.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Trang phục truyền thống -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
+                            <img src="/my-server/images/ao-dai.jpg" alt="ao" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-blue-700 mb-2">Trang phục truyền thống</h3>
+                            <p class="text-gray-600 text-sm mb-3">
+                                Áo dài Việt Nam, Sampot Khmer và trang phục truyền thống Hoa trong các dịp lễ hội.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Làng nghề truyền thống -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                            <img src="/my-server/images/det-chieu.jpg" alt="làm chiếu" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-blue-700 mb-2">Làng nghề truyền thống</h3>
+                            <p class="text-gray-600 text-sm mb-3">
+                                Dệt chiếu cói, làm bánh tráng, chế biến dừa sáp và các nghề thủ công mỹ nghệ.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Ngôn ngữ đa dạng -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-br from-teal-400 to-blue-500 flex items-center justify-center">
+                            <img src="/my-server/images/tieng-khmer.jpg" alt=" tieng khmer" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-blue-700 mb-2">Ngôn ngữ đa dạng</h3>
+                            <p class="text-gray-600 text-sm mb-3">
+                                Tiếng Việt, tiếng Khmer và tiếng Hoa cùng tồn tại, tạo nên sự phong phú về ngôn ngữ.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cultural Harmony -->
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 text-white mb-16">
+                <h2 class="text-3xl font-bold text-center mb-8">
+                    Sự hòa quyện văn hóa
+                </h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">
+                            <i class="fas fa-handshake mr-2"></i>
+                            Sống chung hòa thuận
+                        </h3>
+                        <p class="text-blue-100 mb-4">
+                            Ba dân tộc cùng chung sống, làm việc và học tập trong tinh thần đoàn kết, tôn trọng lẫn nhau. Các em học sinh Kinh, Khmer, Hoa cùng ngồi chung lớp học, tạo nên môi trường giáo dục đa văn hóa độc đáo.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">
+                            <i class="fas fa-heart mr-2"></i>
+                            Giao thoa văn hóa
+                        </h3>
+                        <p class="text-blue-100 mb-4">
+                            Các lễ hội, tập tục của mỗi dân tộc đều được cộng đồng khác tham gia và chia sẻ. Điều này tạo nên sự giao thoa, học hỏi và làm phong phú thêm bản sắc văn hóa của từng dân tộc.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="text-center">
+                <div class="bg-white rounded-lg shadow-lg p-8 max-w-2xl mx-auto">
+                    <h2 class="text-3xl font-bold text-blue-700 mb-4">
+                        Khám phá văn hóa đa dạng Trà Vinh!
+                    </h2>
+                    <p class="text-gray-700 mb-6">
+                        Hãy đến Trà Vinh để trực tiếp trải nghiệm sự hòa quyện độc đáo của ba nền văn hóa và cảm nhận tinh thần đoàn kết, tương thân tương ái của người dân nơi đây.
+                    </p>
+                    <div class="flex flex-row gap-4 justify-center flex-wrap">
+                        <a href="dia-diem.html" class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            Khám phá địa điểm văn hóa
+                        </a>
+                        <a href="index.html" class="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-600 hover:text-white transition duration-300">
+                            <i class="fas fa-home mr-2"></i>
+                            Về trang chủ
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-pagoda text-2xl mr-2"></i>
+                        <h3 class="text-xl font-bold">Du lịch Trà Vinh</h3>
+                    </div>
+                    <p class="text-gray-300">Khám phá vẻ đẹp độc đáo của đồng bằng sông Cửu Long</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Liên kết nhanh</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="index.html" class="hover:text-white">Trang chủ</a></li>
+                        <li><a href="gioi-thieu.html" class="hover:text-white">Giới thiệu</a></li>
+                        <li><a href="dia-diem.html" class="hover:text-white">Địa điểm</a></li>
+                        <li><a href="lien-he.html" class="hover:text-white">Liên hệ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Văn hóa</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-white">Chùa Khmer</a></li>
+                        <li><a href="#" class="hover:text-white">Lễ hội truyền thống</a></li>
+                        <li><a href="#" class="hover:text-white">Nghệ thuật dân gian</a></li>
+                        <li><a href="#" class="hover:text-white">Làng nghề</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Theo dõi chúng tôi</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+                <p>© 2024 Du lịch Trà Vinh. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Location Button -->
+    <button id="locationBtn" class="fixed bottom-24 right-6 w-14 h-14 rounded-full bg-green-600 shadow-lg flex items-center justify-center text-white text-2xl z-50 hover:bg-green-700 focus:outline-none">
+        <i class="fas fa-location-dot"></i>
+    </button>
+
+    <!-- Map Popup -->
+    <div id="mapPopup" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl p-4 relative w-full max-w-4xl mx-4">
+            <button onclick="closeMapPopup()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl focus:outline-none">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="text-xl font-bold mb-2 text-green-700 text-center">Bản đồ vị trí Tỉnh Trà Vinh</h2>
+            <div class="w-full h-96 rounded-lg overflow-hidden">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125753.27319478593!2d106.26245430302716!3d9.95144061411913!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a017515cc705df%3A0xade5b5649cd70f79!2zVHAuIFRyw6AgVmluaCwgVHLDoCBWaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1752588719298!5m2!1svi!2s" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        document.getElementById('locationBtn').onclick = function() {
+            document.getElementById('mapPopup').classList.remove('hidden');
+        }
+
+        function closeMapPopup() {
+            document.getElementById('mapPopup').classList.add('hidden');
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
