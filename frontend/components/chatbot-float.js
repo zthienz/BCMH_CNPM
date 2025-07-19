@@ -194,7 +194,7 @@ class FloatingChatbot {
                 width: 100%;
                 border: 2px solid #e5e7eb;
                 border-radius: 12px;
-                padding: 10px 12px;
+                padding: 10px 50px 10px 12px;
                 outline: none;
                 transition: all 0.3s ease;
                 font-size: 14px;
@@ -209,8 +209,9 @@ class FloatingChatbot {
 
             .floating-chatbot-send {
                 position: absolute;
-                right: 24px;
-                bottom: 24px;
+                right: 8px;
+                top: 50%;
+                transform: translateY(-50%);
                 background: #3b82f6;
                 color: white;
                 border: none;
@@ -219,6 +220,7 @@ class FloatingChatbot {
                 cursor: pointer;
                 transition: background-color 0.2s;
                 font-size: 14px;
+                z-index: 10;
             }
 
             .floating-chatbot-send:hover {
