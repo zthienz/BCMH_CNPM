@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ẩm thực đặc sắc Trà Vinh - Hương vị miền Tây sông nước</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-blue-700 shadow-lg fixed w-full top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-pagoda text-blue-100 text-2xl"></i>
+                    <a href="index.html" class="text-blue-100 text-xl font-bold">Du lịch Trà Vinh</a>
+                </div>
+                
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Giới thiệu</a>
+                    <a href="dia-diem.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Địa điểm</a>
+                    <a href="lien-he.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Liên hệ</a>
+                    <a href="danh-gia.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Đánh giá & Bài viết</a>
+                </div>
+                
+                <button class="md:hidden text-blue-100" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <div id="mobileMenu" class="md:hidden hidden bg-blue-800 bg-opacity-90 rounded-lg mb-4">
+                <div class="px-4 py-2 space-y-2">
+                    <a href="index.html" class="block text-blue-100 hover:text-blue-300 py-2">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="block text-blue-100 hover:text-blue-300 py-2">Giới thiệu</a>
+                    <a href="dia-diem.html" class="block text-blue-100 hover:text-blue-300 py-2">Địa điểm</a>
+                    <a href="lien-he.html" class="block text-blue-100 hover:text-blue-300 py-2">Liên hệ</a>
+                    <a href="danh-gia.html" class="block text-blue-100 hover:text-blue-300 py-2">Đánh giá & Bài viết</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="min-h-96 flex items-center pt-16" style="background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/my-server/images/BNL.jpg') center center/cover no-repeat;">
+        <div class="container mx-auto px-4 text-center text-white">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-4 drop-shadow-lg">
+                Ẩm thực đặc sắc Trà Vinh
+            </h1>
+            <p class="text-xl md:text-2xl mb-6 font-semibold drop-shadow-md">
+                Hương vị miền Tây sông nước - Tinh hoa văn hóa ẩm thực ba dân tộc
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="py-16">
+        <div class="container mx-auto px-4">
+            <!-- Introduction -->
+            <div class="max-w-4xl mx-auto mb-16">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-3xl font-bold text-blue-700 mb-6 text-center">
+                        <i class="fas fa-utensils mr-3"></i>
+                        Khám phá ẩm thực Trà Vinh
+                    </h2>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                        Trà Vinh không chỉ nổi tiếng với những ngôi chùa Khmer cổ kính mà còn là thiên đường ẩm thực miền Tây với sự hòa quyện độc đáo giữa văn hóa ẩm thực của ba dân tộc Kinh - Khmer - Hoa. Mỗi món ăn đều mang trong mình câu chuyện văn hóa, lịch sử và tình yêu của người dân nơi đây.
+                    </p>
+                    <div class="grid md:grid-cols-3 gap-6 text-center">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <i class="fas fa-fish text-3xl text-blue-600 mb-2"></i>
+                            <h3 class="font-bold text-blue-700">Hải sản tươi ngon</h3>
+                            <p class="text-sm text-gray-600">Từ sông nước miền Tây</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <i class="fas fa-seedling text-3xl text-green-600 mb-2"></i>
+                            <h3 class="font-bold text-green-700">Rau củ tự nhiên</h3>
+                            <p class="text-sm text-gray-600">Tươi ngon từ vườn</p>
+                        </div>
+                        <div class="bg-yellow-50 p-4 rounded-lg">
+                            <i class="fas fa-pepper-hot text-3xl text-yellow-600 mb-2"></i>
+                            <h3 class="font-bold text-yellow-700">Gia vị đặc trưng</h3>
+                            <p class="text-sm text-gray-600">Hương vị khó quên</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Dishes -->
+            <div class="grid lg:grid-cols-2 gap-8 mb-16">
+                <!-- Bún nước lèo -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="/my-server/images/BNL.jpg" alt="Bún nước lèo" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-blue-700 mb-3">
+                            <i class="fas fa-bowl-food mr-2"></i>
+                            Bún nước lèo
+                        </h3>
+                        <p class="text-gray-700 mb-4">
+                            Món ăn đặc trưng nhất của Trà Vinh với nước dùng ngọt thanh từ cá lóc, kết hợp cùng mắm bò hóc tạo nên hương vị độc đáo. Bún được ăn kèm với rau sống tươi ngon như rau muống, giá đỗ, chuối xanh.
+                        </p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-star text-yellow-500 mr-1"></i>
+                            <span class="mr-4">4.8/5</span>
+                            <i class="fas fa-clock mr-1"></i>
+                            <span>15-20 phút</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bún suông -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="/my-server/images/bun-suong.jpg" alt="Bún suông" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-blue-700 mb-3">
+                            <i class="fas fa-bowl-rice mr-2"></i>
+                            Bún suông
+                        </h3>
+                        <p class="text-gray-700 mb-4">
+                            Món bún đặc sắc được làm từ bột gạo mịn, có màu trắng trong và độ dai vừa phải. Nước dùng được nấu từ xương heo và tôm khô, tạo nên vị ngọt tự nhiên đặc trưng của miền sông nước.
+                        </p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-star text-yellow-500 mr-1"></i>
+                            <span class="mr-4">4.7/5</span>
+                            <i class="fas fa-clock mr-1"></i>
+                            <span>10-15 phút</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- More Dishes Grid -->
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-center text-blue-700 mb-12">
+                    Những món ăn không thể bỏ qua
+                </h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <!-- Cháo ám -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center relative">
+                            <img src="../my-server/images/chao-am.jpg" alt="Cháo ám" class="absolute w-full h-full object-cover">
+                            <i class="fas fa-bowl-hot text-6xl text-white z-10"></i>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-blue-700 mb-2">Cháo ám</h3>
+                            <p class="text-gray-600 text-sm mb-3">
+                                Món cháo truyền thống của người Khmer, nấu từ cá lóc và thịt heo, ăn kèm rau thơm và giá đỗ.
+                            </p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-green-600 font-bold">35,000 - 45,000đ</span>
+                            </div>
+                        </div>
+                    </div>
+                   <!-- Bánh tét cốm dẹp -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-cover bg-center">
+                            <img src="../my-server/images/com-dep.jpg" alt="Bánh tét cốm dẹp" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-blue-700 mb-2">Bánh tét cốm dẹp</h3>
+                            <p class="text-gray-600 text-sm mb-3">
+                                Đặc sản Trà Vinh với lớp cốm xanh bên ngoài, nhân đậu xanh và thịt heo thơm ngon bên trong.
+                            </p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-green-600 font-bold">15,000 - 20,000đ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dừa sáp -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-cover bg-center">
+                            <img src="../my-server/images/dua-sap.jpg" alt="Dừa sáp" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-blue-700 mb-2">Dừa sáp</h3>
+                            <p class="text-gray-600 text-sm mb-3">
+                                Đặc sản nổi tiếng với cơm dừa có độ dẻo như sáp, vị ngọt tự nhiên và thơm mát.
+                            </p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-green-600 font-bold">25,000 - 35,000đ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bánh canh Bến Có -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-cover bg-center">
+                            <img src="../my-server/images/banh-canh.jpg" alt="Bánh canh Bến Có" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-blue-700 mb-2">Bánh canh Bến Có</h3>
+                            <p class="text-gray-600 text-sm mb-3">
+                                Bánh canh đặc biệt với sợi bánh dai ngon, nước dùng đậm đà từ xương heo và cá.
+                            </p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-green-600 font-bold">30,000 - 40,000đ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nem nướng -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-cover bg-center">
+                            <img src="../my-server/images/nem-nuong.jpg" alt="Nem nướng" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-blue-700 mb-2">Nem nướng</h3>
+                            <p class="text-gray-600 text-sm mb-3">
+                                Nem nướng thơm lừng với thịt heo tươi ngon, ăn kèm bánh tráng và rau sống.
+                            </p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-green-600 font-bold">40,000 - 60,000đ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cơm dẻo -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-cover bg-center">
+                            <img src="../my-server/images/com-deo.jpg" alt="Cơm dẻo" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-blue-700 mb-2">Cơm dẻo</h3>
+                            <p class="text-gray-600 text-sm mb-3">
+                                Món cơm đặc biệt với độ dẻo dai, thường ăn kèm với thịt nướng và rau sống.
+                            </p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-green-600 font-bold">25,000 - 35,000đ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cultural Influence -->
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 text-white mb-16">
+                <h2 class="text-3xl font-bold text-center mb-8">
+                    Ảnh hưởng văn hóa ẩm thực
+                </h2>
+                <div class="flex flex-wrap justify-center gap-8">
+                    <div class="text-center w-72">
+                        <i class="fas fa-flag text-4xl mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Văn hóa Kinh</h3>
+                        <p class="text-blue-100">
+                            Mang đến những món ăn truyền thống miền Nam với hương vị đậm đà, sử dụng nhiều rau thơm và gia vị.
+                        </p>
+                    </div>
+                    <div class="text-center w-72">
+                        <i class="fas fa-pagoda text-4xl mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Văn hóa Khmer</h3>
+                        <p class="text-blue-100">
+                            Đóng góp những món ăn độc đáo như cháo ám, bánh ít lá gai với hương vị thanh đạm, tinh tế.
+                        </p>
+                    </div>
+                    <div class="text-center w-72">
+                        <i class="fas fa-yin-yang text-4xl mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Văn hóa Hoa</h3>
+                        <p class="text-blue-100">
+                            Ảnh hưởng trong cách chế biến và gia vị, tạo nên sự hòa quyện độc đáo trong ẩm thực địa phương.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <!-- Call to Action -->
+            <div class="text-center">
+                <div class="bg-white rounded-lg shadow-lg p-8 max-w-2xl mx-auto">
+                    <h2 class="text-3xl font-bold text-blue-700 mb-4">
+                        Khám phá ẩm thực Trà Vinh ngay hôm nay!
+                    </h2>
+                    <p class="text-gray-700 mb-6">
+                        Đừng bỏ lỡ cơ hội thưởng thức những món ăn đặc sắc và trải nghiệm văn hóa ẩm thực độc đáo của Trà Vinh.
+                    </p>
+                    <div class="flex flex-row gap-4 justify-center flex-wrap">
+                        <a href="dia-diem.html" class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            Tìm địa điểm ăn uống
+                        </a>
+                        <a href="index.html" class="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-600 hover:text-white transition duration-300">
+                            <i class="fas fa-home mr-2"></i>
+                            Về trang chủ
+                        </a>
+                    </div>
+                </div>
+            </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-pagoda text-2xl mr-2"></i>
+                        <h3 class="text-xl font-bold">Du lịch Trà Vinh</h3>
+                    </div>
+                    <p class="text-gray-300">Khám phá vẻ đẹp độc đáo của đồng bằng sông Cửu Long</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Liên kết nhanh</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="index.html" class="hover:text-white">Trang chủ</a></li>
+                        <li><a href="gioi-thieu.html" class="hover:text-white">Giới thiệu</a></li>
+                        <li><a href="dia-diem.html" class="hover:text-white">Địa điểm</a></li>
+                        <li><a href="lien-he.html" class="hover:text-white">Liên hệ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Ẩm thực</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-white">Bún nước lèo</a></li>
+                        <li><a href="#" class="hover:text-white">Bún suông</a></li>
+                        <li><a href="#" class="hover:text-white">Dừa sáp</a></li>
+                        <li><a href="#" class="hover:text-white">Bánh tét cốm dẹp</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Theo dõi chúng tôi</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+                <p>© 2024 Du lịch Trà Vinh. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Location Button -->
+    <button id="locationBtn" class="fixed bottom-24 right-6 w-14 h-14 rounded-full bg-green-600 shadow-lg flex items-center justify-center text-white text-2xl z-50 hover:bg-green-700 focus:outline-none">
+        <i class="fas fa-location-dot"></i>
+    </button>
+
+    <!-- Map Popup -->
+    <div id="mapPopup" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl p-4 relative w-full max-w-4xl mx-4">
+            <button onclick="closeMapPopup()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl focus:outline-none">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="text-xl font-bold mb-2 text-green-700 text-center">Bản đồ vị trí Tỉnh Trà Vinh</h2>
+            <div class="w-full h-96 rounded-lg overflow-hidden">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125753.27319478593!2d106.26245430302716!3d9.95144061411913!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a017515cc705df%3A0xade5b5649cd70f79!2zVHAuIFRyw6AgVmluaCwgVHLDoCBWaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1752588719298!5m2!1svi!2s" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        document.getElementById('locationBtn').onclick = function() {
+            document.getElementById('mapPopup').classList.remove('hidden');
+        }
+
+        function closeMapPopup() {
+            document.getElementById('mapPopup').classList.add('hidden');
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
