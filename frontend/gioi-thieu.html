@@ -240,209 +240,391 @@
     <main class="pt-20">
         <div class="py-16 bg-gradient-to-b from-blue-50 to-white">
             <div class="container mx-auto px-4">
-                <div class="max-w-4xl mx-auto">
-                    <h1 class="text-4xl font-bold text-center mb-12 text-gray-800">Giới thiệu về Trà Vinh</h1>
-                    
-                    <div class="mb-12">
-                      <div id="sliderHero" class="relative w-full max-w-3xl mx-auto h-96 rounded-lg overflow-hidden shadow-lg flex items-end justify-start">
-                        <div id="sliderBg" class="absolute inset-0 bg-center bg-cover transition-all duration-700 bg-gray-300"></div>
-                        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+                <div class="max-w-6xl mx-auto">
+                    <h1 class="text-4xl font-bold text-center mb-12 text-gray-800">Giới thiệu các địa điểm du lịch Trà Vinh</h1>
 
-                        <!-- Loading indicator -->
-                        <div id="sliderLoading" class="absolute inset-0 flex items-center justify-center bg-gray-200">
-                          <div class="flex items-center space-x-2 text-gray-600">
-                            <i class="fas fa-spinner fa-spin text-2xl"></i>
-                            <span class="text-lg">Đang tải hình ảnh...</span>
-                          </div>
-                        </div>
-
-                        <div class="relative z-10 p-8">
-                          <span id="sliderPlace" class="text-white text-3xl font-bold drop-shadow-lg bg-black bg-opacity-40 px-6 py-3 rounded-lg">Rừng dừa Bảy Mẫu</span>
-                        </div>
-
-                        <!-- Navigation dots -->
-                        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
-                          <div id="slideDots" class="flex space-x-2"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <script>
-                    const slides = [
-                      {
-                        name: 'Chùa Ang',
-                        img: '../my-server/images/chua-ang.jpg',
-                        fallback: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop'
-                      },
-                      {
-                        name: 'Ao Bà Om',
-                        img: '../my-server/images/ao-ba-om.jpg',
-                        fallback: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop'
-                      },
-                      {
-                        name: 'Biển Ba Động',
-                        img: '../my-server/images/bien-ba-dong.jpg',
-                        fallback: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=400&fit=crop'
-                      },
-                      {
-                        name: 'Rừng dừa Bảy Mẫu',
-                        img: '../my-server/images/rung-dua-bay-mau.jpg',
-                        fallback: 'https://images.unsplash.com/photo-1520637836862-4d197d17c93a?w=800&h=400&fit=crop'
-                      },
-                      {
-                        name: 'Bảo tàng Khmer',
-                        img: '../my-server/images/nha-bao-tang.jpg',
-                        fallback: 'https://images.unsplash.com/photo-1566552881560-0be862a7c445?w=800&h=400&fit=crop'
-                      },
-                    ];
-                    let currentSlide = 0;
-                    let slideInterval;
-
-                    function createDots() {
-                      const dotsContainer = document.getElementById('slideDots');
-                      dotsContainer.innerHTML = '';
-
-                      slides.forEach((_, index) => {
-                        const dot = document.createElement('button');
-                        dot.className = `w-3 h-3 rounded-full transition-all duration-300 ${index === currentSlide ? 'bg-white' : 'bg-white bg-opacity-50'}`;
-                        dot.onclick = () => goToSlide(index);
-                        dotsContainer.appendChild(dot);
-                      });
-                    }
-
-                    function updateDots() {
-                      const dots = document.querySelectorAll('#slideDots button');
-                      dots.forEach((dot, index) => {
-                        dot.className = `w-3 h-3 rounded-full transition-all duration-300 ${index === currentSlide ? 'bg-white' : 'bg-white bg-opacity-50'}`;
-                      });
-                    }
-
-                    function showSlide(idx) {
-                      const slide = slides[idx];
-                      const sliderBg = document.getElementById('sliderBg');
-                      const sliderPlace = document.getElementById('sliderPlace');
-                      const sliderLoading = document.getElementById('sliderLoading');
-
-                      // Show loading
-                      sliderLoading.style.display = 'flex';
-
-                      // Test if image exists
-                      const img = new Image();
-                      img.onload = function() {
-                        sliderBg.style.backgroundImage = `url('${slide.img}')`;
-                        sliderBg.classList.add('slide-fade-in');
-                        sliderPlace.textContent = slide.name;
-                        sliderLoading.style.display = 'none';
-                        updateDots();
-
-                        // Remove animation class after animation completes
-                        setTimeout(() => {
-                          sliderBg.classList.remove('slide-fade-in');
-                        }, 800);
-                      };
-                      img.onerror = function() {
-                        // Try fallback image first
-                        if (slide.fallback) {
-                          const fallbackImg = new Image();
-                          fallbackImg.onload = function() {
-                            sliderBg.style.backgroundImage = `url('${slide.fallback}')`;
-                            sliderPlace.textContent = slide.name;
-                            sliderLoading.style.display = 'none';
-                            updateDots();
-                          };
-                          fallbackImg.onerror = function() {
-                            // Final fallback to gradient
-                            sliderBg.style.backgroundImage = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                            sliderPlace.textContent = slide.name;
-                            sliderLoading.style.display = 'none';
-                            updateDots();
-                            console.warn(`All images failed for slide: ${slide.name}`);
-                          };
-                          fallbackImg.src = slide.fallback;
-                        } else {
-                          // Fallback to gradient if no fallback image
-                          sliderBg.style.backgroundImage = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                          sliderPlace.textContent = slide.name;
-                          sliderLoading.style.display = 'none';
-                          updateDots();
-                          console.warn(`Failed to load image: ${slide.img}`);
-                        }
-                      };
-                      img.src = slide.img;
-                    }
-
-                    function goToSlide(idx) {
-                      currentSlide = idx;
-                      showSlide(currentSlide);
-
-                      // Reset interval
-                      clearInterval(slideInterval);
-                      slideInterval = setInterval(nextSlide, 5000);
-                    }
-
-                    function nextSlide() {
-                      currentSlide = (currentSlide + 1) % slides.length;
-                      showSlide(currentSlide);
-                    }
-
-                    // Initialize slideshow
-                    document.addEventListener('DOMContentLoaded', function() {
-                      createDots();
-                      showSlide(currentSlide);
-                      slideInterval = setInterval(nextSlide, 5000);
-                    });
-                    </script>
-
-                    <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
-                        <h2 class="text-2xl font-bold mb-6 text-blue-600">
-                            <i class="fas fa-history mr-2"></i>Lịch sử & Văn hóa
+                    <!-- Tổng quan về Trà Vinh -->
+                    <div class="bg-white rounded-lg shadow-lg p-8 mb-12">
+                        <h2 class="text-3xl font-bold mb-6 text-blue-600 text-center">
+                            <i class="fas fa-map-marked-alt mr-3"></i>Tỉnh Trà Vinh
                         </h2>
-                        <p class="text-gray-700 leading-relaxed mb-4">
-                            Trà Vinh là một tỉnh ven biển thuộc vùng đồng bằng sông Cửu Long, nổi tiếng với sự đa dạng văn hóa độc đáo. 
-                            Đây là nơi sinh sống của ba dân tộc chính: Kinh, Khmer và Hoa, tạo nên một bức tranh văn hóa phong phú và đầy màu sắc.
-                        </p>
-                        <p class="text-gray-700 leading-relaxed">
-                            Tỉnh có hơn 140 ngôi chùa Khmer cổ kính, là minh chứng cho lịch sử lâu đời và truyền thống văn hóa đậm đà của vùng đất này.
-                        </p>
-                    </div>
-
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="bg-white rounded-lg shadow-lg p-6">
-                            <h3 class="text-xl font-bold mb-4 text-green-600">
-                                <i class="fas fa-map-marker-alt mr-2"></i>Vị trí địa lý
-                            </h3>
-                            <ul class="text-gray-700 space-y-2">
-                                <li><i class="fas fa-arrow-right text-green-500 mr-2"></i>Diện tích: 2.295,1 km²</li>
-                                <li><i class="fas fa-arrow-right text-green-500 mr-2"></i>Dân số: Khoảng 1,015 triệu người</li>
-                                <li><i class="fas fa-arrow-right text-green-500 mr-2"></i>Giáp biển Đông với 65km bờ biển</li>
-                                <li><i class="fas fa-arrow-right text-green-500 mr-2"></i>Cách TP.HCM 200km về phía Tây Nam</li>
-                            </ul>
-                        </div>
-
-                        <div class="bg-white rounded-lg shadow-lg p-6">
-                            <h3 class="text-xl font-bold mb-4 text-orange-600">
-                                <i class="fas fa-star mr-2"></i>Đặc sản nổi tiếng
-                            </h3>
-                            <ul class="text-gray-700 space-y-2">
-                                <li><i class="fas fa-arrow-right text-orange-500 mr-2"></i>Bánh ít lá gai</li>
-                                <li><i class="fas fa-arrow-right text-orange-500 mr-2"></i>Cơm dẻo</li>
-                                <li><i class="fas fa-arrow-right text-orange-500 mr-2"></i>Bánh xèo Khmer</li>
-                                <li><i class="fas fa-arrow-right text-orange-500 mr-2"></i>Tôm càng xanh</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-lg shadow-lg p-8 mt-8">
-                        <h2 class="text-2xl font-bold mb-6 text-purple-600">
-                            <i class="fas fa-calendar-alt mr-2"></i>Lễ hội truyền thống
-                        </h2>
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <h4 class="font-bold text-lg mb-2">Lễ hội Ok Om Bok</h4>
-                                <p class="text-gray-700">Lễ hội cúng trăng của người Khmer, diễn ra vào tháng 10 âm lịch</p>
+                        <div class="max-w-4xl mx-auto text-center">
+                            <p class="text-gray-700 leading-relaxed mb-6 text-lg">
+                                Trà Vinh là tỉnh ven biển thuộc vùng đồng bằng sông Cửu Long, nổi tiếng với sự đa dạng văn hóa của ba dân tộc Kinh - Khmer - Hoa.
+                            </p>
+                            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                                <div class="bg-blue-50 p-4 rounded-lg">
+                                    <i class="fas fa-map-marker-alt text-blue-500 text-2xl mb-2"></i>
+                                    <p class="font-semibold">Vị trí</p>
+                                    <p class="text-sm text-gray-600">Đồng bằng sông Cửu Long</p>
+                                </div>
+                                <div class="bg-green-50 p-4 rounded-lg">
+                                    <i class="fas fa-ruler-combined text-green-500 text-2xl mb-2"></i>
+                                    <p class="font-semibold">Diện tích</p>
+                                    <p class="text-sm text-gray-600">2.295,1 km²</p>
+                                </div>
+                                <div class="bg-purple-50 p-4 rounded-lg">
+                                    <i class="fas fa-users text-purple-500 text-2xl mb-2"></i>
+                                    <p class="font-semibold">Dân số</p>
+                                    <p class="text-sm text-gray-600">~1,015 triệu người</p>
+                                </div>
+                                <div class="bg-cyan-50 p-4 rounded-lg">
+                                    <i class="fas fa-water text-cyan-500 text-2xl mb-2"></i>
+                                    <p class="font-semibold">Bờ biển</p>
+                                    <p class="text-sm text-gray-600">65km</p>
+                                </div>
                             </div>
                             <div>
-                                <h4 class="font-bold text-lg mb-2">Lễ hội Chol Chnam Thmay</h4>
-                                <p class="text-gray-700">Tết truyền thống của người Khmer, thường diễn ra vào tháng 4</p>
+                                <a href="https://www.google.com/maps/place/Tr%C3%A0+Vinh,+Vietnam" target="_blank" rel="noopener"
+                                   class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold">
+                                    <i class="fas fa-external-link-alt mr-2"></i>Xem trên Google Maps
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Danh sách các địa điểm du lịch -->
+                    <div class="space-y-12">
+                        <!-- Ao Bà Om -->
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                            <div class="md:flex">
+                                <div class="md:w-1/2">
+                                    <img src="/my-server/images/ao-ba-om.jpg" alt="Ao Bà Om" class="w-full h-64 md:h-full object-cover">
+                                </div>
+                                <div class="md:w-1/2 p-8">
+                                    <h3 class="text-2xl font-bold text-blue-600 mb-4">
+                                        <i class="fas fa-water mr-2"></i>Ao Bà Om
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        Khu du lịch sinh thái nổi tiếng với hồ nước trong xanh, cây cối xanh mát và không gian yên tĩnh.
+                                        Đây là nơi lý tưởng để thư giãn và tìm hiểu về văn hóa Khmer.
+                                    </p>
+                                    <div class="space-y-2 mb-4">
+                                        <p><i class="fas fa-map-marker-alt text-green-500 mr-2"></i><strong>Vị trí:</strong> Thành phố Trà Vinh</p>
+                                        <p><i class="fas fa-history text-green-500 mr-2"></i><strong>Lịch sử:</strong> Khu du lịch sinh thái được phát triển từ ao tự nhiên</p>
+                                        <p><i class="fas fa-clock text-green-500 mr-2"></i><strong>Giờ mở cửa:</strong> 6:00 - 18:00 hàng ngày</p>
+                                        <p><i class="fas fa-ticket-alt text-green-500 mr-2"></i><strong>Giá vé:</strong> 20,000 - 30,000 VNĐ</p>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <a href="ao-ba-om.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                                            <i class="fas fa-info-circle mr-2"></i>Chi tiết
+                                        </a>
+                                        <a href="https://www.google.com/maps/search/Ao+Bà+Om+Trà+Vinh" target="_blank" rel="noopener"
+                                           class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                                            <i class="fas fa-map-marked-alt mr-2"></i>Bản đồ
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bảo tàng Khmer -->
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                            <div class="md:flex">
+                                <div class="md:w-1/2 md:order-2">
+                                    <img src="/my-server/images/nha-bao-tang.jpg" alt="Bảo tàng Khmer" class="w-full h-64 md:h-full object-cover">
+                                </div>
+                                <div class="md:w-1/2 p-8">
+                                    <h3 class="text-2xl font-bold text-blue-600 mb-4">
+                                        <i class="fas fa-university mr-2"></i>Bảo tàng Khmer
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        Nơi lưu giữ và trưng bày những hiện vật quý giá về văn hóa, lịch sử của dân tộc Khmer Nam Bộ.
+                                        Bảo tàng có hơn 1.000 hiện vật và tài liệu.
+                                    </p>
+                                    <div class="space-y-2 mb-4">
+                                        <p><i class="fas fa-map-marker-alt text-green-500 mr-2"></i><strong>Vị trí:</strong> Đường Nguyễn Đáng, TP. Trà Vinh</p>
+                                        <p><i class="fas fa-history text-green-500 mr-2"></i><strong>Lịch sử:</strong> Thành lập năm 1976</p>
+                                        <p><i class="fas fa-clock text-green-500 mr-2"></i><strong>Giờ mở cửa:</strong> 7:30 - 11:30, 13:30 - 17:00</p>
+                                        <p><i class="fas fa-ticket-alt text-green-500 mr-2"></i><strong>Giá vé:</strong> 10,000 VNĐ</p>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <a href="bao-tang-khmer.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                                            <i class="fas fa-info-circle mr-2"></i>Chi tiết
+                                        </a>
+                                        <a href="https://www.google.com/maps/search/Bảo+tàng+Khmer+Trà+Vinh" target="_blank" rel="noopener"
+                                           class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                                            <i class="fas fa-map-marked-alt mr-2"></i>Bản đồ
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Biển Ba Động -->
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                            <div class="md:flex">
+                                <div class="md:w-1/2">
+                                    <img src="/my-server/images/bien-ba-dong.jpg" alt="Biển Ba Động" class="w-full h-64 md:h-full object-cover">
+                                </div>
+                                <div class="md:w-1/2 p-8">
+                                    <h3 class="text-2xl font-bold text-blue-600 mb-4">
+                                        <i class="fas fa-umbrella-beach mr-2"></i>Biển Ba Động
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        Bãi biển hoang sơ với cát trắng mịn, sóng biển êm đềm. Đây là nơi lý tưởng để cắm trại,
+                                        ngắm hoàng hôn và trải nghiệm cuộc sống bình dị của ngư dân.
+                                    </p>
+                                    <div class="space-y-2 mb-4">
+                                        <p><i class="fas fa-map-marker-alt text-green-500 mr-2"></i><strong>Vị trí:</strong> Xã Ba Động, huyện Trà Cú</p>
+                                        <p><i class="fas fa-history text-green-500 mr-2"></i><strong>Đặc điểm:</strong> Bãi biển hoang sơ, ít du khách</p>
+                                        <p><i class="fas fa-clock text-green-500 mr-2"></i><strong>Thời gian tốt nhất:</strong> Sáng sớm và chiều tà</p>
+                                        <p><i class="fas fa-ticket-alt text-green-500 mr-2"></i><strong>Giá vé:</strong> Miễn phí</p>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <a href="bien-ba-dong.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                                            <i class="fas fa-info-circle mr-2"></i>Chi tiết
+                                        </a>
+                                        <a href="https://www.google.com/maps/search/Biển+Ba+Động+Trà+Vinh" target="_blank" rel="noopener"
+                                           class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                                            <i class="fas fa-map-marked-alt mr-2"></i>Bản đồ
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chùa Âng -->
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                            <div class="md:flex">
+                                <div class="md:w-1/2 md:order-2">
+                                    <img src="/my-server/images/chua-ang.jpg" alt="Chùa Âng" class="w-full h-64 md:h-full object-cover">
+                                </div>
+                                <div class="md:w-1/2 p-8">
+                                    <h3 class="text-2xl font-bold text-blue-600 mb-4">
+                                        <i class="fas fa-pagoda mr-2"></i>Chùa Âng
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        Ngôi chùa Khmer cổ kính với kiến trúc độc đáo và linh thiêng. Chùa có lịch sử lâu đời
+                                        và là nơi sinh hoạt tôn giáo quan trọng của cộng đồng người Khmer.
+                                    </p>
+                                    <div class="space-y-2 mb-4">
+                                        <p><i class="fas fa-map-marker-alt text-green-500 mr-2"></i><strong>Vị trí:</strong> Phường 8, TP. Trà Vinh</p>
+                                        <p><i class="fas fa-history text-green-500 mr-2"></i><strong>Lịch sử:</strong> Được xây dựng từ thế kỷ 16</p>
+                                        <p><i class="fas fa-clock text-green-500 mr-2"></i><strong>Giờ tham quan:</strong> 6:00 - 18:00</p>
+                                        <p><i class="fas fa-ticket-alt text-green-500 mr-2"></i><strong>Chính sách:</strong> Trang phục lịch sự, tôn trọng nơi thờ tự</p>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <a href="chua-ang.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                                            <i class="fas fa-info-circle mr-2"></i>Chi tiết
+                                        </a>
+                                        <a href="https://www.google.com/maps/search/Chùa+Âng+Trà+Vinh" target="_blank" rel="noopener"
+                                           class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                                            <i class="fas fa-map-marked-alt mr-2"></i>Bản đồ
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chùa Cổ -->
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                            <div class="md:flex">
+                                <div class="md:w-1/2">
+                                    <img src="/my-server/images/chua-co.jpg" alt="Chùa Cổ" class="w-full h-64 md:h-full object-cover">
+                                </div>
+                                <div class="md:w-1/2 p-8">
+                                    <h3 class="text-2xl font-bold text-blue-600 mb-4">
+                                        <i class="fas fa-pagoda mr-2"></i>Chùa Cổ (Kompong Chrây)
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        Ngôi chùa cổ nhất Trà Vinh với lịch sử hàng trăm năm. Chùa có kiến trúc Khmer truyền thống
+                                        và nhiều hiện vật quý giá về văn hóa tâm linh.
+                                    </p>
+                                    <div class="space-y-2 mb-4">
+                                        <p><i class="fas fa-map-marker-alt text-green-500 mr-2"></i><strong>Vị trí:</strong> Phường 1, TP. Trà Vinh</p>
+                                        <p><i class="fas fa-history text-green-500 mr-2"></i><strong>Lịch sử:</strong> Được xây dựng từ thế kỷ 10</p>
+                                        <p><i class="fas fa-clock text-green-500 mr-2"></i><strong>Giờ tham quan:</strong> 5:30 - 18:30</p>
+                                        <p><i class="fas fa-ticket-alt text-green-500 mr-2"></i><strong>Chính sách:</strong> Miễn phí, cần tôn trọng nơi thờ tự</p>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <a href="chua-co.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                                            <i class="fas fa-info-circle mr-2"></i>Chi tiết
+                                        </a>
+                                        <a href="https://www.google.com/maps/search/Chùa+Cổ+Trà+Vinh" target="_blank" rel="noopener"
+                                           class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                                            <i class="fas fa-map-marked-alt mr-2"></i>Bản đồ
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chùa Hang -->
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                            <div class="md:flex">
+                                <div class="md:w-1/2 md:order-2">
+                                    <img src="/my-server/images/chua-hang.jpg" alt="Chùa Hang" class="w-full h-64 md:h-full object-cover">
+                                </div>
+                                <div class="md:w-1/2 p-8">
+                                    <h3 class="text-2xl font-bold text-blue-600 mb-4">
+                                        <i class="fas fa-pagoda mr-2"></i>Chùa Hang
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        Ngôi chùa Khmer nổi tiếng với kiến trúc nghệ thuật tinh xảo nhất trong các chùa ở Trà Vinh.
+                                        Các chi tiết trang trí rất đẹp và ấn tượng.
+                                    </p>
+                                    <div class="space-y-2 mb-4">
+                                        <p><i class="fas fa-map-marker-alt text-green-500 mr-2"></i><strong>Vị trí:</strong> Xã Hàm Giang, huyện Trà Cú</p>
+                                        <p><i class="fas fa-history text-green-500 mr-2"></i><strong>Lịch sử:</strong> Được xây dựng từ thế kỷ 16</p>
+                                        <p><i class="fas fa-clock text-green-500 mr-2"></i><strong>Giờ tham quan:</strong> 6:00 - 18:00</p>
+                                        <p><i class="fas fa-ticket-alt text-green-500 mr-2"></i><strong>Chính sách:</strong> Miễn phí, cần trang phục lịch sự</p>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <a href="chua-hang.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                                            <i class="fas fa-info-circle mr-2"></i>Chi tiết
+                                        </a>
+                                        <a href="https://www.google.com/maps/search/Chùa+Hang+Trà+Vinh" target="_blank" rel="noopener"
+                                           class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                                            <i class="fas fa-map-marked-alt mr-2"></i>Bản đồ
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Cù lao Tân Quy -->
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                            <div class="md:flex">
+                                <div class="md:w-1/2">
+                                    <img src="/my-server/images/cu-lao-tan-quy.jpg" alt="Cù lao Tân Quy" class="w-full h-64 md:h-full object-cover">
+                                </div>
+                                <div class="md:w-1/2 p-8">
+                                    <h3 class="text-2xl font-bold text-blue-600 mb-4">
+                                        <i class="fas fa-island-tropical mr-2"></i>Cù lao Tân Quy
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        Hòn đảo xinh đẹp với cuộc sống bình dị của người dân miền sông nước.
+                                        Nơi lý tưởng để trải nghiệm du lịch sinh thái và văn hóa nông thôn.
+                                    </p>
+                                    <div class="space-y-2 mb-4">
+                                        <p><i class="fas fa-map-marker-alt text-green-500 mr-2"></i><strong>Vị trí:</strong> Xã Tân Quy, huyện Tiểu Cần</p>
+                                        <p><i class="fas fa-history text-green-500 mr-2"></i><strong>Đặc điểm:</strong> Đảo sinh thái, cuộc sống nông thôn</p>
+                                        <p><i class="fas fa-clock text-green-500 mr-2"></i><strong>Thời gian tham quan:</strong> Cả ngày</p>
+                                        <p><i class="fas fa-ticket-alt text-green-500 mr-2"></i><strong>Chính sách:</strong> Tôn trọng môi trường, văn hóa địa phương</p>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <a href="cu-lao-tan-quy.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                                            <i class="fas fa-info-circle mr-2"></i>Chi tiết
+                                        </a>
+                                        <a href="https://www.google.com/maps/search/Cù+lao+Tân+Quy+Trà+Vinh" target="_blank" rel="noopener"
+                                           class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                                            <i class="fas fa-map-marked-alt mr-2"></i>Bản đồ
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Khu du lịch Huỳnh Kha -->
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                            <div class="md:flex">
+                                <div class="md:w-1/2 md:order-2">
+                                    <img src="/my-server/images/toan-canh-khu-du-lich-huynh-kha.jpg" alt="Khu du lịch Huỳnh Kha" class="w-full h-64 md:h-full object-cover">
+                                </div>
+                                <div class="md:w-1/2 p-8">
+                                    <h3 class="text-2xl font-bold text-blue-600 mb-4">
+                                        <i class="fas fa-tree mr-2"></i>Khu du lịch Huỳnh Kha
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        Khu du lịch sinh thái với nhiều hoạt động giải trí thú vị và cảnh quan đẹp.
+                                        Rất phù hợp cho gia đình có trẻ em và các hoạt động team building.
+                                    </p>
+                                    <div class="space-y-2 mb-4">
+                                        <p><i class="fas fa-map-marker-alt text-green-500 mr-2"></i><strong>Vị trí:</strong> Xã Long Đức, TP. Trà Vinh</p>
+                                        <p><i class="fas fa-history text-green-500 mr-2"></i><strong>Đặc điểm:</strong> Khu du lịch sinh thái, giải trí</p>
+                                        <p><i class="fas fa-clock text-green-500 mr-2"></i><strong>Giờ mở cửa:</strong> 7:00 - 18:00</p>
+                                        <p><i class="fas fa-ticket-alt text-green-500 mr-2"></i><strong>Giá vé:</strong> 50,000 - 100,000 VNĐ</p>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <a href="khu-du-lich-huynh-kha.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                                            <i class="fas fa-info-circle mr-2"></i>Chi tiết
+                                        </a>
+                                        <a href="https://www.google.com/maps/search/Khu+du+lịch+Huỳnh+Kha+Trà+Vinh" target="_blank" rel="noopener"
+                                           class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                                            <i class="fas fa-map-marked-alt mr-2"></i>Bản đồ
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Khu sinh thái rừng dược -->
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                            <div class="md:flex">
+                                <div class="md:w-1/2">
+                                    <img src="/my-server/images/toan-canh-rung-duoc.jpg" alt="Khu sinh thái rừng dược" class="w-full h-64 md:h-full object-cover">
+                                </div>
+                                <div class="md:w-1/2 p-8">
+                                    <h3 class="text-2xl font-bold text-blue-600 mb-4">
+                                        <i class="fas fa-leaf mr-2"></i>Khu sinh thái rừng dược
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        Nơi tuyệt vời để tìm hiểu về thảo dược và thiên nhiên. Có nhiều loài cây dược liệu quý hiếm
+                                        và cảnh quan thiên nhiên đẹp, phù hợp cho du lịch sinh thái.
+                                    </p>
+                                    <div class="space-y-2 mb-4">
+                                        <p><i class="fas fa-map-marker-alt text-green-500 mr-2"></i><strong>Vị trí:</strong> Huyện Tiểu Cần</p>
+                                        <p><i class="fas fa-history text-green-500 mr-2"></i><strong>Đặc điểm:</strong> Rừng dược liệu, sinh thái học</p>
+                                        <p><i class="fas fa-clock text-green-500 mr-2"></i><strong>Giờ tham quan:</strong> 7:00 - 17:00</p>
+                                        <p><i class="fas fa-ticket-alt text-green-500 mr-2"></i><strong>Chính sách:</strong> Bảo vệ môi trường, không hái lá cây</p>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <a href="khu-sinh-thai-rung-duoc.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                                            <i class="fas fa-info-circle mr-2"></i>Chi tiết
+                                        </a>
+                                        <a href="https://www.google.com/maps/place/Khu+Sinh+Tha%CC%81i+R%C6%B0%CC%80ng+Ng%C3%A2%CC%A3p+M%C4%83%CC%A3n+TX.+Duy%C3%AAn+H%E1%BA%A3i/data=!4m7!3m6!1s0x31a02996001307b9:0xfcfd00fc17da946!8m2!3d9.608746!4d106.50532!16s%2Fg%2F11gcxzlydm!19sChIJuQcTAJYpoDERRql9wQ_Qzw8?authuser=0&hl=vi&rclk=1" target="_blank" rel="noopener"
+                                           class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                                            <i class="fas fa-map-marked-alt mr-2"></i>Bản đồ
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ẩm thực đặc sắc -->
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                            <div class="md:flex">
+                                <div class="md:w-1/2 md:order-2">
+                                    <img src="/my-server/images/BNL.jpg" alt="Ẩm thực Trà Vinh" class="w-full h-64 md:h-full object-cover">
+                                </div>
+                                <div class="md:w-1/2 p-8">
+                                    <h3 class="text-2xl font-bold text-blue-600 mb-4">
+                                        <i class="fas fa-utensils mr-2"></i>Ẩm thực đặc sắc
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        Khám phá hương vị độc đáo của ẩm thực ba dân tộc Kinh - Khmer - Hoa.
+                                        Từ bún nước lèo, bánh ít lá gai đến dừa sáp, mỗi món đều có câu chuyện riêng.
+                                    </p>
+                                    <div class="space-y-2 mb-4">
+                                        <p><i class="fas fa-map-marker-alt text-green-500 mr-2"></i><strong>Vị trí:</strong> Khắp tỉnh Trà Vinh</p>
+                                        <p><i class="fas fa-history text-green-500 mr-2"></i><strong>Đặc điểm:</strong> Ẩm thực đa văn hóa</p>
+                                        <p><i class="fas fa-clock text-green-500 mr-2"></i><strong>Thời gian:</strong> Cả ngày</p>
+                                        <p><i class="fas fa-ticket-alt text-green-500 mr-2"></i><strong>Giá cả:</strong> 15,000 - 60,000 VNĐ/món</p>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <a href="am-thuc-dac-sac.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                                            <i class="fas fa-info-circle mr-2"></i>Chi tiết
+                                        </a>
+                                        <a href="https://www.google.com/maps/search/Quán+ăn+Trà+Vinh" target="_blank" rel="noopener"
+                                           class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                                            <i class="fas fa-map-marked-alt mr-2"></i>Tìm quán ăn
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Xem tất cả địa điểm -->
+                        <div class="text-center mt-12">
+                            <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 text-white">
+                                <h3 class="text-2xl font-bold mb-4">Khám phá thêm nhiều địa điểm khác</h3>
+                                <p class="mb-6">Trà Vinh còn có rất nhiều địa điểm du lịch hấp dẫn khác đang chờ bạn khám phá!</p>
+                                <div class="flex flex-wrap justify-center gap-4">
+                                    <a href="dia-diem.html" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300">
+                                        <i class="fas fa-map-marked-alt mr-2"></i>Xem tất cả địa điểm
+                                    </a>
+                                    <a href="danh-gia.html" class="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition duration-300">
+                                        <i class="fas fa-star mr-2"></i>Đọc đánh giá
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
