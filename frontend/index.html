@@ -8,7 +8,36 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 
+    <style>
+        .hero-bg {
+            background: linear-gradient(rgba(16, 52, 166, 0.18), rgba(16, 52, 166, 0.18)), url('/my-server/images/ao-ba-om.jpg') center center/cover no-repeat;
+            transition: background-image 1s ease-in-out;
+        }
 
+        .hero-indicators {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: white;
+            transform: scale(1.2);
+        }
+    </style>
 
 
 
@@ -63,8 +92,8 @@
     <!-- Main Content -->
     <main>
         <!-- Hero Section -->
-        <div class="min-h-screen flex items-center pt-16" style="background: linear-gradient(rgba(16, 52, 166, 0.18), rgba(16, 52, 166, 0.18)), url('/my-server/images/ao-ba-om.jpg') center center/cover no-repeat;">
-            <div class="container mx-auto px-4 text-center text-white">
+        <div id="heroSection" class="min-h-screen flex items-center pt-16 hero-bg">
+           <div class="container mx-auto px-4 text-center text-white">
                 <h1 class="text-6xl md:text-8xl font-extrabold mb-6 drop-shadow-lg tracking-wide" style="text-shadow: 0 4px 24px rgba(0,0,0,0.25); letter-spacing: 0.08em;">
                     <span>Trà Vinh</span>
                 </h1>
@@ -84,32 +113,47 @@
                     </a>
                 </div>
             </div>
-        </div>
 
+            <!-- Hero Indicators -->
+            <div class="hero-indicators">
+                <div class="indicator active" onclick="changeHeroImage(0)"></div>
+                <div class="indicator" onclick="changeHeroImage(1)"></div>
+                <div class="indicator" onclick="changeHeroImage(2)"></div>
+                <div class="indicator" onclick="changeHeroImage(3)"></div>
+                <div class="indicator" onclick="changeHeroImage(4)"></div>
+                <div class="indicator" onclick="changeHeroImage(5)"></div>
+            </div>
+        </div>
+        
         <!-- Features Section -->
         <div class="py-16 bg-white">
             <div class="container mx-auto px-4">
                 <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">Tại sao chọn Trà Vinh?</h2>
                 <div class="grid md:grid-cols-3 gap-8">
                     <div class="text-center p-6 bg-gradient-to-b from-blue-50 to-white rounded-lg shadow-lg">
-                        <i class="fas fa-landmark text-4xl text-blue-600 mb-4"></i>
-                        <h3 class="text-xl font-bold mb-4">Văn hóa đa dạng</h3>
+                        <img src="/my-server/images/kien-truc-khmer1.png" alt="Văn hóa Khmer" class="w-16 h-16 mx-auto mb-4 rounded-full object-cover">
+                        <a href="van-hoa-da-dang.html" class="block">
+                            <h3 class="text-xl font-bold mb-4 hover:text-blue-600 transition duration-300">Văn hóa đa dạng</h3>
+                        </a>
                         <p class="text-gray-600">Khám phá sự hòa quyện độc đáo giữa văn hóa Kinh, Khmer và Hoa</p>
                     </div>
                     <div class="text-center p-6 bg-gradient-to-b from-green-50 to-white rounded-lg shadow-lg">
-                        <i class="fas fa-leaf text-4xl text-green-600 mb-4"></i>
-                        <h3 class="text-xl font-bold mb-4">Thiên nhiên hoang sơ</h3>
+                        <img src="/my-server/images/rung_duoc.jpg" alt="Thiên nhiên Trà Vinh" class="w-16 h-16 mx-auto mb-4 rounded-full object-cover">
+                        <a href="thien-nhien-hoang-so.html" class="block">
+                            <h3 class="text-xl font-bold mb-4 hover:text-green-600 transition duration-300">Thiên nhiên hoang sơ</h3>
+                        </a>
                         <p class="text-gray-600">Trải nghiệm cảnh quan đồng bằng sông nước tuyệt đẹp</p>
                     </div>
                     <div class="text-center p-6 bg-gradient-to-b from-yellow-50 to-white rounded-lg shadow-lg">
-                        <i class="fas fa-utensils text-4xl text-yellow-600 mb-4"></i>
-                        <h3 class="text-xl font-bold mb-4">Ẩm thực đặc sắc</h3>
+                        <img src="/my-server/images/am-thuc.jpg" alt="Ẩm thực Trà Vinh" class="w-16 h-16 mx-auto mb-4 rounded-full object-cover">
+                        <a href="am-thuc-dac-sac.html" class="block">
+                            <h3 class="text-xl font-bold mb-4 hover:text-yellow-600 transition duration-300">Ẩm thực đặc sắc</h3>
+                        </a>
                         <p class="text-gray-600">Thưởng thức các món ăn truyền thống với hương vị đậm đà</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </div>                
 
     <!-- Login Modal -->
     <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
@@ -259,6 +303,54 @@
     function closeMapPopup() {
         document.getElementById('mapPopup').classList.add('hidden');
     }
+
+    // Hero Image Slideshow
+    const heroImages = [
+        '/my-server/images/ao-ba-om.jpg',
+        '/my-server/images/chua-ang.jpg',
+        '/my-server/images/bien-ba-dong.jpg',
+        '/my-server/images/chua-hang.jpg',
+        '/my-server/images/cu-lao-tan-quy.jpg',
+        '/my-server/images/Chua-Vam-Ray.jpg'
+    ];
+
+    let currentImageIndex = 0;
+    const heroSection = document.getElementById('heroSection');
+    const indicators = document.querySelectorAll('.indicator');
+
+    function changeHeroImage(index) {
+        currentImageIndex = index;
+        updateHeroBackground();
+        updateIndicators();
+    }
+
+    function updateHeroBackground() {
+        const imageUrl = heroImages[currentImageIndex];
+        heroSection.style.background = `linear-gradient(rgba(16, 52, 166, 0.18), rgba(16, 52, 166, 0.18)), url('${imageUrl}') center center/cover no-repeat`;
+    }
+
+    function updateIndicators() {
+        indicators.forEach((indicator, index) => {
+            if (index === currentImageIndex) {
+                indicator.classList.add('active');
+            } else {
+                indicator.classList.remove('active');
+            }
+        });
+    }
+
+    function nextImage() {
+        currentImageIndex = (currentImageIndex + 1) % heroImages.length;
+        updateHeroBackground();
+        updateIndicators();
+    }
+
+    // Auto-change images every 5 seconds
+    setInterval(nextImage, 5000);
+
+    // Initialize
+    updateHeroBackground();
+    updateIndicators();
     </script>
 </body>
 </html>
