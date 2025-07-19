@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiên nhiên hoang sơ Trà Vinh - Vẻ đẹp đồng bằng sông nước</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-blue-700 shadow-lg fixed w-full top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-pagoda text-blue-100 text-2xl"></i>
+                    <a href="index.html" class="text-blue-100 text-xl font-bold">Du lịch Trà Vinh</a>
+                </div>
+                
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Giới thiệu</a>
+                    <a href="dia-diem.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Địa điểm</a>
+                    <a href="lien-he.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Liên hệ</a>
+                    <a href="danh-gia.html" class="nav-link text-blue-100 hover:text-blue-300 px-3 py-2 transition duration-300 font-bold drop-shadow-md text-lg">Đánh giá & Bài viết</a>
+                </div>
+                
+                <button class="md:hidden text-blue-100" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <div id="mobileMenu" class="md:hidden hidden bg-blue-800 bg-opacity-90 rounded-lg mb-4">
+                <div class="px-4 py-2 space-y-2">
+                    <a href="index.html" class="block text-blue-100 hover:text-blue-300 py-2">Trang chủ</a>
+                    <a href="gioi-thieu.html" class="block text-blue-100 hover:text-blue-300 py-2">Giới thiệu</a>
+                    <a href="dia-diem.html" class="block text-blue-100 hover:text-blue-300 py-2">Địa điểm</a>
+                    <a href="lien-he.html" class="block text-blue-100 hover:text-blue-300 py-2">Liên hệ</a>
+                    <a href="danh-gia.html" class="block text-blue-100 hover:text-blue-300 py-2">Đánh giá & Bài viết</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="min-h-96 flex items-center pt-16" style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/my-server/images/ao-ba-om.jpg') center center/cover no-repeat;">
+        <div class="container mx-auto px-4 text-center text-white">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-4 drop-shadow-lg">
+                Thiên nhiên hoang sơ Trà Vinh
+            </h1>
+            <p class="text-xl md:text-2xl mb-6 font-semibold drop-shadow-md">
+                Vẻ đẹp nguyên sơ của đồng bằng sông nước miền Tây
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="py-16">
+        <div class="container mx-auto px-4">
+            <!-- Introduction -->
+            <div class="max-w-4xl mx-auto mb-16">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h2 class="text-3xl font-bold text-green-700 mb-6 text-center">
+                        <i class="fas fa-leaf mr-3"></i>
+                        Thiên đường sinh thái miền Tây
+                    </h2>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                        Trà Vinh sở hữu hệ sinh thái đa dạng và phong phú với những cánh rừng nguyên sinh, sông ngòi chằng chịt, đầm phá bạt ngàn và bãi biển hoang sơ. Đây là nơi lý tưởng cho những ai yêu thích thiên nhiên và muốn tìm hiểu về hệ sinh thái đồng bằng sông Cửu Long độc đáo.
+                    </p>
+                    <div class="grid md:grid-cols-4 gap-6 text-center">
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <i class="fas fa-tree text-3xl text-green-600 mb-2"></i>
+                            <h3 class="font-bold text-green-700">Rừng nguyên sinh</h3>
+                            <p class="text-sm text-gray-600">15,000 ha</p>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <i class="fas fa-water text-3xl text-blue-600 mb-2"></i>
+                            <h3 class="font-bold text-blue-700">Sông ngòi</h3>
+                            <p class="text-sm text-gray-600">200+ km</p>
+                        </div>
+                        <div class="bg-teal-50 p-4 rounded-lg">
+                            <i class="fas fa-fish text-3xl text-teal-600 mb-2"></i>
+                            <h3 class="font-bold text-teal-700">Đầm phá</h3>
+                            <p class="text-sm text-gray-600">5,000 ha</p>
+                        </div>
+                        <div class="bg-yellow-50 p-4 rounded-lg">
+                            <i class="fas fa-umbrella-beach text-3xl text-yellow-600 mb-2"></i>
+                            <h3 class="font-bold text-yellow-700">Bãi biển</h3>
+                            <p class="text-sm text-gray-600">65 km</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Natural Features -->
+            <div class="grid lg:grid-cols-2 gap-8 mb-16">
+                <!-- Ao Bà Om -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="/my-server/images/ao-ba-om.jpg" alt="Ao Bà Om" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-green-700 mb-3">
+                            <i class="fas fa-lake mr-2"></i>
+                            Ao Bà Om
+                        </h3>
+                        <p class="text-gray-700 mb-4">
+                            Hồ nước ngọt tự nhiên rộng 45ha với nước trong xanh quanh năm, được bao quanh bởi rừng cây cổ thụ hàng trăm năm tuổi. Đây là địa điểm linh thiêng của người Khmer và là khu du lịch sinh thái nổi tiếng.
+                        </p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-map-marker-alt mr-1"></i>
+                            <span class="mr-4">Trà Cú, Trà Vinh</span>
+                            <i class="fas fa-clock mr-1"></i>
+                            <span>Mở cửa 24/7</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Biển Bà Động -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="/my-server/images/bien-ba-dong.jpg" alt="Biển Bà Động" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-blue-700 mb-3">
+                            <i class="fas fa-waves mr-2"></i>
+                            Biển Bà Động
+                        </h3>
+                        <p class="text-gray-700 mb-4">
+                            Bãi biển hoang sơ với cát trắng mịn, sóng êm ái và rừng dừa xanh mướt. Nơi đây còn có khu rừng ngập mặn phong phú với nhiều loài động thực vật quý hiếm.
+                        </p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-map-marker-alt mr-1"></i>
+                            <span class="mr-4">Duyên Hải, Trà Vinh</span>
+                            <i class="fas fa-thermometer-half mr-1"></i>
+                            <span>26-30°C</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ecosystem Diversity -->
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-center text-green-700 mb-12">
+                    Đa dạng sinh học phong phú
+                </h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Rừng ngập mặn -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-br from-green-400 to-teal-500 flex items-center justify-center">
+                            <img src="/my-server/images/rung-ngap-man.jpg" alt="Nem nướng" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-green-700 mb-2">Rừng ngập mặn</h3>
+                            <p class="text-gray-600 text-sm mb-3">
+                                Hệ sinh thái rừng ngập mặn với hơn 50 loài thực vật và là nơi cư trú của nhiều loài chim quý hiếm.
+                            </p>
+                            <div class="text-xs text-gray-500">
+                                <span class="bg-green-100 px-2 py-1 rounded">Đước</span>
+                                <span class="bg-green-100 px-2 py-1 rounded ml-1">Tràm</span>
+                                <span class="bg-green-100 px-2 py-1 rounded ml-1">Mắm</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hệ sinh thái nước ngọt -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center">
+                            <img src="/my-server/images/he-sinh-thai-nuoc-ngot.jpg" alt="sinh thái class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-blue-700 mb-2">Hệ sinh thái nước ngọt</h3>
+                            <p class="text-gray-600 text-sm mb-3">
+                                Sông ngòi, kênh rạch với hơn 100 loài cá và các loài thủy sinh vật đặc trưng miền Tây.
+                            </p>
+                            <div class="text-xs text-gray-500">
+                                <span class="bg-blue-100 px-2 py-1 rounded">Cá lóc</span>
+                                <span class="bg-blue-100 px-2 py-1 rounded ml-1">Cá tra</span>
+                                <span class="bg-blue-100 px-2 py-1 rounded ml-1">Tôm sú</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chim di cư -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center">
+                            <img src="/my-server/images/chim-di-cu.webp" alt="chim" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-purple-700 mb-2">Chim di cư</h3>
+                            <p class="text-gray-600 text-sm mb-3">
+                                Điểm dừng chân của hàng triệu con chim di cư từ phương Bắc vào mùa khô hàng năm.
+                            </p>
+                            <div class="text-xs text-gray-500">
+                                <span class="bg-purple-100 px-2 py-1 rounded">Cò</span>
+                                <span class="bg-purple-100 px-2 py-1 rounded ml-1">Vịt trời</span>
+                                <span class="bg-purple-100 px-2 py-1 rounded ml-1">Chim lặn</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rừng tràm -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                            <img src="/my-server/images/runng-u-minh.jpg" alt="rừng" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-yellow-700 mb-2">Rừng tràm U Minh</h3>
+                            <p class="text-gray-600 text-sm mb-3">
+                                Rừng tràm nguyên sinh với những cây tràm cổ thụ hàng trăm năm tuổi, tạo nên cảnh quan độc đáo.
+                            </p>
+                            <div class="text-xs text-gray-500">
+                                <span class="bg-yellow-100 px-2 py-1 rounded">Tràm trắng</span>
+                                <span class="bg-yellow-100 px-2 py-1 rounded ml-1">Tràm đỏ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vườn trái cây -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-br from-red-400 to-pink-500 flex items-center justify-center">
+                            <img src="/my-server/images/vuon-trai-cay.jpg" alt="trái cây" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-red-700 mb-2">Vườn trái cây</h3>
+                            <p class="text-gray-600 text-sm mb-3">
+                                Những vườn trái cây nhiệt đới với dừa sáp, xoài, chôm chôm và nhiều loại trái cây đặc sản.
+                            </p>
+                            <div class="text-xs text-gray-500">
+                                <span class="bg-red-100 px-2 py-1 rounded">Dừa sáp</span>
+                                <span class="bg-red-100 px-2 py-1 rounded ml-1">Xoài</span>
+                                <span class="bg-red-100 px-2 py-1 rounded ml-1">Chôm chôm</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Đồng lúa -->
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-br from-green-400 to-yellow-500 flex items-center justify-center">
+                            <img src="/my-server/images/lua.jpeg" alt="lua" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-green-700 mb-2">Đồng lúa bạt ngàn</h3>
+                            <p class="text-gray-600 text-sm mb-3">
+                                Những cánh đồng lúa xanh mướt bạt ngàn, tạo nên cảnh quan nông thôn đặc trưng miền Tây.
+                            </p>
+                            <div class="text-xs text-gray-500">
+                                <span class="bg-green-100 px-2 py-1 rounded">Lúa tẻ</span>
+                                <span class="bg-green-100 px-2 py-1 rounded ml-1">Lúa nàng hương</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seasonal Beauty -->
+            <div class="bg-gradient-to-r from-green-600 to-blue-600 rounded-lg p-8 text-white mb-16">
+                <h2 class="text-3xl font-bold text-center mb-8">
+                    Vẻ đẹp theo mùa
+                </h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">
+                            <i class="fas fa-sun mr-2"></i>
+                            Mùa khô (Tháng 12 - Tháng 4)
+                        </h3>
+                        <p class="text-green-100 mb-4">
+                            Thời điểm lý tưởng để khám phá thiên nhiên với thời tiết mát mẻ, ít mưa. Đây cũng là mùa của các loài chim di cư và mùa thu hoạch lúa, tạo nên những cánh đồng vàng óng ả.
+                        </p>
+                        <ul class="text-green-100 text-sm space-y-1">
+                            <li><i class="fas fa-check mr-2"></i>Chim di cư về đông đúc</li>
+                            <li><i class="fas fa-check mr-2"></i>Cánh đồng lúa chín vàng</li>
+                            <li><i class="fas fa-check mr-2"></i>Thời tiết mát mẻ, dễ chịu</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">
+                            <i class="fas fa-cloud-rain mr-2"></i>
+                            Mùa mưa (Tháng 5 - Tháng 11)
+                        </h3>
+                        <p class="text-blue-100 mb-4">
+                            Mùa mưa mang đến sự tươi mới cho thiên nhiên với cây cối xanh tươi, hoa nở rộ. Đây là thời điểm lý tưởng để trải nghiệm cuộc sống nông thôn và thưởng thức trái cây tươi ngon.
+                        </p>
+                        <ul class="text-blue-100 text-sm space-y-1">
+                            <li><i class="fas fa-check mr-2"></i>Cây cối xanh tươi</li>
+                            <li><i class="fas fa-check mr-2"></i>Trái cây chín rộ</li>
+                            <li><i class="fas fa-check mr-2"></i>Không khí trong lành</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activities -->
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-center text-green-700 mb-12">
+                    Hoạt động trải nghiệm thiên nhiên
+                </h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition duration-300">
+                        <i class="fas fa-binoculars text-4xl text-green-600 mb-4"></i>
+                        <h3 class="font-bold text-green-700 mb-2">Ngắm chim</h3>
+                        <p class="text-gray-600 text-sm">Quan sát các loài chim di cư và bản địa</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition duration-300">
+                        <i class="fas fa-ship text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="font-bold text-blue-700 mb-2">Du thuyền sinh thái</h3>
+                        <p class="text-gray-600 text-sm">Khám phá sông ngòi và rừng ngập mặn</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition duration-300">
+                        <i class="fas fa-camera text-4xl text-purple-600 mb-4"></i>
+                        <h3 class="font-bold text-purple-700 mb-2">Chụp ảnh thiên nhiên</h3>
+                        <p class="text-gray-600 text-sm">Ghi lại vẻ đẹp hoang sơ</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition duration-300">
+                        <i class="fas fa-hiking text-4xl text-orange-600 mb-4"></i>
+                        <h3 class="font-bold text-orange-700 mb-2">Trekking</h3>
+                        <p class="text-gray-600 text-sm">Khám phá rừng tràm và đường mòn</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="text-center">
+                <div class="bg-white rounded-lg shadow-lg p-8 max-w-2xl mx-auto">
+                    <h2 class="text-3xl font-bold text-green-700 mb-4">
+                        Khám phá thiên nhiên hoang sơ Trà Vinh!
+                    </h2>
+                    <p class="text-gray-700 mb-6">
+                        Hãy đến Trà Vinh để trải nghiệm vẻ đẹp nguyên sơ của thiên nhiên miền Tây và cảm nhận sự hòa quyện giữa con người và môi trường tự nhiên.
+                    </p>
+                    <div class="flex flex-row gap-4 justify-center flex-wrap">
+                        <a href="dia-diem.html" class="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition duration-300">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            Khám phá địa điểm sinh thái
+                        </a>
+                        <a href="index.html" class="border-2 border-green-600 text-green-600 px-8 py-3 rounded-lg font-semibold hover:bg-green-600 hover:text-white transition duration-300">
+                            <i class="fas fa-home mr-2"></i>
+                            Về trang chủ
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-pagoda text-2xl mr-2"></i>
+                        <h3 class="text-xl font-bold">Du lịch Trà Vinh</h3>
+                    </div>
+                    <p class="text-gray-300">Khám phá vẻ đẹp độc đáo của đồng bằng sông Cửu Long</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Liên kết nhanh</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="index.html" class="hover:text-white">Trang chủ</a></li>
+                        <li><a href="gioi-thieu.html" class="hover:text-white">Giới thiệu</a></li>
+                        <li><a href="dia-diem.html" class="hover:text-white">Địa điểm</a></li>
+                        <li><a href="lien-he.html" class="hover:text-white">Liên hệ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Thiên nhiên</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-white">Ao Bà Om</a></li>
+                        <li><a href="#" class="hover:text-white">Biển Bà Động</a></li>
+                        <li><a href="#" class="hover:text-white">Rừng tràm U Minh</a></li>
+                        <li><a href="#" class="hover:text-white">Khu sinh thái</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Theo dõi chúng tôi</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+                <p>© 2024 Du lịch Trà Vinh. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Location Button -->
+    <button id="locationBtn" class="fixed bottom-24 right-6 w-14 h-14 rounded-full bg-green-600 shadow-lg flex items-center justify-center text-white text-2xl z-50 hover:bg-green-700 focus:outline-none">
+        <i class="fas fa-location-dot"></i>
+    </button>
+
+    <!-- Map Popup -->
+    <div id="mapPopup" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl p-4 relative w-full max-w-4xl mx-4">
+            <button onclick="closeMapPopup()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl focus:outline-none">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="text-xl font-bold mb-2 text-green-700 text-center">Bản đồ vị trí Tỉnh Trà Vinh</h2>
+            <div class="w-full h-96 rounded-lg overflow-hidden">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125753.27319478593!2d106.26245430302716!3d9.95144061411913!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a017515cc705df%3A0xade5b5649cd70f79!2zVHAuIFRyw6AgVmluaCwgVHLDoCBWaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1752588719298!5m2!1svi!2s" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        document.getElementById('locationBtn').onclick = function() {
+            document.getElementById('mapPopup').classList.remove('hidden');
+        }
+
+        function closeMapPopup() {
+            document.getElementById('mapPopup').classList.add('hidden');
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
