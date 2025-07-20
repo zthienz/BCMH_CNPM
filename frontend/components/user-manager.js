@@ -27,19 +27,42 @@ class UserManager {
      */
     async checkSession() {
         try {
-            // Check localStorage first
+            // Check JWT token first
+            if (window.jwtService && window.jwtService.isLoggedIn) {
+                const currentUser = window.jwtService.getCurrentUser();
+                if (currentUser) {
+                    this.user = {
+                        id: currentUser.sub,
+                        username: currentUser.username,
+                        email: currentUser.email,
+                        role: currentUser.role
+                    };
+                    this.isLoggedIn = true;
+                    this.saveLocalSession(this.user);
+                    return;
+                }
+            }
+
+            // Fallback: Check localStorage
             const localSession = this.getLocalSession();
             if (localSession) {
                 this.user = localSession;
                 this.isLoggedIn = true;
             }
 
-            // Verify with server
+            // Verify with server (với JWT header)
+            const headers = {
+                'Content-Type': 'application/json',
+            };
+
+            // Thêm JWT token vào header nếu có
+            if (window.jwtService) {
+                Object.assign(headers, window.jwtService.getAuthHeader());
+            }
+
             const response = await fetch('http://localhost:3000/api/auth/session', {
                 method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: headers,
                 credentials: 'include'
             });
 
@@ -78,14 +101,40 @@ class UserManager {
             this.user = e.detail.user;
             this.isLoggedIn = true;
             this.setLocalSession(e.detail.user);
+
+            // Tạo JWT token
+            if (window.jwtService) {
+                window.jwtService.login(e.detail.user);
+            }
+
             this.updateUI();
         });
 
-        window.addEventListener('userLoggedOut', () => {
+        window.addEventListener('userLoggedOut', (e) => {
             this.user = null;
             this.isLoggedIn = false;
             this.clearLocalSession();
+
+            // Logout từ JWT service (nếu chưa logout)
+            if (window.jwtService && window.jwtService.isLoggedIn) {
+                const reason = e.detail?.reason || 'manual';
+                if (reason !== 'inactivity') {
+                    window.jwtService.logout('manual');
+                }
+            }
+
             this.updateUI();
+        });
+
+        // Lắng nghe JWT logout events
+        window.addEventListener('userLogout', (e) => {
+            if (e.detail?.reason === 'inactivity') {
+                // JWT service đã xử lý logout do inactivity
+                this.user = null;
+                this.isLoggedIn = false;
+                this.clearLocalSession();
+                this.updateUI();
+            }
         });
     }
 

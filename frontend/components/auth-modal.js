@@ -819,11 +819,18 @@ class AuthModal {
      */
     async logout() {
         try {
+            // Thêm JWT token vào header nếu có
+            const headers = {
+                'Content-Type': 'application/json',
+            };
+
+            if (window.jwtService) {
+                Object.assign(headers, window.jwtService.getAuthHeader());
+            }
+
             const response = await fetch('http://localhost:3000/api/auth/logout', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: headers,
                 credentials: 'include'
             });
 
@@ -831,6 +838,11 @@ class AuthModal {
 
             // Clear local session regardless of API response
             this.clearUserSession();
+
+            // Logout từ JWT service
+            if (window.jwtService && window.jwtService.isLoggedIn) {
+                window.jwtService.logout('manual');
+            }
 
             // Update userManager
             if (window.userManager) {
@@ -841,12 +853,19 @@ class AuthModal {
             }
 
             // Dispatch logout event
-            window.dispatchEvent(new CustomEvent('userLoggedOut'));
+            window.dispatchEvent(new CustomEvent('userLoggedOut', {
+                detail: { reason: 'manual' }
+            }));
 
         } catch (error) {
             console.error('Logout error:', error);
             // Still clear local session on error
             this.clearUserSession();
+
+            // Logout từ JWT service ngay cả khi có lỗi
+            if (window.jwtService && window.jwtService.isLoggedIn) {
+                window.jwtService.logout('manual');
+            }
 
             // Update userManager even on error
             if (window.userManager) {
@@ -854,6 +873,11 @@ class AuthModal {
                 window.userManager.isLoggedIn = false;
                 window.userManager.updateUI();
             }
+
+            // Dispatch logout event
+            window.dispatchEvent(new CustomEvent('userLoggedOut', {
+                detail: { reason: 'manual' }
+            }));
         }
     }
 }
