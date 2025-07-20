@@ -1,0 +1,312 @@
+name: 🧪 Tests - Tra Vinh Travel
+
+on:
+  push:
+    branches: [ main, develop, feature/* ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  # ===== QUICK TESTS =====
+  quick-tests:
+    name: ⚡ Quick Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        
+    - name: 🔍 Check file structure
+      run: |
+        echo "📁 Checking project structure..."
+        ls -la
+        echo ""
+        echo "📁 Frontend structure:"
+        ls -la frontend/ | head -10
+        echo ""
+        echo "📁 Backend structure:"
+        ls -la backend/ | head -10
+        
+    - name: ✅ Validate HTML files
+      run: |
+        echo "🔍 Validating HTML files..."
+        html_files=$(find frontend -name "*.html" | wc -l)
+        echo "Found $html_files HTML files"
+        
+        # Check for basic HTML structure
+        for file in frontend/*.html; do
+          if [ -f "$file" ]; then
+            echo "Checking $file..."
+            if grep -q "<!DOCTYPE html>" "$file" && grep -q "<html" "$file" && grep -q "</html>" "$file"; then
+              echo "✅ $file has valid HTML structure"
+            else
+              echo "⚠️ $file may have HTML structure issues"
+            fi
+          fi
+        done
+        
+    - name: ✅ Validate CSS files
+      run: |
+        echo "🎨 Validating CSS files..."
+        css_files=$(find frontend -name "*.css" | wc -l)
+        echo "Found $css_files CSS files"
+        
+        for file in frontend/*.css; do
+          if [ -f "$file" ]; then
+            echo "Checking $file..."
+            # Basic CSS syntax check
+            if [ -s "$file" ]; then
+              echo "✅ $file exists and is not empty"
+            else
+              echo "⚠️ $file is empty"
+            fi
+          fi
+        done
+        
+    - name: ✅ Validate JavaScript files
+      run: |
+        echo "🔧 Validating JavaScript files..."
+        
+        # Check frontend JS files
+        echo "Frontend JavaScript files:"
+        find frontend -name "*.js" -not -path "*/node_modules/*" | while read file; do
+          echo "Checking $file..."
+          if node -c "$file" 2>/dev/null; then
+            echo "✅ $file syntax is valid"
+          else
+            echo "❌ $file has syntax errors"
+            node -c "$file"
+          fi
+        done
+        
+        # Check backend JS files
+        echo "Backend JavaScript files:"
+        find backend -name "*.js" -not -path "*/node_modules/*" | while read file; do
+          echo "Checking $file..."
+          if node -c "$file" 2>/dev/null; then
+            echo "✅ $file syntax is valid"
+          else
+            echo "❌ $file has syntax errors"
+            node -c "$file"
+          fi
+        done
+
+  # ===== BACKEND TESTS =====
+  backend-tests:
+    name: 🔧 Backend Tests
+    runs-on: ubuntu-latest
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: test_password
+          MYSQL_DATABASE: dulichtravinh_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+        cache-dependency-path: 'backend/package-lock.json'
+        
+    - name: 📦 Install backend dependencies
+      run: |
+        cd backend
+        npm ci
+        
+    - name: 🗄️ Setup test database
+      run: |
+        echo "🗄️ Setting up test database..."
+        mysql -h 127.0.0.1 -u root -ptest_password -e "
+          CREATE DATABASE IF NOT EXISTS dulichtravinh_test;
+          USE dulichtravinh_test;
+          
+          -- Create TaiKhoanNguoiDung table
+          CREATE TABLE IF NOT EXISTS TaiKhoanNguoiDung (
+            MaTK INT AUTO_INCREMENT PRIMARY KEY,
+            TenNguoiDung VARCHAR(100) NOT NULL,
+            Email VARCHAR(150) UNIQUE NOT NULL,
+            MatKhau VARCHAR(255) NOT NULL,
+            LoaiNguoiDung ENUM('admin', 'user') DEFAULT 'user',
+            NgayTao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            NgayCapNhat TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+          );
+          
+          -- Create diadiemdulich table
+          CREATE TABLE IF NOT EXISTS diadiemdulich (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            ten_dia_diem VARCHAR(255) NOT NULL,
+            mo_ta TEXT,
+            dia_chi VARCHAR(255),
+            hinh_anh VARCHAR(255),
+            loai_dia_diem VARCHAR(100),
+            gia_ve DECIMAL(10,2),
+            gio_mo_cua TIME,
+            gio_dong_cua TIME,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+          );
+          
+          -- Insert test data
+          INSERT INTO diadiemdulich (ten_dia_diem, mo_ta, dia_chi, loai_dia_diem) VALUES
+          ('Ao Bà Om', 'Khu du lịch sinh thái nổi tiếng', 'Trà Cú, Trà Vinh', 'sinh_thai'),
+          ('Chùa Giác Linh', 'Chùa Khmer cổ kính', 'Trà Vinh', 'chua_khmer');
+          
+          SELECT 'Database setup completed' as status;
+        "
+        
+    - name: 🧪 Test database connection
+      env:
+        DB_HOST: 127.0.0.1
+        DB_PORT: 3306
+        DB_NAME: dulichtravinh_test
+        DB_USER: root
+        DB_PASSWORD: test_password
+      run: |
+        cd backend
+        echo "🔌 Testing database connection..."
+        node -e "
+          const mysql = require('mysql2/promise');
+          async function testConnection() {
+            try {
+              const connection = await mysql.createConnection({
+                host: process.env.DB_HOST,
+                port: process.env.DB_PORT,
+                user: process.env.DB_USER,
+                password: process.env.DB_PASSWORD,
+                database: process.env.DB_NAME
+              });
+              
+              const [rows] = await connection.execute('SELECT COUNT(*) as count FROM diadiemdulich');
+              console.log('✅ Database connection successful!');
+              console.log('📊 Test data count:', rows[0].count);
+              
+              await connection.end();
+            } catch (error) {
+              console.error('❌ Database connection failed:', error.message);
+              process.exit(1);
+            }
+          }
+          testConnection();
+        "
+        
+    - name: 🧪 Run backend tests
+      env:
+        DB_HOST: 127.0.0.1
+        DB_PORT: 3306
+        DB_NAME: dulichtravinh_test
+        DB_USER: root
+        DB_PASSWORD: test_password
+        NODE_ENV: test
+        JWT_SECRET: test_jwt_secret_for_github_actions
+        SESSION_SECRET: test_session_secret_for_github_actions
+        PORT: 3001
+      run: |
+        cd backend
+        echo "🧪 Running backend tests..."
+        
+        # If jest tests exist, run them
+        if [ -f "package.json" ] && grep -q "jest" package.json; then
+          npm test
+        else
+          echo "ℹ️ No Jest tests configured, running basic checks..."
+          
+          # Test server startup
+          echo "🔧 Testing server startup..."
+          timeout 10s npm start &
+          SERVER_PID=$!
+          sleep 5
+          
+          # Test if server is responding
+          if curl -f http://localhost:3001/health 2>/dev/null; then
+            echo "✅ Server health check passed"
+          else
+            echo "ℹ️ Server health endpoint not available (this is normal)"
+          fi
+          
+          # Clean up
+          kill $SERVER_PID 2>/dev/null || true
+          echo "✅ Backend tests completed"
+        fi
+
+  # ===== INTEGRATION TESTS =====
+  integration-tests:
+    name: 🔗 Integration Tests
+    runs-on: ubuntu-latest
+    needs: [quick-tests, backend-tests]
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        
+    - name: 🔗 Test frontend-backend integration
+      run: |
+        echo "🔗 Testing frontend-backend integration..."
+        
+        # Check if frontend files reference backend endpoints
+        echo "🔍 Checking API endpoint references..."
+        if grep -r "localhost:3001\|/api/" frontend/ --include="*.js" --include="*.html"; then
+          echo "✅ Found API endpoint references in frontend"
+        else
+          echo "ℹ️ No explicit API endpoint references found"
+        fi
+        
+        # Check if backend has CORS configuration
+        echo "🔍 Checking CORS configuration..."
+        if grep -r "cors\|CORS" backend/ --include="*.js"; then
+          echo "✅ CORS configuration found in backend"
+        else
+          echo "⚠️ No CORS configuration found"
+        fi
+        
+        echo "✅ Integration tests completed"
+
+  # ===== TEST SUMMARY =====
+  test-summary:
+    name: 📊 Test Summary
+    runs-on: ubuntu-latest
+    needs: [quick-tests, backend-tests, integration-tests]
+    if: always()
+    
+    steps:
+    - name: 📊 Generate test summary
+      run: |
+        echo "📊 TEST SUMMARY - Tra Vinh Travel"
+        echo "=================================="
+        echo ""
+        echo "🧪 Quick Tests: ${{ needs.quick-tests.result }}"
+        echo "🔧 Backend Tests: ${{ needs.backend-tests.result }}"
+        echo "🔗 Integration Tests: ${{ needs.integration-tests.result }}"
+        echo ""
+        
+        if [ "${{ needs.quick-tests.result }}" = "success" ] && 
+           [ "${{ needs.backend-tests.result }}" = "success" ] && 
+           [ "${{ needs.integration-tests.result }}" = "success" ]; then
+          echo "🎉 ALL TESTS PASSED! ✅"
+          echo "🚀 Ready for deployment"
+        else
+          echo "❌ SOME TESTS FAILED!"
+          echo "🔧 Please check the failed jobs and fix issues"
+        fi

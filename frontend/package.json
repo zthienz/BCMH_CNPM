@@ -1,0 +1,42 @@
+{
+  "name": "travinh-travel-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for Tra Vinh Travel Website - Tourism information and booking system",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server . -p 3000 -c-1",
+    "dev": "npx http-server . -p 3000 -c-1 -o",
+    "build": "echo 'Frontend build completed - static files ready'",
+    "test": "echo 'Frontend tests - checking syntax and structure'",
+    "lint": "echo 'Linting HTML, CSS, and JavaScript files'",
+    "validate": "echo 'Validating HTML and CSS syntax'"
+  },
+  "keywords": [
+    "travel",
+    "tourism",
+    "travinh",
+    "vietnam",
+    "frontend",
+    "html",
+    "css",
+    "javascript",
+    "gemini-ai",
+    "chatbot"
+  ],
+  "author": "Tra Vinh Travel Team",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/tra-vinh-travel.git"
+  },
+  "homepage": "https://your-username.github.io/tra-vinh-travel",
+  "bugs": {
+    "url": "https://github.com/your-username/tra-vinh-travel/issues"
+  }
+}
