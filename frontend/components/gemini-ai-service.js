@@ -15,7 +15,11 @@ class GeminiAIService {
         // Kiểm tra API key
         console.log('🔑 Checking API key:', this.apiKey ? `${this.apiKey.substring(0, 10)}...` : 'Not found');
 
-        if (!this.apiKey || this.apiKey === 'YOUR_GEMINI_API_KEY' || this.apiKey === 'YOUR_ACTUAL_GEMINI_API_KEY') {
+        if (!this.apiKey ||
+            this.apiKey === 'YOUR_GEMINI_API_KEY' ||
+            this.apiKey === 'YOUR_ACTUAL_GEMINI_API_KEY' ||
+            this.apiKey === 'your-gemini-api-key-here' ||
+            !this.apiKey.startsWith('AIzaSy')) {
             console.warn('⚠️ Gemini API key chưa được cấu hình đúng. Sử dụng mock responses.');
             this.useMockResponses = true;
         } else {

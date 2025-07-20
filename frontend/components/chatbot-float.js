@@ -825,30 +825,62 @@ class FloatingChatbot {
      * Load API key
      */
     loadApiKey() {
-        return localStorage.getItem('gemini_api_key') || '';
+        // Try to get from GEMINI_CONFIG first
+        if (typeof window.GEMINI_CONFIG !== 'undefined' && window.GEMINI_CONFIG.API_KEY) {
+            const apiKey = window.GEMINI_CONFIG.API_KEY;
+            if (apiKey && apiKey !== 'YOUR_ACTUAL_GEMINI_API_KEY' && apiKey !== 'your-gemini-api-key-here') {
+                console.log('🔑 Using API key from GEMINI_CONFIG:', apiKey.substring(0, 10) + '...');
+                return apiKey;
+            }
+        }
+
+        // Fallback to localStorage
+        const localKey = localStorage.getItem('gemini_api_key') || '';
+        if (localKey) {
+            console.log('🔑 Using API key from localStorage:', localKey.substring(0, 10) + '...');
+            return localKey;
+        }
+
+        console.warn('⚠️ No valid API key found in GEMINI_CONFIG or localStorage');
+        return '';
     }
 
     /**
      * Call Gemini API
      */
     async callGeminiAPI(message) {
-        if (!this.apiKey || this.apiKey === 'YOUR_ACTUAL_GEMINI_API_KEY') {
+        // Reload API key in case it was updated
+        this.apiKey = this.loadApiKey();
+
+        if (!this.apiKey ||
+            this.apiKey === 'YOUR_ACTUAL_GEMINI_API_KEY' ||
+            this.apiKey === 'your-gemini-api-key-here' ||
+            !this.apiKey.startsWith('AIzaSy')) {
             throw new Error('API key chưa được cấu hình. Vui lòng mở chatbot đầy đủ để cấu hình API key.');
         }
+
+        console.log('🤖 Calling Gemini API with message:', message.substring(0, 50) + '...');
 
         const requestBody = {
             contents: [{
                 parts: [{
                     text: `Bạn là chuyên gia du lịch Trà Vinh. Trả lời NGẮN GỌN (tối đa 100 từ) về: ${message}`
                 }]
-            }]
+            }],
+            generationConfig: {
+                maxOutputTokens: 500,
+                temperature: 0.4,
+                topP: 0.9,
+                topK: 20
+            }
         };
 
-        const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent', {
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${this.apiKey}`;
+
+        const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'X-goog-api-key': this.apiKey
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(requestBody)
         });

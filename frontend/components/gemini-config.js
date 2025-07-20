@@ -33,20 +33,20 @@ function loadGeminiConfig() {
 // Default configuration fallback - Optimized for speed and accuracy
 function getDefaultConfig() {
     return {
-        API_KEY: 'YOUR_ACTUAL_GEMINI_API_KEY',
-        BASE_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
-        MODEL: 'gemini-2.0-flash',
+        API_KEY: 'AIzaSyCrw7zvE5wexXuBFe6n4wsWOEXvVfnjXwA',
+        BASE_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent',
+        MODEL: 'gemini-2.0-flash-exp',
 
         // Optimized for faster response
-        MAX_TOKENS: 800,        // Reduced for faster response
-        TEMPERATURE: 0.3,       // Lower for more focused answers
+        MAX_TOKENS: 1000,       // Increased for better responses
+        TEMPERATURE: 0.4,       // Balanced for accuracy and creativity
         TOP_P: 0.9,            // Higher for better quality
         TOP_K: 20,             // Lower for more focused selection
 
         // Optimized timeouts
-        TIMEOUT: 15000,        // Reduced to 15 seconds
-        MAX_RETRIES: 2,        // Reduced retries for faster failure
-        RETRY_DELAY: 500       // Faster retry
+        TIMEOUT: 15000,        // 15 seconds timeout
+        MAX_RETRIES: 2,        // 2 retries for reliability
+        RETRY_DELAY: 500       // 500ms retry delay
     };
 }
 
@@ -160,6 +160,7 @@ function isGeminiApiKeyValid() {
     const apiKey = GEMINI_CONFIG.API_KEY;
     return apiKey &&
            apiKey !== 'YOUR_ACTUAL_GEMINI_API_KEY' &&
+           apiKey !== 'your-gemini-api-key-here' &&
            apiKey.startsWith('AIzaSy') &&
            apiKey.length >= 35;
 }
