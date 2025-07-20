@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Du Lich Tra Vinh - API Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .content {
+            padding: 30px;
+        }
+        .endpoint {
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .method {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+        .get { background: #28a745; color: white; }
+        .post { background: #007bff; color: white; }
+        .put { background: #ffc107; color: black; }
+        .delete { background: #dc3545; color: white; }
+        .patch { background: #6f42c1; color: white; }
+        .url {
+            font-family: monospace;
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .section {
+            margin: 30px 0;
+        }
+        .section h2 {
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 10px;
+        }
+        .test-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .test-btn:hover {
+            background: #218838;
+        }
+        .response {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .auth-info {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏛️ Du Lich Tra Vinh API</h1>
+            <p>RESTful API Documentation v1.0.0</p>
+            <p>Complete CRUD operations for Tourism Management System</p>
+        </div>
+        
+        <div class="content">
+            <div class="auth-info">
+                <strong>🔐 Authentication:</strong> Most endpoints require JWT token in Authorization header: <code>Bearer &lt;token&gt;</code>
+            </div>
+            
+            <div class="section">
+                <h2>📊 System Information</h2>
+                
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="url">/health</span>
+                    <p>Health check endpoint - returns server status</p>
+                    <button class="test-btn" onclick="testEndpoint('GET', '/health')">Test</button>
+                    <div id="response-health" class="response" style="display:none;"></div>
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="url">/api/info</span>
+                    <p>API information and available endpoints</p>
+                    <button class="test-btn" onclick="testEndpoint('GET', '/api/info')">Test</button>
+                    <div id="response-info" class="response" style="display:none;"></div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>🔐 Authentication</h2>
+                
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="url">/api/auth/register</span>
+                    <p>Register new user account</p>
+                    <p><strong>Body:</strong> <code>{ "username": "string", "email": "string", "password": "string" }</code></p>
+                    <button class="test-btn" onclick="testRegister()">Test Register</button>
+                    <div id="response-register" class="response" style="display:none;"></div>
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="url">/api/auth/login</span>
+                    <p>Login user and get JWT token</p>
+                    <p><strong>Body:</strong> <code>{ "email": "string", "password": "string" }</code></p>
+                    <button class="test-btn" onclick="testLogin()">Test Login</button>
+                    <div id="response-login" class="response" style="display:none;"></div>
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="url">/api/auth/logout</span>
+                    <p>Logout current user (requires auth)</p>
+                    <button class="test-btn" onclick="testEndpoint('POST', '/api/auth/logout', null, true)">Test Logout</button>
+                    <div id="response-logout" class="response" style="display:none;"></div>
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="url">/api/auth/session</span>
+                    <p>Get current session info (requires auth)</p>
+                    <button class="test-btn" onclick="testEndpoint('GET', '/api/auth/session', null, true)">Test Session</button>
+                    <div id="response-session" class="response" style="display:none;"></div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>👥 User Management</h2>
+                
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="url">/api/users</span>
+                    <p>Get all users (Admin only)</p>
+                    <p><strong>Query:</strong> <code>?page=1&limit=10&search=keyword</code></p>
+                    <button class="test-btn" onclick="testEndpoint('GET', '/api/users', null, true)">Test</button>
+                    <div id="response-users" class="response" style="display:none;"></div>
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="url">/api/users/profile</span>
+                    <p>Get current user profile (requires auth)</p>
+                    <button class="test-btn" onclick="testEndpoint('GET', '/api/users/profile', null, true)">Test</button>
+                    <div id="response-profile" class="response" style="display:none;"></div>
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method put">PUT</span>
+                    <span class="url">/api/users/profile</span>
+                    <p>Update current user profile (requires auth)</p>
+                    <p><strong>Body:</strong> <code>{ "name": "string", "email": "string" }</code></p>
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method put">PUT</span>
+                    <span class="url">/api/users/password</span>
+                    <p>Change password (requires auth)</p>
+                    <p><strong>Body:</strong> <code>{ "currentPassword": "string", "newPassword": "string" }</code></p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>🏛️ Location Management</h2>
+                
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="url">/api/locations</span>
+                    <p>Get all locations</p>
+                    <p><strong>Query:</strong> <code>?page=1&limit=10&search=keyword&category=type&sort=field</code></p>
+                    <button class="test-btn" onclick="testEndpoint('GET', '/api/locations')">Test</button>
+                    <div id="response-locations" class="response" style="display:none;"></div>
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="url">/api/locations/search</span>
+                    <p>Search locations</p>
+                    <p><strong>Query:</strong> <code>?q=keyword&category=type&minPrice=0&maxPrice=100&minRating=4</code></p>
+                    <button class="test-btn" onclick="testEndpoint('GET', '/api/locations/search?q=Ao')">Test Search</button>
+                    <div id="response-search" class="response" style="display:none;"></div>
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="url">/api/locations/category/:category</span>
+                    <p>Get locations by category</p>
+                    <p><strong>Categories:</strong> DiTich, ChuaDen, KhuDuLich, AmThuc, KhachSan</p>
+                    <button class="test-btn" onclick="testEndpoint('GET', '/api/locations/category/KhuDuLich')">Test Category</button>
+                    <div id="response-category" class="response" style="display:none;"></div>
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="url">/api/locations</span>
+                    <p>Create new location (Admin only, supports file upload)</p>
+                    <p><strong>Body:</strong> FormData with location fields and optional image file</p>
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method put">PUT</span>
+                    <span class="url">/api/locations/:id</span>
+                    <p>Update location (Admin only)</p>
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method delete">DELETE</span>
+                    <span class="url">/api/locations/:id</span>
+                    <p>Delete location (Admin only)</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>📁 File Upload</h2>
+                
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="url">/api/uploads/image</span>
+                    <p>Upload image file (requires auth, max 5MB)</p>
+                    <p><strong>Body:</strong> FormData with 'image' field</p>
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method delete">DELETE</span>
+                    <span class="url">/api/uploads/:filename</span>
+                    <p>Delete uploaded file (Admin only)</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>🔑 Authentication Token</h2>
+                <p>Current JWT Token:</p>
+                <textarea id="jwt-token" style="width: 100%; height: 100px; font-family: monospace;" placeholder="Login to get JWT token..."></textarea>
+                <button class="test-btn" onclick="clearToken()">Clear Token</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3001';
+        let currentToken = '';
+        
+        function showResponse(elementId, data) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.textContent = JSON.stringify(data, null, 2);
+        }
+        
+        async function testEndpoint(method, endpoint, body = null, requireAuth = false) {
+            const responseId = 'response-' + endpoint.split('/').pop().split('?')[0];
+            
+            try {
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include'
+                };
+                
+                if (requireAuth && currentToken) {
+                    options.headers['Authorization'] = `Bearer ${currentToken}`;
+                }
+                
+                if (body) {
+                    options.body = JSON.stringify(body);
+                }
+                
+                const response = await fetch(`${API_BASE}${endpoint}`, options);
+                const data = await response.json();
+                
+                showResponse(responseId, {
+                    status: response.status,
+                    statusText: response.statusText,
+                    data: data
+                });
+                
+            } catch (error) {
+                showResponse(responseId, {
+                    error: error.message
+                });
+            }
+        }
+        
+        async function testRegister() {
+            const testData = {
+                username: 'API Test User',
+                email: 'apitest@example.com',
+                password: '123456'
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(testData)
+                });
+                
+                const data = await response.json();
+                
+                showResponse('response-register', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    data: data
+                });
+                
+            } catch (error) {
+                showResponse('response-register', {
+                    error: error.message
+                });
+            }
+        }
+        
+        async function testLogin() {
+            const testData = {
+                email: 'vpt123@gmail.com',
+                password: '123456'
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(testData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success && data.data.token) {
+                    currentToken = data.data.token;
+                    document.getElementById('jwt-token').value = currentToken;
+                }
+                
+                showResponse('response-login', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    data: data
+                });
+                
+            } catch (error) {
+                showResponse('response-login', {
+                    error: error.message
+                });
+            }
+        }
+        
+        function clearToken() {
+            currentToken = '';
+            document.getElementById('jwt-token').value = '';
+        }
+        
+        // Auto test health on load
+        window.addEventListener('load', () => {
+            setTimeout(() => testEndpoint('GET', '/health'), 1000);
+        });
+    </script>
+</body>
+</html>
