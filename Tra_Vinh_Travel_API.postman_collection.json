@@ -1,0 +1,1678 @@
+{
+	"info": {
+		"_postman_id": "tra-vinh-travel-api-2024",
+		"name": "🏛️ Tra Vinh Travel API",
+		"description": "Complete API collection for Tra Vinh Tourism Management System\n\n## 🌟 Features\n- User Authentication (JWT)\n- User Management\n- Location Management\n- File Upload\n- Search & Filtering\n\n## 🔧 Setup\n1. Set environment variables\n2. Run authentication requests first\n3. Use generated tokens for protected endpoints\n\n## 📚 Documentation\n- Base URL: http://localhost:3001\n- All responses are in JSON format\n- Authentication required for most endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "🏥 Health & Info",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Check server health and status"
+					},
+					"response": []
+				},
+				{
+					"name": "API Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/info",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"info"
+							]
+						},
+						"description": "Get API information and available endpoints"
+					},
+					"response": []
+				}
+			],
+			"description": "Basic health check and API information endpoints"
+		},
+		{
+			"name": "🔐 Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.data.user) {",
+									"        pm.environment.set('user_id', response.data.user.id);",
+									"        console.log('User registered:', response.data.user.email);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{test_username}}\",\n    \"email\": \"{{test_email}}\",\n    \"password\": \"{{test_password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						},
+						"description": "Register a new user account"
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.data.token) {",
+									"        pm.environment.set('auth_token', response.data.token);",
+									"        pm.environment.set('user_id', response.data.user.id);",
+									"        pm.environment.set('user_name', response.data.user.name);",
+									"        pm.environment.set('user_email', response.data.user.email);",
+									"        pm.environment.set('user_type', response.data.user.type);",
+									"        console.log('Login successful for:', response.data.user.email);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{test_email}}\",\n    \"password\": \"{{test_password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login with email and password to get JWT token"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Session",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/session",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"session"
+							]
+						},
+						"description": "Get current user session information"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.data.token) {",
+									"        pm.environment.set('auth_token', response.data.token);",
+									"        console.log('Token refreshed successfully');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/refresh",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"refresh"
+							]
+						},
+						"description": "Refresh JWT token"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						},
+						"description": "Logout current user"
+					},
+					"response": []
+				}
+			],
+			"description": "User authentication endpoints with JWT token management"
+		},
+		{
+			"name": "👥 User Management",
+			"item": [
+				{
+					"name": "Get All Users (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users?page=1&limit=10&search=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "search",
+									"value": ""
+								}
+							]
+						},
+						"description": "Get all users with pagination and search (Admin only)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{user_id}}"
+							]
+						},
+						"description": "Get specific user by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current User Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						},
+						"description": "Get current user's profile information"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Name\",\n    \"email\": \"updated@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						},
+						"description": "Update current user's profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"currentPassword\": \"{{test_password}}\",\n    \"newPassword\": \"newpassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"password"
+							]
+						},
+						"description": "Change user password"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User (Admin)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated User Name\",\n    \"email\": \"updated@example.com\",\n    \"type\": \"Admin\",\n    \"status\": \"Active\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{user_id}}"
+							]
+						},
+						"description": "Update user information (Admin only)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User (Admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{user_id}}"
+							]
+						},
+						"description": "Delete user account (Admin only)"
+					},
+					"response": []
+				}
+			],
+			"description": "User management endpoints for profile and admin operations"
+		},
+		{
+			"name": "🏛️ Location Management",
+			"item": [
+				{
+					"name": "Get All Locations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/locations?page=1&limit=10&search=&category=&sort=NgayTao",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"locations"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "search",
+									"value": ""
+								},
+								{
+									"key": "category",
+									"value": ""
+								},
+								{
+									"key": "sort",
+									"value": "NgayTao"
+								}
+							]
+						},
+						"description": "Get all locations with pagination, search, and filtering"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Location by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.data.location) {",
+									"        pm.environment.set('location_id', response.data.location.MaDiaDiem);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/locations/{{location_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"locations",
+								"{{location_id}}"
+							]
+						},
+						"description": "Get specific location by ID (increments view count)"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Locations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/locations/search?q=chùa&category=&minPrice=&maxPrice=&minRating=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"locations",
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "chùa"
+								},
+								{
+									"key": "category",
+									"value": ""
+								},
+								{
+									"key": "minPrice",
+									"value": ""
+								},
+								{
+									"key": "maxPrice",
+									"value": ""
+								},
+								{
+									"key": "minRating",
+									"value": ""
+								}
+							]
+						},
+						"description": "Search locations by name, description, or address"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Locations by Category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/locations/category/chua_khmer?page=1&limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"locations",
+								"category",
+								"chua_khmer"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get locations filtered by category"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Location (Admin)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.data.location) {",
+									"        pm.environment.set('location_id', response.data.location.MaDiaDiem);",
+									"        console.log('Location created:', response.data.location.TenDiaDiem);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Chùa Test\",\n    \"description\": \"Chùa Khmer test được tạo từ Postman\",\n    \"address\": \"Trà Vinh, Việt Nam\",\n    \"coordinates\": \"9.9344, 106.3425\",\n    \"category\": \"chua_khmer\",\n    \"price\": 0,\n    \"openingHours\": \"06:00-18:00\",\n    \"rating\": 4.5\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/locations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"locations"
+							]
+						},
+						"description": "Create new location (Admin only)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Location (Admin)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Chùa Test Updated\",\n    \"description\": \"Mô tả đã được cập nhật\",\n    \"address\": \"Trà Vinh, Việt Nam\",\n    \"rating\": 4.8,\n    \"status\": \"Active\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/locations/{{location_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"locations",
+								"{{location_id}}"
+							]
+						},
+						"description": "Update location information (Admin only)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Location (Admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/locations/{{location_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"locations",
+								"{{location_id}}"
+							]
+						},
+						"description": "Delete location (Admin only)"
+					},
+					"response": []
+				}
+			],
+			"description": "Location management endpoints for tourism destinations"
+		},
+		{
+			"name": "📁 File Upload",
+			"item": [
+				{
+					"name": "Upload Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.data.filename) {",
+									"        pm.environment.set('uploaded_filename', response.data.filename);",
+									"        pm.environment.set('uploaded_url', response.data.url);",
+									"        console.log('Image uploaded:', response.data.filename);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": [],
+									"description": "Select an image file to upload"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/uploads/image",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"uploads",
+								"image"
+							]
+						},
+						"description": "Upload image file (JPEG, PNG, GIF, WebP - max 5MB)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Uploaded File (Admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/uploads/{{uploaded_filename}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"uploads",
+								"{{uploaded_filename}}"
+							]
+						},
+						"description": "Delete uploaded file (Admin only)"
+					},
+					"response": []
+				}
+			],
+			"description": "File upload endpoints for images and media"
+		},
+		{
+			"name": "🤖 AI Chatbot & Gemini",
+			"item": [
+				{
+					"name": "Chat with AI (Backend API)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.data.message) {",
+									"        console.log('🤖 AI Response:', response.data.message);",
+									"        pm.environment.set('last_ai_response', response.data.message);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"Giới thiệu về Ao Bà Om\",\n    \"context\": \"tourism\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/chatbot/chat",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"chatbot",
+								"chat"
+							]
+						},
+						"description": "Chat with AI through backend API (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Chat - Travel Planning",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"Tôi có 2 ngày ở Trà Vinh, hãy tạo lịch trình chi tiết\",\n    \"context\": \"travel_plan\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/chatbot/chat",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"chatbot",
+								"chat"
+							]
+						},
+						"description": "Get detailed travel planning from AI"
+					},
+					"response": []
+				},
+				{
+					"name": "Chat - Khmer Culture",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"Văn hóa Khmer ở Trà Vinh có gì đặc biệt?\",\n    \"context\": \"culture\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/chatbot/chat",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"chatbot",
+								"chat"
+							]
+						},
+						"description": "Ask about Khmer culture and traditions"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Chat Suggestions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/chatbot/suggestions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"chatbot",
+								"suggestions"
+							]
+						},
+						"description": "Get suggested questions for different chat contexts"
+					},
+					"response": []
+				},
+				{
+					"name": "Submit Chat Feedback",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"Giới thiệu về Ao Bà Om\",\n    \"response\": \"{{last_ai_response}}\",\n    \"rating\": 5,\n    \"feedback\": \"Câu trả lời rất hữu ích và chi tiết!\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/chatbot/feedback",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"chatbot",
+								"feedback"
+							]
+						},
+						"description": "Submit feedback for AI chat responses"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Chatbot Statistics (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/chatbot/stats",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"chatbot",
+								"stats"
+							]
+						},
+						"description": "Get chatbot usage statistics (Admin only)"
+					},
+					"response": []
+				},
+				{
+					"name": "Chat with Gemini (Direct API)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.candidates && response.candidates[0]) {",
+									"        const aiResponse = response.candidates[0].content.parts[0].text;",
+									"        console.log('🤖 AI Response:', aiResponse);",
+									"        pm.environment.set('last_ai_response', aiResponse);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"contents\": [\n        {\n            \"parts\": [\n                {\n                    \"text\": \"Bạn là chuyên gia du lịch Trà Vinh. Hãy giới thiệu về Ao Bà Om một cách ngắn gọn.\"\n                }\n            ]\n        }\n    ],\n    \"generationConfig\": {\n        \"maxOutputTokens\": 500,\n        \"temperature\": 0.4,\n        \"topP\": 0.9,\n        \"topK\": 20\n    }\n}"
+						},
+						"url": {
+							"raw": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key={{gemini_api_key}}",
+							"protocol": "https",
+							"host": [
+								"generativelanguage",
+								"googleapis",
+								"com"
+							],
+							"path": [
+								"v1beta",
+								"models",
+								"gemini-2.0-flash-exp:generateContent"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{gemini_api_key}}"
+								}
+							]
+						},
+						"description": "Direct call to Gemini API for tourism chat (same as frontend chatbot)"
+					},
+					"response": []
+				},
+				{
+					"name": "Chat - Tourism Question",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.candidates && response.candidates[0]) {",
+									"        const aiResponse = response.candidates[0].content.parts[0].text;",
+									"        console.log('🏛️ Tourism Response:', aiResponse);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"contents\": [\n        {\n            \"parts\": [\n                {\n                    \"text\": \"Bạn là chuyên gia du lịch Trà Vinh. Trả lời NGẮN GỌN (tối đa 100 từ) về: Những địa điểm du lịch nổi tiếng ở Trà Vinh?\"\n                }\n            ]\n        }\n    ],\n    \"generationConfig\": {\n        \"maxOutputTokens\": 500,\n        \"temperature\": 0.4,\n        \"topP\": 0.9,\n        \"topK\": 20\n    }\n}"
+						},
+						"url": {
+							"raw": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key={{gemini_api_key}}",
+							"protocol": "https",
+							"host": [
+								"generativelanguage",
+								"googleapis",
+								"com"
+							],
+							"path": [
+								"v1beta",
+								"models",
+								"gemini-2.0-flash-exp:generateContent"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{gemini_api_key}}"
+								}
+							]
+						},
+						"description": "Ask about famous tourist destinations in Tra Vinh"
+					},
+					"response": []
+				},
+				{
+					"name": "Chat - Khmer Culture",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"contents\": [\n        {\n            \"parts\": [\n                {\n                    \"text\": \"Bạn là chuyên gia du lịch Trà Vinh. Trả lời NGẮN GỌN về văn hóa Khmer ở Trà Vinh và các chùa Khmer nổi tiếng.\"\n                }\n            ]\n        }\n    ],\n    \"generationConfig\": {\n        \"maxOutputTokens\": 500,\n        \"temperature\": 0.4,\n        \"topP\": 0.9,\n        \"topK\": 20\n    }\n}"
+						},
+						"url": {
+							"raw": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key={{gemini_api_key}}",
+							"protocol": "https",
+							"host": [
+								"generativelanguage",
+								"googleapis",
+								"com"
+							],
+							"path": [
+								"v1beta",
+								"models",
+								"gemini-2.0-flash-exp:generateContent"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{gemini_api_key}}"
+								}
+							]
+						},
+						"description": "Ask about Khmer culture and temples in Tra Vinh"
+					},
+					"response": []
+				},
+				{
+					"name": "Chat - Travel Recommendations",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"contents\": [\n        {\n            \"parts\": [\n                {\n                    \"text\": \"Bạn là chuyên gia du lịch Trà Vinh. Tôi có 2 ngày ở Trà Vinh, hãy gợi ý lịch trình du lịch chi tiết.\"\n                }\n            ]\n        }\n    ],\n    \"generationConfig\": {\n        \"maxOutputTokens\": 800,\n        \"temperature\": 0.5,\n        \"topP\": 0.9,\n        \"topK\": 25\n    }\n}"
+						},
+						"url": {
+							"raw": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key={{gemini_api_key}}",
+							"protocol": "https",
+							"host": [
+								"generativelanguage",
+								"googleapis",
+								"com"
+							],
+							"path": [
+								"v1beta",
+								"models",
+								"gemini-2.0-flash-exp:generateContent"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{gemini_api_key}}"
+								}
+							]
+						},
+						"description": "Get detailed 2-day travel itinerary for Tra Vinh"
+					},
+					"response": []
+				},
+				{
+					"name": "Test API Key Validity",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    console.log('✅ Gemini API Key is valid and working');",
+									"    pm.test('API Key is valid', function () {",
+									"        pm.response.to.have.status(200);",
+									"    });",
+									"} else if (pm.response.code === 400) {",
+									"    console.log('❌ Invalid API Key or request format');",
+									"    pm.test('API Key validation failed', function () {",
+									"        pm.response.to.have.status(400);",
+									"    });",
+									"} else {",
+									"    console.log('⚠️ Unexpected response:', pm.response.code);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"contents\": [\n        {\n            \"parts\": [\n                {\n                    \"text\": \"Hello, test API connection\"\n                }\n            ]\n        }\n    ],\n    \"generationConfig\": {\n        \"maxOutputTokens\": 50,\n        \"temperature\": 0.1\n    }\n}"
+						},
+						"url": {
+							"raw": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key={{gemini_api_key}}",
+							"protocol": "https",
+							"host": [
+								"generativelanguage",
+								"googleapis",
+								"com"
+							],
+							"path": [
+								"v1beta",
+								"models",
+								"gemini-2.0-flash-exp:generateContent"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{gemini_api_key}}"
+								}
+							]
+						},
+						"description": "Test if Gemini API key is valid and working"
+					},
+					"response": []
+				}
+			],
+			"description": "AI Chatbot endpoints using Gemini API (same as frontend chatbot functionality)"
+		},
+		{
+			"name": "📊 Analytics & Ratings",
+			"item": [
+				{
+					"name": "Rate Location",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    if (response.success) {",
+									"        console.log('✅ Rating submitted successfully');",
+									"        pm.environment.set('rating_id', response.data.rating.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rating\": 5,\n    \"comment\": \"Địa điểm rất đẹp và thú vị! Rất đáng để ghé thăm.\",\n    \"visitDate\": \"2024-01-15\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/locations/{{location_id}}/rating",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"locations",
+								"{{location_id}}",
+								"rating"
+							]
+						},
+						"description": "Submit rating and review for a location"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Location Ratings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/locations/{{location_id}}/ratings?page=1&limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"locations",
+								"{{location_id}}",
+								"ratings"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get all ratings and reviews for a location"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Popular Locations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/locations?sort=LuotXem&order=DESC&limit=5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"locations"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "LuotXem"
+								},
+								{
+									"key": "order",
+									"value": "DESC"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						},
+						"description": "Get most popular locations by view count"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Top Rated Locations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/locations?sort=DanhGia&order=DESC&limit=5&minRating=4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"locations"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "DanhGia"
+								},
+								{
+									"key": "order",
+									"value": "DESC"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								},
+								{
+									"key": "minRating",
+									"value": "4"
+								}
+							]
+						},
+						"description": "Get highest rated locations (4+ stars)"
+					},
+					"response": []
+				}
+			],
+			"description": "Analytics and rating endpoints for locations"
+		},
+		{
+			"name": "🔍 Session-based Auth (Alternative)",
+			"item": [
+				{
+					"name": "Session Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{test_email}}\",\n    \"password\": \"{{test_password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Session-based login (from routes/auth.js)"
+					},
+					"response": []
+				},
+				{
+					"name": "Session Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{test_username}}\",\n    \"email\": \"{{test_email}}\",\n    \"password\": \"{{test_password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						},
+						"description": "Session-based registration (from routes/auth.js)"
+					},
+					"response": []
+				},
+				{
+					"name": "Check Session",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/auth/session",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"session"
+							]
+						},
+						"description": "Check current session status"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/auth/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"user"
+							]
+						},
+						"description": "Get current user information"
+					},
+					"response": []
+				},
+				{
+					"name": "Check Email Availability",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/check-email",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"check-email"
+							]
+						},
+						"description": "Check if email is available for registration"
+					},
+					"response": []
+				},
+				{
+					"name": "Session Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/auth/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						},
+						"description": "Logout and destroy session"
+					},
+					"response": []
+				}
+			],
+			"description": "Session-based authentication endpoints (alternative to JWT)"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Auto-set base URL if not set",
+					"if (!pm.environment.get('base_url')) {",
+					"    pm.environment.set('base_url', 'http://localhost:3001');",
+					"}",
+					"",
+					"// Set default test credentials if not set",
+					"if (!pm.environment.get('test_email')) {",
+					"    pm.environment.set('test_email', 'test@travinh.com');",
+					"    pm.environment.set('test_username', 'Test User');",
+					"    pm.environment.set('test_password', 'password123');",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Global test script",
+					"pm.test('Response time is less than 5000ms', function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(5000);",
+					"});",
+					"",
+					"pm.test('Response has JSON content-type', function () {",
+					"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+					"});",
+					"",
+					"if (pm.response.code !== 404) {",
+					"    pm.test('Response has success field', function () {",
+					"        const response = pm.response.json();",
+					"        pm.expect(response).to.have.property('success');",
+					"    });",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3001",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "test_email",
+			"value": "test@travinh.com",
+			"type": "string"
+		},
+		{
+			"key": "test_username",
+			"value": "Test User",
+			"type": "string"
+		},
+		{
+			"key": "test_password",
+			"value": "password123",
+			"type": "string"
+		},
+		{
+			"key": "location_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "uploaded_filename",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "uploaded_url",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "gemini_api_key",
+			"value": "AIzaSyCrw7zvE5wexXuBFe6n4wsWOEXvVfnjXwA",
+			"type": "string"
+		},
+		{
+			"key": "last_ai_response",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "rating_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

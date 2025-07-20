@@ -24,13 +24,15 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-        cache-dependency-path: 'frontend/package.json'
         
-    - name: 📦 Install frontend dependencies
+    - name: 📦 Install frontend dependencies (if needed)
       run: |
-        cd frontend
-        npm ci || npm install
+        if [ -f "frontend/package.json" ]; then
+          cd frontend
+          npm ci || npm install
+        else
+          echo "ℹ️ No package.json found in frontend - using static files"
+        fi
         
     - name: 🔍 Lint HTML files
       run: |
@@ -64,10 +66,10 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping"
+          --health-cmd="mysqladmin ping --silent"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=3
+          --health-retries=5
     
     steps:
     - name: 📥 Checkout code
@@ -83,7 +85,7 @@ jobs:
     - name: 📦 Install backend dependencies
       run: |
         cd backend
-        npm ci
+        npm ci || npm install
         
     - name: 🔍 Lint backend code
       run: |
@@ -93,6 +95,8 @@ jobs:
         
     - name: 🗄️ Setup test database
       run: |
+        # Wait for MySQL to be ready
+        sleep 10
         mysql -h 127.0.0.1 -u root -ptest_password -e "
           CREATE DATABASE IF NOT EXISTS dulichtravinh_test;
           USE dulichtravinh_test;

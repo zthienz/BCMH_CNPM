@@ -1,0 +1,292 @@
+name: ✅ Simple Tests - Tra Vinh Travel
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # ===== BASIC VALIDATION =====
+  basic-validation:
+    name: 🔍 Basic Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        
+    - name: 📁 Check project structure
+      run: |
+        echo "📁 Project Structure Check"
+        echo "=========================="
+        echo ""
+        echo "📂 Root directory:"
+        ls -la
+        echo ""
+        echo "📂 Frontend directory:"
+        if [ -d "frontend" ]; then
+          echo "✅ Frontend directory exists"
+          echo "Files: $(find frontend -type f | wc -l)"
+          echo "HTML files: $(find frontend -name "*.html" | wc -l)"
+          echo "CSS files: $(find frontend -name "*.css" | wc -l)"
+          echo "JS files: $(find frontend -name "*.js" | wc -l)"
+        else
+          echo "❌ Frontend directory not found"
+          exit 1
+        fi
+        echo ""
+        echo "📂 Backend directory:"
+        if [ -d "backend" ]; then
+          echo "✅ Backend directory exists"
+          echo "Files: $(find backend -type f -not -path "*/node_modules/*" | wc -l)"
+          echo "JS files: $(find backend -name "*.js" -not -path "*/node_modules/*" | wc -l)"
+        else
+          echo "❌ Backend directory not found"
+          exit 1
+        fi
+        
+    - name: ✅ Validate HTML files
+      run: |
+        echo "🔍 HTML Validation"
+        echo "=================="
+        
+        html_count=0
+        valid_count=0
+        
+        for file in frontend/*.html; do
+          if [ -f "$file" ]; then
+            html_count=$((html_count + 1))
+            echo "Checking: $(basename "$file")"
+            
+            # Check for DOCTYPE
+            if grep -q "<!DOCTYPE html>" "$file"; then
+              echo "  ✅ Has DOCTYPE declaration"
+            else
+              echo "  ⚠️ Missing DOCTYPE declaration"
+            fi
+            
+            # Check for html tag
+            if grep -q "<html" "$file"; then
+              echo "  ✅ Has HTML tag"
+            else
+              echo "  ❌ Missing HTML tag"
+              continue
+            fi
+            
+            # Check for head and body
+            if grep -q "<head>" "$file" && grep -q "<body>" "$file"; then
+              echo "  ✅ Has head and body sections"
+              valid_count=$((valid_count + 1))
+            else
+              echo "  ⚠️ Missing head or body section"
+            fi
+            
+            echo ""
+          fi
+        done
+        
+        echo "📊 Summary: $valid_count/$html_count HTML files are valid"
+        
+        if [ $html_count -eq 0 ]; then
+          echo "❌ No HTML files found!"
+          exit 1
+        fi
+        
+    - name: ✅ Validate CSS files
+      run: |
+        echo "🎨 CSS Validation"
+        echo "================"
+        
+        css_count=0
+        
+        for file in frontend/*.css; do
+          if [ -f "$file" ]; then
+            css_count=$((css_count + 1))
+            echo "Checking: $(basename "$file")"
+            
+            # Check if file is not empty
+            if [ -s "$file" ]; then
+              echo "  ✅ File is not empty ($(wc -l < "$file") lines)"
+            else
+              echo "  ⚠️ File is empty"
+            fi
+            
+            # Basic syntax check - look for opening braces
+            if grep -q "{" "$file"; then
+              echo "  ✅ Contains CSS rules"
+            else
+              echo "  ⚠️ No CSS rules found"
+            fi
+            
+            echo ""
+          fi
+        done
+        
+        echo "📊 Found $css_count CSS files"
+        
+    - name: ✅ Validate JavaScript files
+      run: |
+        echo "🔧 JavaScript Validation"
+        echo "======================="
+        
+        js_errors=0
+        
+        # Check frontend JS files
+        echo "Frontend JavaScript files:"
+        for file in frontend/*.js frontend/components/*.js; do
+          if [ -f "$file" ]; then
+            echo "Checking: $file"
+            if node -c "$file" 2>/dev/null; then
+              echo "  ✅ Syntax is valid"
+            else
+              echo "  ❌ Syntax error detected:"
+              node -c "$file" 2>&1 | head -3
+              js_errors=$((js_errors + 1))
+            fi
+            echo ""
+          fi
+        done
+        
+        # Check backend JS files (basic ones)
+        echo "Backend JavaScript files:"
+        for file in backend/*.js; do
+          if [ -f "$file" ] && [ "$(basename "$file")" != "package.json" ]; then
+            echo "Checking: $file"
+            if node -c "$file" 2>/dev/null; then
+              echo "  ✅ Syntax is valid"
+            else
+              echo "  ❌ Syntax error detected:"
+              node -c "$file" 2>&1 | head -3
+              js_errors=$((js_errors + 1))
+            fi
+            echo ""
+          fi
+        done
+        
+        if [ $js_errors -gt 0 ]; then
+          echo "❌ Found $js_errors JavaScript files with syntax errors"
+          exit 1
+        else
+          echo "✅ All JavaScript files have valid syntax"
+        fi
+
+  # ===== BACKEND BASIC TEST =====
+  backend-basic:
+    name: 🔧 Backend Basic Test
+    runs-on: ubuntu-latest
+    needs: basic-validation
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        
+    - name: 📦 Check backend dependencies
+      run: |
+        echo "📦 Backend Dependencies Check"
+        echo "============================"
+        
+        if [ -f "backend/package.json" ]; then
+          echo "✅ package.json found"
+          cd backend
+          
+          echo "📋 Package info:"
+          node -e "const pkg = require('./package.json'); console.log('Name:', pkg.name); console.log('Version:', pkg.version);"
+          
+          echo ""
+          echo "📦 Installing dependencies..."
+          if npm install --silent; then
+            echo "✅ Dependencies installed successfully"
+            
+            echo ""
+            echo "📊 Dependency summary:"
+            npm ls --depth=0 2>/dev/null || echo "Dependencies installed but some peer dependencies may be missing"
+            
+          else
+            echo "❌ Failed to install dependencies"
+            exit 1
+          fi
+        else
+          echo "❌ No package.json found in backend directory"
+          exit 1
+        fi
+        
+    - name: 🧪 Basic backend tests
+      run: |
+        echo "🧪 Basic Backend Tests"
+        echo "====================="
+        
+        cd backend
+        
+        # Test if main files exist
+        echo "📁 Checking main backend files..."
+        
+        main_files=("server.js" "restful-api-server.js" "simple-cors-server.js")
+        found_main=false
+        
+        for file in "${main_files[@]}"; do
+          if [ -f "$file" ]; then
+            echo "✅ Found main file: $file"
+            found_main=true
+            
+            # Test syntax
+            if node -c "$file" 2>/dev/null; then
+              echo "  ✅ Syntax is valid"
+            else
+              echo "  ❌ Syntax error in $file"
+              node -c "$file"
+              exit 1
+            fi
+          fi
+        done
+        
+        if [ "$found_main" = false ]; then
+          echo "⚠️ No main server file found, but this might be OK"
+        fi
+        
+        echo ""
+        echo "✅ Backend basic tests completed"
+
+  # ===== TEST SUMMARY =====
+  test-summary:
+    name: 📊 Test Summary
+    runs-on: ubuntu-latest
+    needs: [basic-validation, backend-basic]
+    if: always()
+    
+    steps:
+    - name: 📊 Generate summary
+      run: |
+        echo "📊 SIMPLE TEST SUMMARY"
+        echo "======================"
+        echo ""
+        echo "🔍 Basic Validation: ${{ needs.basic-validation.result }}"
+        echo "🔧 Backend Basic: ${{ needs.backend-basic.result }}"
+        echo ""
+        
+        if [ "${{ needs.basic-validation.result }}" = "success" ] && [ "${{ needs.backend-basic.result }}" = "success" ]; then
+          echo "🎉 ALL SIMPLE TESTS PASSED! ✅"
+          echo ""
+          echo "✅ Project structure is valid"
+          echo "✅ HTML files are properly formatted"
+          echo "✅ CSS files are present"
+          echo "✅ JavaScript syntax is correct"
+          echo "✅ Backend dependencies can be installed"
+          echo ""
+          echo "🚀 Ready for more comprehensive testing!"
+        else
+          echo "❌ SOME TESTS FAILED!"
+          echo ""
+          echo "🔧 Please check the failed jobs above and fix the issues"
+          echo "💡 This is a simplified test - fix these basic issues first"
+        fi

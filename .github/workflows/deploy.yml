@@ -38,7 +38,7 @@ jobs:
     - name: 📦 Install dependencies
       run: |
         cd backend
-        npm ci --production
+        npm ci --production || npm install --production
         
     - name: 🏗️ Build application
       run: |
@@ -68,7 +68,7 @@ jobs:
         
         # Install production dependencies
         cd dist/backend
-        npm ci --production --silent
+        npm ci --production --silent || npm install --production --silent
         
         # Create version info
         echo "📝 Creating version info..."

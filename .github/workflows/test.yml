@@ -100,7 +100,7 @@ jobs:
   backend-tests:
     name: 🔧 Backend Tests
     runs-on: ubuntu-latest
-    
+
     services:
       mysql:
         image: mysql:8.0
@@ -110,10 +110,10 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping"
+          --health-cmd="mysqladmin ping --silent"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=3
+          --health-retries=5
     
     steps:
     - name: 📥 Checkout code
@@ -129,11 +129,13 @@ jobs:
     - name: 📦 Install backend dependencies
       run: |
         cd backend
-        npm ci
+        npm ci || npm install
         
     - name: 🗄️ Setup test database
       run: |
         echo "🗄️ Setting up test database..."
+        # Wait for MySQL to be ready
+        sleep 10
         mysql -h 127.0.0.1 -u root -ptest_password -e "
           CREATE DATABASE IF NOT EXISTS dulichtravinh_test;
           USE dulichtravinh_test;

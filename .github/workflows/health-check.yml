@@ -1,0 +1,153 @@
+name: 🏥 Health Check - Tra Vinh Travel
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    # Run every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  health-check:
+    name: 🏥 System Health Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        
+    - name: 🏥 Project health check
+      run: |
+        echo "🏥 SYSTEM HEALTH CHECK"
+        echo "====================="
+        echo ""
+        
+        # Check project structure
+        echo "📁 Project Structure:"
+        echo "  Frontend: $([ -d 'frontend' ] && echo '✅ OK' || echo '❌ Missing')"
+        echo "  Backend: $([ -d 'backend' ] && echo '✅ OK' || echo '❌ Missing')"
+        echo "  GitHub Actions: $([ -d '.github/workflows' ] && echo '✅ OK' || echo '❌ Missing')"
+        echo ""
+        
+        # Check key files
+        echo "📄 Key Files:"
+        echo "  index.html: $([ -f 'frontend/index.html' ] && echo '✅ OK' || echo '❌ Missing')"
+        echo "  package.json: $([ -f 'backend/package.json' ] && echo '✅ OK' || echo '❌ Missing')"
+        echo "  README: $([ -f 'README.md' ] && echo '✅ OK' || echo '⚠️ Missing')"
+        echo ""
+        
+        # Count files
+        echo "📊 File Statistics:"
+        echo "  HTML files: $(find frontend -name '*.html' 2>/dev/null | wc -l)"
+        echo "  CSS files: $(find frontend -name '*.css' 2>/dev/null | wc -l)"
+        echo "  JS files: $(find . -name '*.js' -not -path '*/node_modules/*' 2>/dev/null | wc -l)"
+        echo "  Workflows: $(find .github/workflows -name '*.yml' 2>/dev/null | wc -l)"
+        echo ""
+        
+        # Check for common issues
+        echo "🔍 Common Issues Check:"
+        
+        # Check for large files
+        large_files=$(find . -type f -size +1M -not -path '*/node_modules/*' -not -path '*/.git/*' 2>/dev/null | wc -l)
+        echo "  Large files (>1MB): $large_files $([ $large_files -eq 0 ] && echo '✅' || echo '⚠️')"
+        
+        # Check for node_modules in git
+        node_modules_in_git=$(find . -name 'node_modules' -not -path '*/.git/*' 2>/dev/null | wc -l)
+        echo "  node_modules folders: $node_modules_in_git $([ $node_modules_in_git -eq 0 ] && echo '✅' || echo '⚠️')"
+        
+        # Check for .env files
+        env_files=$(find . -name '.env*' -not -path '*/.git/*' 2>/dev/null | wc -l)
+        echo "  .env files: $env_files $([ $env_files -gt 0 ] && echo '✅' || echo '⚠️')"
+        
+        echo ""
+        echo "🎯 Health Check Summary:"
+        
+        # Calculate health score
+        score=0
+        total=10
+        
+        [ -d 'frontend' ] && score=$((score + 1))
+        [ -d 'backend' ] && score=$((score + 1))
+        [ -f 'frontend/index.html' ] && score=$((score + 1))
+        [ -f 'backend/package.json' ] && score=$((score + 1))
+        [ -d '.github/workflows' ] && score=$((score + 1))
+        [ $(find frontend -name '*.html' 2>/dev/null | wc -l) -gt 0 ] && score=$((score + 1))
+        [ $(find frontend -name '*.css' 2>/dev/null | wc -l) -gt 0 ] && score=$((score + 1))
+        [ $(find . -name '*.js' -not -path '*/node_modules/*' 2>/dev/null | wc -l) -gt 0 ] && score=$((score + 1))
+        [ $large_files -eq 0 ] && score=$((score + 1))
+        [ $env_files -gt 0 ] && score=$((score + 1))
+        
+        health_percentage=$((score * 100 / total))
+        
+        echo "  Health Score: $score/$total ($health_percentage%)"
+        
+        if [ $health_percentage -ge 90 ]; then
+          echo "  Status: 🟢 EXCELLENT"
+        elif [ $health_percentage -ge 70 ]; then
+          echo "  Status: 🟡 GOOD"
+        elif [ $health_percentage -ge 50 ]; then
+          echo "  Status: 🟠 NEEDS ATTENTION"
+        else
+          echo "  Status: 🔴 CRITICAL"
+        fi
+        
+        echo ""
+        echo "✅ Health check completed!"
+        
+    - name: 📊 Generate health report
+      run: |
+        echo "📊 DETAILED HEALTH REPORT"
+        echo "========================="
+        echo ""
+        
+        # Frontend analysis
+        echo "🎨 Frontend Analysis:"
+        if [ -d 'frontend' ]; then
+          cd frontend
+          echo "  📄 HTML files:"
+          find . -name '*.html' -exec echo "    - {}" \; | head -10
+          echo "  🎨 CSS files:"
+          find . -name '*.css' -exec echo "    - {}" \; | head -5
+          echo "  🔧 JS files:"
+          find . -name '*.js' -exec echo "    - {}" \; | head -10
+          cd ..
+        else
+          echo "  ❌ Frontend directory not found"
+        fi
+        
+        echo ""
+        
+        # Backend analysis
+        echo "🔧 Backend Analysis:"
+        if [ -d 'backend' ]; then
+          cd backend
+          if [ -f 'package.json' ]; then
+            echo "  📦 Package info:"
+            node -e "
+              try {
+                const pkg = require('./package.json');
+                console.log('    Name:', pkg.name || 'N/A');
+                console.log('    Version:', pkg.version || 'N/A');
+                console.log('    Dependencies:', Object.keys(pkg.dependencies || {}).length);
+                console.log('    Dev Dependencies:', Object.keys(pkg.devDependencies || {}).length);
+              } catch(e) {
+                console.log('    ❌ Error reading package.json');
+              }
+            " 2>/dev/null || echo "    ⚠️ Could not analyze package.json"
+          fi
+          
+          echo "  📄 Main files:"
+          find . -maxdepth 1 -name '*.js' -exec echo "    - {}" \; | head -10
+          cd ..
+        else
+          echo "  ❌ Backend directory not found"
+        fi
+        
+        echo ""
+        echo "🎉 Health report completed!"
