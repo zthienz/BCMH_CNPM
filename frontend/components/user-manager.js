@@ -60,22 +60,32 @@ class UserManager {
                 Object.assign(headers, window.jwtService.getAuthHeader());
             }
 
-            const response = await fetch('http://localhost:3000/api/auth/session', {
-                method: 'GET',
-                headers: headers,
-                credentials: 'include'
-            });
+            try {
+                const response = await fetch('http://localhost:3001/api/auth/session', {
+                    method: 'GET',
+                    headers: headers,
+                    credentials: 'include'
+                });
 
-            const result = await response.json();
+                const result = await response.json();
 
-            if (result.success && result.data && result.data.logged_in) {
-                this.user = result.data.user;
-                this.isLoggedIn = true;
-                this.setLocalSession(result.data.user);
-            } else {
-                this.user = null;
-                this.isLoggedIn = false;
-                this.clearLocalSession();
+                if (result.success && result.data && result.data.logged_in) {
+                    this.user = result.data.user;
+                    this.isLoggedIn = true;
+                    this.setLocalSession(result.data.user);
+                } else {
+                    this.user = null;
+                    this.isLoggedIn = false;
+                    this.clearLocalSession();
+                }
+            } catch (serverError) {
+                console.warn('⚠️ Server session check failed:', serverError.message);
+                // Keep existing session if server is not available
+                if (!this.user && !this.isLoggedIn) {
+                    this.user = null;
+                    this.isLoggedIn = false;
+                    this.clearLocalSession();
+                }
             }
 
             this.updateUI();

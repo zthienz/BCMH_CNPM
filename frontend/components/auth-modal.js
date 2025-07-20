@@ -664,7 +664,7 @@ class AuthModal {
      */
     async handleLogin(data) {
         try {
-            const response = await fetch('http://localhost:3000/api/auth/login', {
+            const response = await fetch('http://localhost:3001/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -707,14 +707,14 @@ class AuthModal {
      */
     async handleRegister(data) {
         try {
-            const response = await fetch('http://localhost:3000/api/auth/register', {
+            const response = await fetch('http://localhost:3001/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
                 body: JSON.stringify({
-                    name: data.name,
+                    username: data.name,
                     email: data.email,
                     password: data.password
                 })
@@ -828,7 +828,7 @@ class AuthModal {
                 Object.assign(headers, window.jwtService.getAuthHeader());
             }
 
-            const response = await fetch('http://localhost:3000/api/auth/logout', {
+            const response = await fetch('http://localhost:3001/api/auth/logout', {
                 method: 'POST',
                 headers: headers,
                 credentials: 'include'
