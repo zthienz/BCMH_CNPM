@@ -720,12 +720,12 @@ const reviews = [
   },
 ];
 
-function renderReviews(filterStar = '', filterPlace = '') {
+function renderReviews(filterStar = '', filterPlace = '', showAll = false) {
   let filtered = reviews;
   if (filterStar) filtered = filtered.filter(r => r.stars == filterStar);
   if (filterPlace) filtered = filtered.filter(r => r.placeValue == filterPlace);
-  // Nếu không lọc gì, chỉ hiện 3 đánh giá đầu
-  if (!filterStar && !filterPlace) filtered = reviews.slice(0, 3);
+  // Nếu không lọc gì và không phải showAll, chỉ hiện 3 đánh giá đầu
+  if (!filterStar && !filterPlace && !showAll) filtered = reviews.slice(0, 3);
   const html = filtered.map(r => `
     <div class="bg-white p-6 rounded-lg shadow-lg">
       <div class="flex items-center mb-4">
@@ -760,7 +760,8 @@ placeSelect.addEventListener('change', () => {
 allBtn.addEventListener('click', () => {
   starSelect.value = '';
   placeSelect.value = '';
-  renderReviews();
+  // Hiển thị tất cả đánh giá, không giới hạn 3 đánh giá đầu
+  renderReviews('','', true);
 });
 
 // Hiện mặc định 3 đánh giá đầu
