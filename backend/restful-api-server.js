@@ -3,6 +3,8 @@
  * Complete CRUD operations for all resources
  */
 
+require('dotenv').config();
+
 const express = require('express');
 const mysql = require('mysql2/promise');
 const bcrypt = require('bcryptjs');
@@ -10,50 +12,53 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const rateLimit = require('express-rate-limit');
+const { body, validationResult } = require('express-validator');
 
 const app = express();
-const PORT = 3001;
-const JWT_SECRET = 'travinh-travel-secret-key-2024';
+const PORT = process.env.PORT || 3001;
+const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-key';
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // Database configuration
 const dbConfig = {
-    host: 'localhost',
-    port: 3306,
-    user: 'root',
-    password: 'Thien@160504',
-    database: 'dulichtravinh',
+    host: process.env.DB_HOST || 'localhost',
+    port: process.env.DB_PORT || 3306,
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME || 'dulichtravinh',
     charset: 'utf8mb4'
 };
 
 let pool;
 
+// Rate limiting
+const limiter = rateLimit({
+    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
+    max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100, // limit each IP to 100 requests per windowMs
+    message: {
+        success: false,
+        message: 'Too many requests from this IP, please try again later.'
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
+// Apply rate limiting to all requests
+app.use(limiter);
+
 // CORS middleware
 app.use((req, res, next) => {
     const origin = req.headers.origin;
 
-    console.log(`📡 ${req.method} ${req.url} from origin: ${origin || 'null'}`);
+    // Only log in development mode
+    if (NODE_ENV === 'development') {
+        console.log(`📡 ${req.method} ${req.url} from origin: ${origin || 'null'}`);
+    }
 
-    // Allowed origins for CORS with credentials
-    const allowedOrigins = [
-        'http://localhost:5500',
-        'http://localhost:5501',
-        'http://localhost:5502',
-        'http://localhost:5503',
-        'http://localhost:5504',
-        'http://localhost:5505',
-        'http://localhost:5506',
-        'http://localhost:5507',
-        'http://127.0.0.1:5500',
-        'http://127.0.0.1:5501',
-        'http://127.0.0.1:5502',
-        'http://127.0.0.1:5503',
-        'http://127.0.0.1:5504',
-        'http://127.0.0.1:5505',
-        'http://127.0.0.1:5506',
-        'http://127.0.0.1:5507',
-        'http://localhost:3000',
-        'http://127.0.0.1:3000'
-    ];
+    // Get allowed origins from environment
+    const corsOrigins = process.env.CORS_ORIGIN || 'http://localhost:5507,http://127.0.0.1:5507';
+    const allowedOrigins = corsOrigins.split(',').map(o => o.trim());
 
     if (origin && allowedOrigins.includes(origin)) {
         res.header('Access-Control-Allow-Origin', origin);
@@ -71,7 +76,9 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
 
     if (req.method === 'OPTIONS') {
-        console.log('✅ Preflight request handled');
+        if (NODE_ENV === 'development') {
+            console.log('✅ Preflight request handled');
+        }
         return res.sendStatus(200);
     }
     
@@ -176,9 +183,30 @@ const generateId = async (table, prefix) => {
     return `${prefix}${(maxId + 1).toString().padStart(3, '0')}`;
 };
 
+// Input validation helper
+const validateInput = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            success: false,
+            message: 'Validation failed',
+            errors: errors.array()
+        });
+    }
+    next();
+};
+
 const handleError = (res, error, message = 'Internal server error') => {
-    console.error('❌ Error:', error);
-    res.status(500).json({ success: false, message, error: error.message });
+    if (NODE_ENV === 'development') {
+        console.error('❌ Error:', error);
+    }
+
+    // Don't expose internal error details in production
+    res.status(500).json({
+        success: false,
+        message,
+        ...(NODE_ENV === 'development' && { error: error.message })
+    });
 };
 
 // ================================
@@ -313,7 +341,9 @@ app.post('/api/auth/register', async (req, res) => {
             [maTK, username, email, hashedPassword, 'Khach']
         );
 
-        console.log('✅ User registered:', email);
+        if (NODE_ENV === 'development') {
+            console.log('✅ User registered:', email);
+        }
 
         res.status(201).json({
             success: true,
@@ -387,7 +417,9 @@ app.post('/api/auth/login', async (req, res) => {
             [user.MaTK]
         );
 
-        console.log('✅ User logged in:', email);
+        if (NODE_ENV === 'development') {
+            console.log('✅ User logged in:', email);
+        }
 
         res.json({
             success: true,
