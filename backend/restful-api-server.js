@@ -30,19 +30,46 @@ let pool;
 // CORS middleware
 app.use((req, res, next) => {
     const origin = req.headers.origin;
-    
+
     console.log(`📡 ${req.method} ${req.url} from origin: ${origin || 'null'}`);
-    
-    if (origin) {
+
+    // Allowed origins for CORS with credentials
+    const allowedOrigins = [
+        'http://localhost:5500',
+        'http://localhost:5501',
+        'http://localhost:5502',
+        'http://localhost:5503',
+        'http://localhost:5504',
+        'http://localhost:5505',
+        'http://localhost:5506',
+        'http://localhost:5507',
+        'http://127.0.0.1:5500',
+        'http://127.0.0.1:5501',
+        'http://127.0.0.1:5502',
+        'http://127.0.0.1:5503',
+        'http://127.0.0.1:5504',
+        'http://127.0.0.1:5505',
+        'http://127.0.0.1:5506',
+        'http://127.0.0.1:5507',
+        'http://localhost:3000',
+        'http://127.0.0.1:3000'
+    ];
+
+    if (origin && allowedOrigins.includes(origin)) {
         res.header('Access-Control-Allow-Origin', origin);
+        res.header('Access-Control-Allow-Credentials', 'true');
+    } else if (!origin) {
+        // For requests without origin (like Postman)
+        res.header('Access-Control-Allow-Origin', 'http://localhost:5507');
+        res.header('Access-Control-Allow-Credentials', 'true');
     } else {
-        res.header('Access-Control-Allow-Origin', 'null');
+        // For disallowed origins, don't set credentials
+        res.header('Access-Control-Allow-Origin', '*');
     }
-    
+
     res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,PATCH,OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    
+
     if (req.method === 'OPTIONS') {
         console.log('✅ Preflight request handled');
         return res.sendStatus(200);
@@ -792,55 +819,51 @@ app.put('/api/users/password', authenticateToken, async (req, res) => {
 });
 
 // ================================
+// CATEGORY MANAGEMENT ENDPOINTS
+// ================================
+
+// GET /api/loaihinhdulich - Get All Categories
+app.get('/api/loaihinhdulich', async (req, res) => {
+    try {
+        const [categories] = await pool.execute(
+            'SELECT * FROM loaihinhdulich ORDER BY MALHDL'
+        );
+
+        res.json(categories);
+
+    } catch (error) {
+        handleError(res, error, 'Failed to get categories');
+    }
+});
+
+// ================================
 // LOCATION MANAGEMENT ENDPOINTS
 // ================================
 
 // GET /api/locations - Get All Locations
 app.get('/api/locations', async (req, res) => {
     try {
-        const { page = 1, limit = 10, search = '', category = '', sort = 'NgayTao' } = req.query;
-        const offset = (page - 1) * limit;
+        const { search = '', category = '' } = req.query;
 
-        let query = 'SELECT * FROM diadiemdulich WHERE TrangThai = "Active"';
-        let countQuery = 'SELECT COUNT(*) as total FROM diadiemdulich WHERE TrangThai = "Active"';
+        let query = 'SELECT * FROM diadiemdulich';
         let params = [];
 
-        if (search) {
-            query += ' AND (TenDiaDiem LIKE ? OR MoTa LIKE ? OR DiaChi LIKE ?)';
-            countQuery += ' AND (TenDiaDiem LIKE ? OR MoTa LIKE ? OR DiaChi LIKE ?)';
-            params.push(`%${search}%`, `%${search}%`, `%${search}%`);
+        if (search && category) {
+            query += ' WHERE (TenDDDL LIKE ? OR MoTa LIKE ? OR DiaChi LIKE ?) AND MALHDL = ?';
+            params = [`%${search}%`, `%${search}%`, `%${search}%`, category];
+        } else if (search) {
+            query += ' WHERE (TenDDDL LIKE ? OR MoTa LIKE ? OR DiaChi LIKE ?)';
+            params = [`%${search}%`, `%${search}%`, `%${search}%`];
+        } else if (category) {
+            query += ' WHERE MALHDL = ?';
+            params = [category];
         }
 
-        if (category) {
-            query += ' AND LoaiDiaDiem = ?';
-            countQuery += ' AND LoaiDiaDiem = ?';
-            params.push(category);
-        }
-
-        // Sorting
-        const validSorts = ['NgayTao', 'TenDiaDiem', 'DanhGia', 'LuotXem', 'GiaVe'];
-        const sortField = validSorts.includes(sort) ? sort : 'NgayTao';
-        query += ` ORDER BY ${sortField} DESC LIMIT ? OFFSET ?`;
-        params.push(parseInt(limit), parseInt(offset));
+        query += ' ORDER BY MADDDL';
 
         const [locations] = await pool.execute(query, params);
 
-        // Get count with same filters
-        const countParams = params.slice(0, -2); // Remove limit and offset
-        const [countResult] = await pool.execute(countQuery, countParams);
-
-        res.json({
-            success: true,
-            data: {
-                locations: locations,
-                pagination: {
-                    page: parseInt(page),
-                    limit: parseInt(limit),
-                    total: countResult[0].total,
-                    pages: Math.ceil(countResult[0].total / limit)
-                }
-            }
-        });
+        res.json(locations);
 
     } catch (error) {
         handleError(res, error, 'Failed to get locations');
@@ -853,7 +876,7 @@ app.get('/api/locations/:id', async (req, res) => {
         const { id } = req.params;
 
         const [locations] = await pool.execute(
-            'SELECT * FROM diadiemdulich WHERE MaDiaDiem = ?',
+            'SELECT * FROM diadiemdulich WHERE MADDDL = ?',
             [id]
         );
 
@@ -995,10 +1018,7 @@ app.put('/api/locations/:id', authenticateToken, requireAdmin, upload.single('im
             params.push(rating);
         }
 
-        if (status) {
-            updates.push('TrangThai = ?');
-            params.push(status);
-        }
+
 
         // Handle uploaded image
         if (req.file) {
@@ -1099,8 +1119,8 @@ app.get('/api/locations/search', async (req, res) => {
             });
         }
 
-        let query = `SELECT * FROM diadiemdulich WHERE TrangThai = "Active"
-                     AND (TenDiaDiem LIKE ? OR MoTa LIKE ? OR DiaChi LIKE ?)`;
+        let query = `SELECT * FROM diadiemdulich WHERE 1=1
+                     AND (TenDDDL LIKE ? OR MoTa LIKE ? OR DiaChi LIKE ?)`;
         let params = [`%${q}%`, `%${q}%`, `%${q}%`];
 
         if (category) {
@@ -1149,12 +1169,12 @@ app.get('/api/locations/category/:category', async (req, res) => {
         const offset = (page - 1) * limit;
 
         const [locations] = await pool.execute(
-            'SELECT * FROM diadiemdulich WHERE LoaiDiaDiem = ? AND TrangThai = "Active" ORDER BY DanhGia DESC, LuotXem DESC LIMIT ? OFFSET ?',
+            'SELECT * FROM diadiemdulich WHERE MALHDL = ? ORDER BY MADDDL LIMIT ? OFFSET ?',
             [category, parseInt(limit), parseInt(offset)]
         );
 
         const [countResult] = await pool.execute(
-            'SELECT COUNT(*) as total FROM diadiemdulich WHERE LoaiDiaDiem = ? AND TrangThai = "Active"',
+            'SELECT COUNT(*) as total FROM diadiemdulich WHERE MALHDL = ?',
             [category]
         );
 
