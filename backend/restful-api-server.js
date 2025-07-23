@@ -47,7 +47,7 @@ const limiter = rateLimit({
 // Apply rate limiting to all requests
 app.use(limiter);
 
-// CORS middleware
+// CORS middleware - Fixed for credentials
 app.use((req, res, next) => {
     const origin = req.headers.origin;
 
@@ -60,20 +60,26 @@ app.use((req, res, next) => {
     const corsOrigins = process.env.CORS_ORIGIN || 'http://localhost:5507,http://127.0.0.1:5507';
     const allowedOrigins = corsOrigins.split(',').map(o => o.trim());
 
+    // Always set specific origin, never wildcard when credentials are involved
     if (origin && allowedOrigins.includes(origin)) {
+        // Allowed origin with credentials
         res.header('Access-Control-Allow-Origin', origin);
         res.header('Access-Control-Allow-Credentials', 'true');
     } else if (!origin) {
-        // For requests without origin (like Postman)
-        res.header('Access-Control-Allow-Origin', 'http://localhost:5507');
+        // For requests without origin (like Postman, direct API calls)
+        res.header('Access-Control-Allow-Origin', allowedOrigins[0]);
         res.header('Access-Control-Allow-Credentials', 'true');
     } else {
-        // For disallowed origins, don't set credentials
-        res.header('Access-Control-Allow-Origin', '*');
+        // For disallowed origins, still set specific origin (not wildcard)
+        // but don't allow credentials
+        res.header('Access-Control-Allow-Origin', origin);
+        // Don't set Access-Control-Allow-Credentials for disallowed origins
     }
 
+    // Set other CORS headers
     res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,PATCH,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept');
+    res.header('Access-Control-Max-Age', '86400'); // Cache preflight for 24 hours
 
     if (req.method === 'OPTIONS') {
         if (NODE_ENV === 'development') {
@@ -89,8 +95,21 @@ app.use((req, res, next) => {
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Static files middleware
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Static files middleware with CORS
+app.use('/uploads', (req, res, next) => {
+    // Set CORS headers for static files
+    const origin = req.headers.origin;
+    const corsOrigins = process.env.CORS_ORIGIN || 'http://localhost:5507,http://127.0.0.1:5507';
+    const allowedOrigins = corsOrigins.split(',').map(o => o.trim());
+
+    if (origin && allowedOrigins.includes(origin)) {
+        res.header('Access-Control-Allow-Origin', origin);
+    } else {
+        res.header('Access-Control-Allow-Origin', '*'); // Allow all for static files
+    }
+
+    next();
+}, express.static(path.join(__dirname, 'uploads')));
 
 // File upload configuration
 const storage = multer.diskStorage({
@@ -157,17 +176,54 @@ async function initDB() {
             ...dbConfig,
             waitForConnections: true,
             connectionLimit: 10,
-            queueLimit: 0
+            queueLimit: 0,
+            // Remove invalid options for mysql2
+            // acquireTimeout: 60000,
+            // timeout: 60000,
+            // reconnect: true,
+            idleTimeout: 300000,
+            maxIdle: 10,
+            enableKeepAlive: true,
+            keepAliveInitialDelay: 0,
+            // Add proper mysql2 options
+            supportBigNumbers: true,
+            bigNumberStrings: true,
+            dateStrings: false,
+            debug: false,
+            multipleStatements: false
         });
         
         const connection = await pool.getConnection();
         await connection.execute('SELECT 1');
         connection.release();
-        
+
         console.log('✅ Database connected');
+
+        // Set up connection monitoring
+        setInterval(async () => {
+            try {
+                const conn = await pool.getConnection();
+                await conn.execute('SELECT 1');
+                conn.release();
+                if (NODE_ENV === 'development') {
+                    console.log('🔄 Database connection check: OK');
+                }
+            } catch (error) {
+                console.error('❌ Database connection lost:', error.message);
+                // Try to reconnect
+                setTimeout(() => {
+                    initDB();
+                }, 5000);
+            }
+        }, 300000); // Check every 5 minutes
+
         return true;
     } catch (error) {
         console.error('❌ Database error:', error.message);
+        console.log('🔄 Retrying database connection in 5 seconds...');
+        setTimeout(() => {
+            initDB();
+        }, 5000);
         return false;
     }
 }
@@ -213,22 +269,86 @@ const handleError = (res, error, message = 'Internal server error') => {
 // HEALTH CHECK & INFO ENDPOINTS
 // ================================
 
-app.get('/health', (req, res) => {
-    res.json({
-        success: true,
-        status: 'OK',
-        port: PORT,
-        database: pool ? 'Connected' : 'Disconnected',
-        timestamp: new Date().toISOString(),
-        version: '1.0.0',
-        endpoints: {
-            auth: '/api/auth/*',
-            users: '/api/users/*',
-            locations: '/api/locations/*',
-            uploads: '/api/uploads/*'
+app.get('/health', async (req, res) => {
+    try {
+        // Test database connection
+        let dbStatus = 'Disconnected';
+        let dbLatency = null;
+
+        if (pool) {
+            try {
+                const startTime = Date.now();
+                const connection = await pool.getConnection();
+                await connection.execute('SELECT 1');
+                connection.release();
+                dbLatency = Date.now() - startTime;
+                dbStatus = 'Connected';
+            } catch (dbError) {
+                dbStatus = 'Error';
+            }
         }
-    });
+
+        // Get memory usage
+        const memUsage = process.memoryUsage();
+
+        // Get uptime
+        const uptime = process.uptime();
+
+        res.json({
+            success: true,
+            status: 'OK',
+            timestamp: new Date().toISOString(),
+            server: {
+                port: PORT,
+                environment: NODE_ENV,
+                uptime: Math.floor(uptime),
+                uptimeFormatted: formatUptime(uptime)
+            },
+            database: {
+                status: dbStatus,
+                latency: dbLatency ? `${dbLatency}ms` : null
+            },
+            memory: {
+                rss: Math.round(memUsage.rss / 1024 / 1024) + 'MB',
+                heapTotal: Math.round(memUsage.heapTotal / 1024 / 1024) + 'MB',
+                heapUsed: Math.round(memUsage.heapUsed / 1024 / 1024) + 'MB',
+                external: Math.round(memUsage.external / 1024 / 1024) + 'MB'
+            },
+            version: '1.0.0',
+            endpoints: {
+                auth: '/api/auth/*',
+                users: '/api/users/*',
+                locations: '/api/locations/*',
+                uploads: '/api/uploads/*'
+            }
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            status: 'ERROR',
+            message: error.message,
+            timestamp: new Date().toISOString()
+        });
+    }
 });
+
+// Helper function to format uptime
+function formatUptime(seconds) {
+    const days = Math.floor(seconds / 86400);
+    const hours = Math.floor((seconds % 86400) / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = Math.floor(seconds % 60);
+
+    if (days > 0) {
+        return `${days}d ${hours}h ${minutes}m ${secs}s`;
+    } else if (hours > 0) {
+        return `${hours}h ${minutes}m ${secs}s`;
+    } else if (minutes > 0) {
+        return `${minutes}m ${secs}s`;
+    } else {
+        return `${secs}s`;
+    }
+}
 
 app.get('/api/info', (req, res) => {
     res.json({
@@ -280,7 +400,7 @@ app.get('/api/info', (req, res) => {
 async function startServer() {
     const dbConnected = await initDB();
     
-    app.listen(PORT, () => {
+    global.server = app.listen(PORT, () => {
         console.log('🚀 RESTful API Server Started!');
         console.log(`📍 Server: http://localhost:${PORT}`);
         console.log(`💾 Database: ${dbConnected ? 'Connected' : 'Disconnected'}`);
@@ -411,11 +531,11 @@ app.post('/api/auth/login', async (req, res) => {
             { expiresIn: '24h' }
         );
 
-        // Update last login
-        await pool.execute(
-            'UPDATE TaiKhoanNguoiDung SET LanDangNhapCuoi = NOW() WHERE MaTK = ?',
-            [user.MaTK]
-        );
+        // Note: Last login tracking would require adding LanDangNhapCuoi column to database
+        // await pool.execute(
+        //     'UPDATE TaiKhoanNguoiDung SET LanDangNhapCuoi = NOW() WHERE MaTK = ?',
+        //     [user.MaTK]
+        // );
 
         if (NODE_ENV === 'development') {
             console.log('✅ User logged in:', email);
@@ -499,7 +619,7 @@ app.get('/api/users', authenticateToken, requireAdmin, async (req, res) => {
         const { page = 1, limit = 10, search = '' } = req.query;
         const offset = (page - 1) * limit;
 
-        let query = 'SELECT MaTK, TenNguoiDung, Email, LoaiNguoiDung, NgayTao, LanDangNhapCuoi, TrangThai FROM TaiKhoanNguoiDung';
+        let query = 'SELECT MaTK, TenNguoiDung, Email, LoaiNguoiDung, NgayTao, TrangThai FROM TaiKhoanNguoiDung';
         let countQuery = 'SELECT COUNT(*) as total FROM TaiKhoanNguoiDung';
         let params = [];
 
@@ -547,7 +667,7 @@ app.get('/api/users/:id', authenticateToken, async (req, res) => {
         }
 
         const [users] = await pool.execute(
-            'SELECT MaTK, TenNguoiDung, Email, LoaiNguoiDung, NgayTao, LanDangNhapCuoi, TrangThai FROM TaiKhoanNguoiDung WHERE MaTK = ?',
+            'SELECT MaTK, TenNguoiDung, Email, LoaiNguoiDung, NgayTao, TrangThai FROM TaiKhoanNguoiDung WHERE MaTK = ?',
             [id]
         );
 
@@ -703,7 +823,7 @@ app.delete('/api/users/:id', authenticateToken, requireAdmin, async (req, res) =
 app.get('/api/users/profile', authenticateToken, async (req, res) => {
     try {
         const [users] = await pool.execute(
-            'SELECT MaTK, TenNguoiDung, Email, LoaiNguoiDung, NgayTao, LanDangNhapCuoi FROM TaiKhoanNguoiDung WHERE MaTK = ?',
+            'SELECT MaTK, TenNguoiDung, Email, LoaiNguoiDung, NgayTao FROM TaiKhoanNguoiDung WHERE MaTK = ?',
             [req.user.id]
         );
 
@@ -1320,5 +1440,78 @@ app.use((error, req, res, next) => {
         error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
 });
+
+// ================================
+// PROCESS MONITORING & GRACEFUL SHUTDOWN
+// ================================
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (error) => {
+    console.error('❌ Uncaught Exception:', error);
+    gracefulShutdown('uncaughtException');
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+    gracefulShutdown('unhandledRejection');
+});
+
+// Handle SIGTERM (production)
+process.on('SIGTERM', () => {
+    console.log('📡 SIGTERM received');
+    gracefulShutdown('SIGTERM');
+});
+
+// Handle SIGINT (Ctrl+C)
+process.on('SIGINT', () => {
+    console.log('📡 SIGINT received');
+    gracefulShutdown('SIGINT');
+});
+
+// Graceful shutdown function
+async function gracefulShutdown(signal) {
+    console.log(`🔄 Graceful shutdown initiated by ${signal}`);
+
+    try {
+        // Close database pool
+        if (pool) {
+            await pool.end();
+            console.log('✅ Database pool closed');
+        }
+
+        // Close server
+        if (global.server) {
+            global.server.close(() => {
+                console.log('✅ HTTP server closed');
+                process.exit(0);
+            });
+
+            // Force close after 10 seconds
+            setTimeout(() => {
+                console.log('❌ Forced shutdown');
+                process.exit(1);
+            }, 10000);
+        } else {
+            process.exit(0);
+        }
+    } catch (error) {
+        console.error('❌ Error during shutdown:', error);
+        process.exit(1);
+    }
+}
+
+// Memory monitoring (development only)
+if (NODE_ENV === 'development') {
+    setInterval(() => {
+        const memUsage = process.memoryUsage();
+        console.log('📊 Memory Usage:', {
+            rss: Math.round(memUsage.rss / 1024 / 1024) + 'MB',
+            heapTotal: Math.round(memUsage.heapTotal / 1024 / 1024) + 'MB',
+            heapUsed: Math.round(memUsage.heapUsed / 1024 / 1024) + 'MB',
+            external: Math.round(memUsage.external / 1024 / 1024) + 'MB'
+        });
+    }, 600000); // Every 10 minutes
+}
 
 startServer();

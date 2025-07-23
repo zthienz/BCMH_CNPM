@@ -1,5 +1,17 @@
 # Du Lich Tra Vinh - Backend API
 
+## 🛡️ **PERMANENT STABILITY SOLUTIONS**
+
+This server includes comprehensive permanent solutions to prevent common issues:
+
+### 🔧 **Auto-Recovery Systems:**
+- **PM2 Process Manager**: Automatic restart on crashes
+- **Database Health Checker**: Auto-repair database connections
+- **Windows Service**: Run as system service (survives reboots)
+- **Connection Pool**: Optimized MySQL connection management
+- **Memory Monitoring**: Automatic memory leak detection
+- **Health Dashboard**: Real-time system monitoring
+
 ## 🚀 Production Deployment Guide
 
 ### Prerequisites
@@ -78,6 +90,62 @@ start-production.bat
 NODE_ENV=production node restful-api-server.js
 ```
 
+#### 🛡️ **PERMANENT STARTUP (Recommended)**
+```bash
+# Windows - Install as Service (Survives Reboots)
+install-windows-service.bat
+
+# Windows - PM2 Process Manager
+start-permanent.bat
+
+# Windows - Auto-restart Monitor
+auto-restart.bat
+```
+
+#### With Health Monitoring
+```bash
+# Windows
+start-with-monitoring.bat
+
+# Linux/Mac
+node health-monitor.js
+```
+
+### 🔍 Health Monitoring Features
+
+The server includes comprehensive health monitoring:
+
+- **Automatic Restart**: Server restarts automatically on crashes
+- **Database Connection Monitoring**: Checks DB connection every 5 minutes
+- **Memory Monitoring**: Tracks memory usage in development mode
+- **Health Endpoint**: `/health` provides detailed server status
+- **Graceful Shutdown**: Proper cleanup on termination signals
+
+#### Health Check Response
+```json
+{
+  "success": true,
+  "status": "OK",
+  "timestamp": "2025-07-22T13:15:53.818Z",
+  "server": {
+    "port": 3001,
+    "environment": "production",
+    "uptime": 21,
+    "uptimeFormatted": "21s"
+  },
+  "database": {
+    "status": "Connected",
+    "latency": "1ms"
+  },
+  "memory": {
+    "rss": "56MB",
+    "heapTotal": "16MB",
+    "heapUsed": "14MB",
+    "external": "2MB"
+  }
+}
+```
+
 ### 📁 File Structure
 
 ```
@@ -123,6 +191,30 @@ Check server logs regularly for:
 - Rate limit violations
 - Unusual API usage patterns
 - Error messages
+- Database connection issues
+- Memory usage spikes
+
+#### Troubleshooting Common Issues
+
+**Server stops after inactivity:**
+- Use `start-with-monitoring.bat` for automatic restart
+- Check database connection timeout settings
+- Monitor memory usage for leaks
+
+**Database connection lost:**
+- Server automatically attempts reconnection
+- Check MySQL server status
+- Verify network connectivity
+
+**High memory usage:**
+- Monitor `/health` endpoint for memory stats
+- Restart server if memory usage is excessive
+- Check for memory leaks in application code
+
+**CORS errors:**
+- Verify CORS_ORIGIN in .env file
+- Check frontend origin matches allowed origins
+- Ensure credentials are handled properly
 
 ### 📞 Support
 

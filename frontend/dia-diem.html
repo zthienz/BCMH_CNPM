@@ -506,7 +506,7 @@
             }
 
             try {
-                const response = await fetch(`${API_BASE_URL}/diadiemdulich/${id}`);
+                const response = await fetch(`${API_BASE_URL}/api/locations/${id}`);
 
                 if (!response.ok) {
                     throw new Error('Không thể tải thông tin chi tiết');
