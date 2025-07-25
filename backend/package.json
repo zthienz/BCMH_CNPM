@@ -4,7 +4,7 @@
   "description": "Backend API for Tra Vinh Travel Website",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node restful-api-server.js",
     "dev": "nodemon server.js",
     "test": "jest"
   },
