@@ -87,7 +87,7 @@ app.use((req, res, next) => {
         }
         return res.sendStatus(200);
     }
-    
+
     next();
 });
 
@@ -126,14 +126,14 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ 
+const upload = multer({
     storage: storage,
     limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
     fileFilter: (req, file, cb) => {
         const allowedTypes = /jpeg|jpg|png|gif|webp/;
         const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
         const mimetype = allowedTypes.test(file.mimetype);
-        
+
         if (mimetype && extname) {
             return cb(null, true);
         } else {
@@ -146,11 +146,11 @@ const upload = multer({
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
-    
+
     if (!token) {
         return res.status(401).json({ success: false, message: 'Access token required' });
     }
-    
+
     jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) {
             return res.status(403).json({ success: false, message: 'Invalid or expired token' });
@@ -192,7 +192,7 @@ async function initDB() {
             debug: false,
             multipleStatements: false
         });
-        
+
         const connection = await pool.getConnection();
         await connection.execute('SELECT 1');
         connection.release();
@@ -360,14 +360,14 @@ app.get('/api/info', (req, res) => {
             endpoints: {
                 'GET /health': 'Health check',
                 'GET /api/info': 'API information',
-                
+
                 // Authentication
                 'POST /api/auth/register': 'User registration',
                 'POST /api/auth/login': 'User login',
                 'POST /api/auth/logout': 'User logout',
                 'GET /api/auth/session': 'Get current session',
                 'POST /api/auth/refresh': 'Refresh token',
-                
+
                 // Users Management
                 'GET /api/users': 'Get all users (Admin only)',
                 'GET /api/users/:id': 'Get user by ID',
@@ -376,7 +376,7 @@ app.get('/api/info', (req, res) => {
                 'GET /api/users/profile': 'Get current user profile',
                 'PUT /api/users/profile': 'Update current user profile',
                 'PUT /api/users/password': 'Change password',
-                
+
                 // Locations Management
                 'GET /api/locations': 'Get all locations',
                 'GET /api/locations/:id': 'Get location by ID',
@@ -387,7 +387,7 @@ app.get('/api/info', (req, res) => {
                 'GET /api/locations/category/:category': 'Get locations by category',
                 'POST /api/locations/:id/rating': 'Rate location',
                 'GET /api/locations/:id/ratings': 'Get location ratings',
-                
+
                 // File Upload
                 'POST /api/uploads/image': 'Upload image',
                 'DELETE /api/uploads/:filename': 'Delete uploaded file'
@@ -399,7 +399,7 @@ app.get('/api/info', (req, res) => {
 // Start server
 async function startServer() {
     const dbConnected = await initDB();
-    
+
     global.server = app.listen(PORT, () => {
         console.log('🚀 RESTful API Server Started!');
         console.log(`📍 Server: http://localhost:${PORT}`);

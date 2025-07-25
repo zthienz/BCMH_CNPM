@@ -4,7 +4,7 @@ services:
   backend:
     build: ./backend
     ports:
-      - "3100:3100"              # Bên host 3100 → trong container cũng là 3100
+      - "3101:3100"              # Bên host 3100 → trong container cũng là 3100
     volumes:
       - ./backend:/app
     depends_on:
@@ -20,7 +20,7 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - "5173:5173"
+      - "3000:3000"
     volumes:
       - ./frontend:/app
     depends_on:
@@ -38,3 +38,5 @@ services:
 
 volumes:
   bcmh_cnpm_mysql_data:
+
+
